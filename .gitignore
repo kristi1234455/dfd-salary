@@ -1,35 +1,67 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# 忽略匹配下列规则的Git 提交 V2.1.0
+### gradle ###
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
 
-# Folder config file
-Desktop.ini
+### STS ###
+.settings/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+bin/
 
-# java class file
-*.class
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.lock
+rebel.xml
 
-# Package Files #
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+### maven ###
+target/
 *.war
 *.ear
-/target
-/.settings
-/.classpath
-/.project
-/.idea
+*.zip
+*.tar
+*.tar.gz
 
-# ignore Maven generated target folders
-target
-out
-
-# ignore eclipse files
-.project
-.classpath
-.settings
-.factorypath
-.metadata
-.idea
-*.iml
-
-# ignore log files
+### logs ####
+/logs/
 *.log
 
+/logs/*/
+*.log.gz
+
+### temp ignore ###
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+### system ignore ###
+.DS_Store
+Thumbs.db
+Servers
+.metadata
+upload
+gen_code
+*.flattened-pom.xml
+
+### node ###
+node_modules
+dby-alliance-api/src/main/java/com/duobaoyu/dby/third/DEMO.java
