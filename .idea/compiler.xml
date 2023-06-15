@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="salary-api" />
+        <module name="salary-mapper" />
+        <module name="salary-service" />
+        <module name="salary-common" />
+        <module name="salary-pojo" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="salary-api" options="-parameters" />
+      <module name="salary-common" options="-parameters" />
+      <module name="salary-mapper" options="-parameters" />
+      <module name="salary-pojo" options="-parameters" />
+      <module name="salary-service" options="-parameters" />
+    </option>
+  </component>
+</project>

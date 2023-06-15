@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.BidSalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.BidSalary" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="bid_uid" property="bidUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="device_category" property="deviceCategory" jdbcType="VARCHAR" />
+    <result column="device_name" property="deviceName" jdbcType="VARCHAR" />
+    <result column="device_output" property="deviceOutput" jdbcType="DECIMAL" />
+    <result column="bid_task" property="bidTask" jdbcType="VARCHAR" />
+    <result column="designer" property="designer" jdbcType="VARCHAR" />
+    <result column="reviewer" property="reviewer" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="distribute_fee" property="distributeFee" jdbcType="DECIMAL" />
+    <result column="adjusted_coefficient" property="adjustedCoefficient" jdbcType="VARCHAR" />
+    <result column="ratio" property="ratio" jdbcType="VARCHAR" />
+    <result column="bid_fee" property="bidFee" jdbcType="DECIMAL" />
+    <result column="distribute_total_fee" property="distributeTotalFee" jdbcType="DECIMAL" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>

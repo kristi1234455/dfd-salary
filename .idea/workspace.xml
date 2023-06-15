@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$PROJECT_DIR$/../../../../software/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="E:\software\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2PoPo81kl5jxxdD0jICKC30YW2c" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\code\dy\dfd-salary\salary-mapper\src\main\resources\mapper" />
+      <recent name="E:\code\dy\dfd-salary\salary-mapper\src\main\java\com\dfd\mapper" />
+      <recent name="E:\code\dy\dfd-salary\salary-pojo\src\main\java\com\dfd\entity" />
+      <recent name="E:\code\test\test-interceptor\dfd-salary\salary-api\src\main\java\com\dfd\controller" />
+      <recent name="E:\code\test\test-interceptor\dfd-salary\salary-mapper\src\main\resources\mapper" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\code\test\test-interceptor\dfd-salary\salary-service\src\main\java\com\dfd\service" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.dfd.controller" />
+      <recent name="com.dfd.dto" />
+      <recent name="com.dfd.config" />
+      <recent name="com.dfd.aspect" />
+      <recent name="com.dfd.utils" />
+    </key>
+  </component>
+  <component name="RestServicesNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="Found 58 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+        </path>
+        <path>
+          <item name="Found 58 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+          <item name="salary-api" type="c588b436:RestServiceStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SalaryApplication">
+    <configuration name="ItemControllerTest.testInfo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="salary-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dfd.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.dfd.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.dfd.controller.ItemControllerTest" />
+      <option name="METHOD_NAME" value="testInfo" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SalaryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="salary-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dfd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dfd.SalaryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SalaryApplication" />
+        <item itemvalue="JUnit.ItemControllerTest.testInfo" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="" />
+      <created>1684120632925</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1684120632925</updated>
+      <workItem from="1684120634330" duration="4482000" />
+      <workItem from="1684126549182" duration="42000" />
+      <workItem from="1684130446371" duration="2567000" />
+      <workItem from="1685349810370" duration="1690000" />
+      <workItem from="1685946364864" duration="2749000" />
+      <workItem from="1686011108507" duration="4271000" />
+      <workItem from="1686097488594" duration="23888000" />
+      <workItem from="1686184438973" duration="12706000" />
+      <workItem from="1686207032937" duration="10013000" />
+      <workItem from="1686270743779" duration="22849000" />
+      <workItem from="1686530048502" duration="19968000" />
+      <workItem from="1686617081987" duration="5268000" />
+      <workItem from="1686703032820" duration="8526000" />
+      <workItem from="1686789299741" duration="1841000" />
+      <workItem from="1686794759040" duration="56000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemServiceImpl.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="scientificSalaryDelDTO.getItemMemberIds()" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

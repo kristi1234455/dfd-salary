@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.TotalSalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.TotalSalary" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="payday" property="payday" jdbcType="VARCHAR" />
+    <result column="performance_total" property="performanceTotal" jdbcType="VARCHAR" />
+    <result column="design_total" property="designTotal" jdbcType="VARCHAR" />
+    <result column="tender_total" property="tenderTotal" jdbcType="VARCHAR" />
+    <result column="scientific_total" property="scientificTotal" jdbcType="VARCHAR" />
+    <result column="office" property="office" jdbcType="VARCHAR" />
+    <result column="special_base_fee" property="specialBaseFee" jdbcType="VARCHAR" />
+    <result column="special_max_coefficient" property="specialMaxCoefficient" jdbcType="VARCHAR" />
+    <result column="standard_subsidy" property="standardSubsidy" jdbcType="VARCHAR" />
+    <result column="subsidy_coefficient" property="subsidyCoefficient" jdbcType="VARCHAR" />
+    <result column="plan_subsidy" property="planSubsidy" jdbcType="VARCHAR" />
+    <result column="check_subsidy" property="checkSubsidy" jdbcType="VARCHAR" />
+    <result column="reality_subsidy" property="realitySubsidy" jdbcType="VARCHAR" />
+    <result column="reality_salary" property="realitySalary" jdbcType="VARCHAR" />
+    <result column="plan_salary" property="planSalary" jdbcType="VARCHAR" />
+    <result column="check_salary" property="checkSalary" jdbcType="VARCHAR" />
+    <result column="coefficient_total" property="coefficientTotal" jdbcType="VARCHAR" />
+    <result column="out_subsidy" property="outSubsidy" jdbcType="VARCHAR" />
+    <result column="night_subsidy" property="nightSubsidy" jdbcType="VARCHAR" />
+    <result column="overtime_subsidy" property="overtimeSubsidy" jdbcType="VARCHAR" />
+    <result column="heating_subsidy" property="heatingSubsidy" jdbcType="VARCHAR" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>

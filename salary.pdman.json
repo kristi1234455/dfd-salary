@@ -1,0 +1,3402 @@
+{
+  "modules": [
+    {
+      "name": "dfd-salary",
+      "chnname": "工资申报",
+      "entities": [
+        {
+          "title": "item",
+          "fields": [
+            {
+              "name": "id",
+              "type": "BigInt",
+              "remark": "",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_name",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "项目名称"
+            },
+            {
+              "name": "project_name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "工程总称"
+            },
+            {
+              "name": "item_number",
+              "type": "MiddleString",
+              "remark": "",
+              "chnname": "立项号"
+            },
+            {
+              "name": "plan_number",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "计划号"
+            },
+            {
+              "name": "virtual_sub_item_number",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "虚拟合同子项号"
+            },
+            {
+              "name": "agreement_money",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "合同金额(万元）"
+            },
+            {
+              "name": "forcast_agreement_money",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "预测合同金额(万元)"
+            },
+            {
+              "name": "sub_item_money",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "合同子项金额"
+            },
+            {
+              "name": "item_properties",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目属性"
+            },
+            {
+              "name": "item_manager",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目经理"
+            },
+            {
+              "name": "item_location",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目地点"
+            },
+            {
+              "name": "item_summary",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目概述"
+            },
+            {
+              "name": "item_start_time",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目开始时间"
+            },
+            {
+              "name": "item_plan_finish_time",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目计划完成时间"
+            },
+            {
+              "name": "business_manager",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "商务经理"
+            },
+            {
+              "name": "tender_director",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标负责人"
+            },
+            {
+              "name": "tender_start_time",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标开始时间"
+            },
+            {
+              "name": "picketage_time",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "定标时间"
+            },
+            {
+              "name": "design_manager",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计经理"
+            },
+            {
+              "name": "scientific_manager",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科研经理"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "项目信息表",
+          "nameTemplate": "",
+          "remark": ""
+        },
+        {
+          "title": "user",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键",
+              "pk": true,
+              "notNull": true,
+              "autoIncrement": true
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "user_name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "用户名"
+            },
+            {
+              "name": "phone",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "手机号"
+            },
+            {
+              "name": "nickname",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "用户昵称"
+            },
+            {
+              "name": "password",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "密码"
+            },
+            {
+              "name": "pic",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "头像"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "用户登录表"
+        },
+        {
+          "title": "item_member",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "department",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门"
+            },
+            {
+              "name": "number",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "工号"
+            },
+            {
+              "name": "post",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "岗位"
+            },
+            {
+              "name": "name",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "名字"
+            },
+            {
+              "name": "gender",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "性别"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "项目人员表"
+        },
+        {
+          "title": "attendance",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "item_member_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "year",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "年"
+            },
+            {
+              "name": "month",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "月"
+            },
+            {
+              "name": "day",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "日"
+            },
+            {
+              "name": "status",
+              "type": "DefaultString",
+              "remark": "1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；",
+              "chnname": "考勤状态"
+            },
+            {
+              "name": "outgoing_total_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "驻外天数"
+            },
+            {
+              "name": "duty_total_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "出勤天数"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "考勤表"
+        },
+        {
+          "title": "tender_plan",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "tender_design_task",
+              "type": "DefaultString",
+              "remark": "1工艺方案图及技术任务书澄清；2设备投标方案图、报价清单评审；3技术描述；4解标PPT及设计方案优化建议；5设备仿真及解标视频制作；6技术标书及商务标书的评审及修订；7技术标书及商务标书的打印出版；8投标资料入PDM库",
+              "chnname": "投标设计任务"
+            },
+            {
+              "name": "design_task_finish_time",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标设计任务完成节点"
+            },
+            {
+              "name": "tender_wage_base",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标工资基数（元）"
+            },
+            {
+              "name": "item_scale",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目规模（万元）"
+            },
+            {
+              "name": "tender_adjust_ratio",
+              "type": "DefaultString",
+              "remark": "与项目规模有关：1：＜2000，-0.4；2：2000～3000，-0.3；3：3000～5000，-0.2；4：5000～7000，-0.1；5：7000～9000，0；6：9000～12000，0.1；7：12000～16000，0.2；8：16000～20000，0.3；9：＞20000以上，0.4；",
+              "chnname": "投标调整系数"
+            },
+            {
+              "name": "is_overseas",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "是否是海外项目、高端合资项目（双语及以上）"
+            },
+            {
+              "name": "is_paraphrase",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "有无述标"
+            },
+            {
+              "name": "is_tender_write",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主导EPC项目投标文件编制"
+            },
+            {
+              "name": "adjust_ratio_sum",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "调整系数小计"
+            },
+            {
+              "name": "multiple_adjust_ratio",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "综合调整系数"
+            },
+            {
+              "name": "tender_total_salary",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标工资合计(元）"
+            },
+            {
+              "name": "adjust_ratio",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "调整系数T"
+            },
+            {
+              "name": "complex_ratio",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "方案复杂系数"
+            },
+            {
+              "name": "tender_salary",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标工资"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "投标计划表"
+        },
+        {
+          "title": "design_plan",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "design_budget",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计工资预算"
+            },
+            {
+              "name": "ratify_pay",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门批准设计工资"
+            },
+            {
+              "name": "management_fee_limit",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计工资技术管理费额度"
+            },
+            {
+              "name": "design_service_fee",
+              "type": "DefaultString",
+              "remark": "（业务招待费）",
+              "chnname": "设计阶段项目服务费"
+            },
+            {
+              "name": "design_travel_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计阶段差旅费"
+            },
+            {
+              "name": "design_publication_fee",
+              "type": "DefaultString",
+              "remark": "（复印、晒图费、文件制作费用）",
+              "chnname": "设计阶段出版费"
+            },
+            {
+              "name": "design_labor_cost",
+              "type": "DefaultString",
+              "remark": "（项目工资）",
+              "chnname": "设计阶段人工费"
+            },
+            {
+              "name": "design_purchase_fee",
+              "type": "DefaultString",
+              "remark": "（设计分包）",
+              "chnname": "设计阶段采购费用"
+            },
+            {
+              "name": "design_unpredictable_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计阶段不可预见费"
+            },
+            {
+              "name": "design_subtotal",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计阶段小计"
+            },
+            {
+              "name": "later_service_fee",
+              "type": "DefaultString",
+              "remark": "（业务招待费）",
+              "chnname": "后期服务阶段项目服务费"
+            },
+            {
+              "name": "later_travel_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "后期服务阶段差旅费"
+            },
+            {
+              "name": "later_publication_fee",
+              "type": "DefaultString",
+              "remark": "(文件制作费用)",
+              "chnname": "后期服务阶段复印、晒图费"
+            },
+            {
+              "name": "later_purchase_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "后期服务阶段采购费用"
+            },
+            {
+              "name": "later_pay",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "后期服务阶段项目工资"
+            },
+            {
+              "name": "later_unpredictable_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "后期服务阶段不可预见费"
+            },
+            {
+              "name": "later_subtotal",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "后期服务阶段小计"
+            },
+            {
+              "name": "distribute_design_stage",
+              "type": "DefaultString",
+              "remark": "1项目建议书；2可研报告；3初步设计；4施工图；5方案设计",
+              "chnname": "分配设计阶段"
+            },
+            {
+              "name": "distribute_stage",
+              "type": "DefaultString",
+              "remark": "1预；2结；3服务",
+              "chnname": "分配阶段"
+            },
+            {
+              "name": "distribute_count",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配次数"
+            },
+            {
+              "name": "total_budget",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "预算总额（元）"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "设计计划表"
+        },
+        {
+          "title": "scientific_plan",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息uid"
+            },
+            {
+              "name": "item_member_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员uid"
+            },
+            {
+              "name": "distribute_stage",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配阶段"
+            },
+            {
+              "name": "distribute_count",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配次数"
+            },
+            {
+              "name": "approve_pay",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "批准工资（元）"
+            },
+            {
+              "name": "pay_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "已发费用（元）"
+            },
+            {
+              "name": "remainder_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "结余工资（元）"
+            },
+            {
+              "name": "current_distribute_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "本次分配额（元）"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "科研计划表"
+        },
+        {
+          "title": "performance_plan",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "uid"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "approve_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "批准总额"
+            },
+            {
+              "name": "distribute_count",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配次数"
+            },
+            {
+              "name": "distribute_stage",
+              "type": "DefaultString",
+              "remark": "1前期/实施；2后期服务；",
+              "chnname": "分配阶段"
+            },
+            {
+              "name": "pay_performance_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "已发绩效工资(元)"
+            },
+            {
+              "name": "remainder_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "结余绩效工资(元)"
+            },
+            {
+              "name": "current_distribute_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "本次分配额（元）"
+            },
+            {
+              "name": "accordance",
+              "type": "DefaultString",
+              "remark": "1到货验收报告；2安调验收报告；3终验收报告；4质保期结束",
+              "chnname": "计收依据"
+            },
+            {
+              "name": "distribute_ratio",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配比例"
+            },
+            {
+              "name": "summary",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目完成情况概述"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "绩效计划表"
+        },
+        {
+          "title": "subsidy_plan",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "基础工资"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "调整系数"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "本月工作目标完成情况"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "下月工作计划"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "申报发放"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "出勤天数"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "备注"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "专岗津贴工资计划表"
+        },
+        {
+          "title": "item_salary",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "id"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "item_member_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "item_salary_budget",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目工资预算"
+            },
+            {
+              "name": "approve_item_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门批准项目工资"
+            },
+            {
+              "name": "technology_manager_fee",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目工资技术管理费额度"
+            },
+            {
+              "name": "post_salary_standard",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "岗位工资标准"
+            },
+            {
+              "name": "plan_approve_factor",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "策划批准系数"
+            },
+            {
+              "name": "declare_factor",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "申报系数"
+            },
+            {
+              "name": "declare_grant",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "申报发放"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "项目工资表"
+        },
+        {
+          "title": "subsidy",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "item_member_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "out_subsidy_standard",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "驻外补助标准（元/天）"
+            },
+            {
+              "name": "out_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "驻外天数"
+            },
+            {
+              "name": "out_subsidy",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "驻外补助"
+            },
+            {
+              "name": "night_duty",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班时间"
+            },
+            {
+              "name": "night_work_content",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班工作内容"
+            },
+            {
+              "name": "night_subsidy_standard",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班补助标准（元/天）"
+            },
+            {
+              "name": "night_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班天数"
+            },
+            {
+              "name": "night_subsidy",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班补助"
+            },
+            {
+              "name": "overtime",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班时间"
+            },
+            {
+              "name": "overtime_work_content",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班工作内容"
+            },
+            {
+              "name": "overtime_subsidy_standard",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班补助标准（元/天）"
+            },
+            {
+              "name": "overtime_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班天数"
+            },
+            {
+              "name": "overtime_subsidy",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班补助"
+            },
+            {
+              "name": "heating_subsidy_standart",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "高温补助标准（元/天）"
+            },
+            {
+              "name": "heating_days",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "高温天数"
+            },
+            {
+              "name": "heating_subsidy",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "高温补助"
+            },
+            {
+              "name": "mark",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "mark"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "补助表"
+        },
+        {
+          "title": "performance_salary",
+          "fields": [
+            {
+              "name": "id",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "item_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "item_member_uid",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "post_salary_standard",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "岗位工资标准"
+            },
+            {
+              "name": "performance_ratio",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "绩效系数"
+            },
+            {
+              "name": "attendance_months",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "出勤月数"
+            },
+            {
+              "name": "performance_salary",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "本次发放绩效工资"
+            },
+            {
+              "name": "distribute_stage",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配阶段"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "批准绩效工资（元）"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "绩效工资结余（元）"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "本次申请工资"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "绩效工资表"
+        },
+        {
+          "title": "design_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled13",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计计划表uid"
+            },
+            {
+              "name": "untitled14",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门技术服务费"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "大类专业"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "小类专业"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计经理"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专业负责"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "校对"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "审核"
+            },
+            {
+              "name": "untitled10",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "小计"
+            },
+            {
+              "name": "untitled11",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "比例统计"
+            },
+            {
+              "name": "untitled12",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计工资合计"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": ""
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "设计工资表"
+        },
+        {
+          "title": "tender_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标计划表uid"
+            },
+            {
+              "name": "untitled14",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设备类别"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设备名称"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设备产值（万元）"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标任务"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计人"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "评审人"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计完成时间"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配金额"
+            },
+            {
+              "name": "untitled10",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "调整系数"
+            },
+            {
+              "name": "untitled11",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "占比"
+            },
+            {
+              "name": "untitled12",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标工资"
+            },
+            {
+              "name": "untitled13",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "分配总金额"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "投标工资表"
+        },
+        {
+          "title": "scientific_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "id"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科研计划表uid"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门技术服务费"
+            },
+            {
+              "name": "untitled10",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "大类专业"
+            },
+            {
+              "name": "untitled11",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "小类专业"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科研经理"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专业负责"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "校对"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "审核"
+            },
+            {
+              "name": "untitled13",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "小计"
+            },
+            {
+              "name": "untitled12",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "比例统计"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科研工资合计"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "科研工资表"
+        },
+        {
+          "title": "subsidy_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "所室"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗基础工资"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗工资系数最大值"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "月份"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗津贴系数"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗津贴标准工资"
+            },
+            {
+              "name": "untitled10",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "月份"
+            },
+            {
+              "name": "untitled11",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗津贴计划发放"
+            },
+            {
+              "name": "untitled12",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "月份"
+            },
+            {
+              "name": "untitled13",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "专岗津贴考核工资"
+            },
+            {
+              "name": "untitled14",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "当月专岗津贴实际发放"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "备注"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "专岗津贴工资表"
+        },
+        {
+          "title": "total_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled8",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目信息表uid"
+            },
+            {
+              "name": "untitled9",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目人员表uid"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目名称"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "工号"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "姓名"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "工资发放日期"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目当月总工资"
+            },
+            {
+              "name": "untitled10",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目工资"
+            },
+            {
+              "name": "untitled11",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "绩效工资"
+            },
+            {
+              "name": "untitled12",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "设计工资"
+            },
+            {
+              "name": "untitled13",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "投标工资"
+            },
+            {
+              "name": "untitled14",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "科研工资"
+            },
+            {
+              "name": "untitled15",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "驻外补助"
+            },
+            {
+              "name": "untitled16",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "夜班补助"
+            },
+            {
+              "name": "untitled17",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "加班补助"
+            },
+            {
+              "name": "untitled18",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "高温补助"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "备注"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "工资汇总表"
+        },
+        {
+          "title": "item_total_salary",
+          "fields": [
+            {
+              "name": "untitled",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "主键"
+            },
+            {
+              "name": "untitled1",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "部门"
+            },
+            {
+              "name": "untitled2",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "立项号"
+            },
+            {
+              "name": "untitled3",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目名称"
+            },
+            {
+              "name": "untitled4",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "阶段"
+            },
+            {
+              "name": "untitled5",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目经理"
+            },
+            {
+              "name": "untitled6",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "项目工资申报"
+            },
+            {
+              "name": "untitled7",
+              "type": "DefaultString",
+              "remark": "",
+              "chnname": "备注"
+            },
+            {
+              "name": "created_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "创建人"
+            },
+            {
+              "name": "created_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "创建时间"
+            },
+            {
+              "name": "updated_by",
+              "type": "IdOrKey",
+              "remark": "",
+              "chnname": "更新人"
+            },
+            {
+              "name": "updated_time",
+              "type": "DateTime",
+              "remark": "",
+              "chnname": "更新时间"
+            }
+          ],
+          "indexs": [],
+          "headers": [
+            {
+              "fieldName": "chnname",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "name",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "type",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "dataType",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "remark",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "pk",
+              "relationNoShow": false
+            },
+            {
+              "fieldName": "notNull",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "autoIncrement",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "defaultValue",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "relationNoShow",
+              "relationNoShow": true
+            },
+            {
+              "fieldName": "uiHint",
+              "relationNoShow": true
+            }
+          ],
+          "chnname": "项目工资清单表"
+        }
+      ],
+      "graphCanvas": {
+        "nodes": [],
+        "edges": []
+      },
+      "associations": []
+    }
+  ],
+  "dataTypeDomains": {
+    "datatype": [
+      {
+        "name": "默认字串",
+        "code": "DefaultString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(255)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(32)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "标识号",
+        "code": "IdOrKey",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(32)"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "标识号-长",
+        "code": "LongKey",
+        "apply": {
+          "MYSQL": {
+            "type": "VARCHAR(64)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(64)"
+          },
+          "JAVA": {
+            "type": "String"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(64)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(64)"
+          }
+        }
+      },
+      {
+        "name": "名称",
+        "code": "Name",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(128)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(128)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(128)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(128)"
+          }
+        }
+      },
+      {
+        "name": "备注说明",
+        "code": "Intro",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(512)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(512)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(512)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(512)"
+          }
+        }
+      },
+      {
+        "name": "字串-短",
+        "code": "ShortString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(64)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(128)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(128)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(128)"
+          }
+        }
+      },
+      {
+        "name": "字串-中",
+        "code": "MiddleString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(128)"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(1024)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(1024)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(1024)"
+          }
+        }
+      },
+      {
+        "name": "字串-长",
+        "code": "LongString",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "ORACLE": {
+            "type": "NVARCHAR2(3072)"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(3072)"
+          },
+          "SQLServer": {
+            "type": "NVARCHAR(3072)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(3072)"
+          }
+        }
+      },
+      {
+        "name": "大文本",
+        "code": "LongText",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "TEXT"
+          },
+          "ORACLE": {
+            "type": "CLOB"
+          },
+          "SQLServer": {
+            "type": "NTEXT"
+          },
+          "PostgreSQL": {
+            "type": "TEXT"
+          }
+        }
+      },
+      {
+        "name": "小数",
+        "code": "Double",
+        "apply": {
+          "JAVA": {
+            "type": "Double"
+          },
+          "MYSQL": {
+            "type": "DECIMAL(32,10)"
+          },
+          "ORACLE": {
+            "type": "NUMBER(32,10)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(32,10)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(32,10)"
+          }
+        }
+      },
+      {
+        "name": "比例",
+        "code": "Ratio",
+        "apply": {
+          "MYSQL": {
+            "type": "DECIMAL(4,2)"
+          },
+          "JAVA": {
+            "type": "Double"
+          },
+          "ORACLE": {
+            "type": "NUMBER(4,2)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(4,2)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(4,2)"
+          }
+        }
+      },
+      {
+        "name": "整数",
+        "code": "Integer",
+        "apply": {
+          "JAVA": {
+            "type": "Integer"
+          },
+          "MYSQL": {
+            "type": "INT"
+          },
+          "ORACLE": {
+            "type": "INT"
+          },
+          "SQLServer": {
+            "type": "INT"
+          },
+          "PostgreSQL": {
+            "type": "INT"
+          }
+        }
+      },
+      {
+        "name": "大整数",
+        "code": "BigInt",
+        "apply": {
+          "MYSQL": {
+            "type": "BIGINT"
+          },
+          "JAVA": {
+            "type": "Long"
+          },
+          "ORACLE": {
+            "type": "NUMBER"
+          },
+          "SQLServer": {
+            "type": "BIGINT"
+          },
+          "PostgreSQL": {
+            "type": "BIGINT"
+          }
+        }
+      },
+      {
+        "name": "金额",
+        "code": "Money",
+        "apply": {
+          "JAVA": {
+            "type": "Double"
+          },
+          "MYSQL": {
+            "type": "DECIMAL(32,8)"
+          },
+          "ORACLE": {
+            "type": "NUMBER(32,8)"
+          },
+          "SQLServer": {
+            "type": "DECIMAL(32,8)"
+          },
+          "PostgreSQL": {
+            "type": "DECIMAL(32,8)"
+          }
+        }
+      },
+      {
+        "name": "是否",
+        "code": "YesNo",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(1)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(1)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(1)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(1)"
+          }
+        }
+      },
+      {
+        "name": "数据字典",
+        "code": "Dict",
+        "apply": {
+          "JAVA": {
+            "type": "String"
+          },
+          "MYSQL": {
+            "type": "VARCHAR(32)"
+          },
+          "ORACLE": {
+            "type": "VARCHAR2(32)"
+          },
+          "SQLServer": {
+            "type": "VARCHAR(32)"
+          },
+          "PostgreSQL": {
+            "type": "VARCHAR(32)"
+          }
+        }
+      },
+      {
+        "name": "日期",
+        "code": "Date",
+        "apply": {
+          "JAVA": {
+            "type": "Date"
+          },
+          "MYSQL": {
+            "type": "DATE"
+          },
+          "ORACLE": {
+            "type": "DATE"
+          },
+          "SQLServer": {
+            "type": "DATE"
+          },
+          "PostgreSQL": {
+            "type": "DATE"
+          }
+        }
+      },
+      {
+        "name": "日期时间",
+        "code": "DateTime",
+        "apply": {
+          "JAVA": {
+            "type": "Date"
+          },
+          "MYSQL": {
+            "type": "DATETIME"
+          },
+          "ORACLE": {
+            "type": "DATE"
+          },
+          "SQLServer": {
+            "type": "DATE"
+          },
+          "PostgreSQL": {
+            "type": "DATE"
+          }
+        }
+      },
+      {
+        "name": "单字符",
+        "code": "Char",
+        "apply": {
+          "MYSQL": {
+            "type": "CHAR(1)"
+          },
+          "ORACLE": {
+            "type": "CHAR(1)"
+          },
+          "JAVA": {
+            "type": "String"
+          },
+          "SQLServer": {
+            "type": "CHAR(1)"
+          },
+          "PostgreSQL": {
+            "type": "CHAR(1)"
+          }
+        }
+      }
+    ],
+    "database": [
+      {
+        "code": "MYSQL",
+        "template": "DROP TABLE {{=it.entity.title}};\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.pk ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}'",
+        "fileShow": true,
+        "defaultDatabase": true,
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'AUTO_INCREMENT' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,' ')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,' ') }}';{{=it.separator}}\n$blankline\n",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/",
+        "rebuildTableTemplate": "create table PDMAN_UP_{{=it.oldEntity.title}}\nas select * from {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}\n{{~it.newEntity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.newEntity.chnname,it.newEntity.remark,';') }}';{{=it.separator}}\n$blankline\n\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\ninsert into {{=it.newEntity.title}}(\n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\n) \nselect \n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\nfrom PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n{{~it.newEntity.indexs:index}}\nALTER TABLE {{=it.newEntity.title}} ADD {{? index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=index.name}}({{=it.func.join(...index.fields,',')}});{{=it.separator}}\n{{~}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.pk}}PRIMARY KEY{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}} {{? it.field.addAfter}}AFTER {{=it.field.addAfter}}{{?}};{{=it.separator}}",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}};{{=it.separator}}",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP {{=it.field.name}};{{=it.separator}}",
+        "deleteIndexTemplate": "ALTER TABLE {{=it.entity.title}} DROP INDEX {{=it.index.name}};{{=it.separator}}",
+        "createIndexTemplate": "ALTER TABLE {{=it.entity.title}} ADD {{? it.index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=it.index.name}}({{=it.func.join(...it.index.fields,',')}});{{=it.separator}}",
+        "updateTableComment": "ALTER TABLE {{=it.entity.title}} COMMENT '{{=it.entity.chnname}}';{{=it.separator}}"
+      },
+      {
+        "code": "ORACLE",
+        "template": "DROP TABLE {{=it.entity.title}};{{=it.separator}}\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}  {{= field.pk ? 'NOT NULL' : '' }} {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\nCOMMENT ON TABLE {{=it.entity.title}} IS '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}';{{=it.separator}}\n{{~it.entity.fields:field:index}}\nCOMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS '{{=it.func.join(field.chnname,field.remark,';')}}';{{=it.separator}}\n{{~}}",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\n{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~}}",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/\r\n$blankline",
+        "rebuildTableTemplate": "CREATE TABLE PDMAN_UP_{{=it.oldEntity.title}}\nAS SELECT * FROM {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\nDROP TABLE {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}{{~it.newEntity.fields:field:index}}{{? field.pk }}{{ pkList.push(field.name) }}{{?}}    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}{{? pkList.length >0 }}    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}}){{?}}\n);{{=it.separator}}\n$blankline\n{{? it.newEntity.chnname || it.newEntity.remark}}COMMENT ON TABLE {{=it.newEntity.title}} IS {{? it.newEntity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.newEntity.chnname}}'{{?}};{{?}}{{=it.separator}}\n{{~it.newEntity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.newEntity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{?}}{{=it.separator}}\n{{~}}\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\n$blankline\nINSERT INTO {{=it.newEntity.title}}(\n{{~sameCols:field:index}}   {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}) \nSELECT\n{{~sameCols:field:index}}   {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}FROM PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n\nDROP TABLE PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n{{~it.newEntity.indexs:index}}\nCREATE{{? index.isUnique}} UNIQUE{{?}} INDEX {{=index.name}} ON {{=it.newEntity.title}}({{=it.func.join(index.fields,',')}});{{=it.separator}}\n{{~}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD({{=it.field.name}} {{=it.field.type}}{{? it.field.defaultValue}} DEFAULT {{=it.field.defaultValue}}{{?}}{{? it.field.notNull}} NOT NULL{{?}});{{=it.separator}}\r\n{{? it.field.chnname || it.field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=it.field.name}} IS {{? it.field.remark}}'{{=it.field.remark}}'{{??}}'{{=it.field.chnname}}'{{?}};{{=it.separator}}{{?}}\r\n$blankline",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY({{=it.field.name}} {{=it.field.type}}{{? it.field.defaultValue}} DEFAULT {{=it.field.defaultValue}}{{?}}{{? it.field.notNull}} NOT NULL{{?}});{{=it.separator}}\r\n{{? it.field.chnname || it.field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=it.field.name}} IS {{? it.field.remark}}'{{=it.field.remark}}'{{??}}'{{=it.field.chnname}}'{{?}};{{=it.separator}}{{=it.separator}}{{?}}\r\n$blankline",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP({{=it.field.name}});{{=it.separator}}\r\n$blankline",
+        "deleteIndexTemplate": "DROP INDEX {{=it.entity.title}}.{{=it.index.name}};{{=it.separator}}\r\n$blankline",
+        "createIndexTemplate": "CREATE{{? it.index.isUnique}} UNIQUE{{?}} INDEX {{=it.index.name}} ON {{=it.entity.title}}({{=it.func.join(it.index.fields,',')}});{{=it.separator}}\r\n$blankline",
+        "updateTableComment": "{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\r\n$blankline"
+      },
+      {
+        "code": "SQLServer",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} {{= field.autoIncrement ? 'IDENTITY(1,1)' : '' }} {{= field.defaultValue ? it.func.join('DEFAULT',field.defaultValue,' ') : '' }}  {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    CONSTRAINT PK_{{=it.entity.title}} PRIMARY KEY CLUSTERED ({{~pkList:pkName:i}}{{= pkName }} ASC {{= i<pkList.length-1 ? ',' : '' }}{{~}}) ON [PRIMARY] \n{{?}}\n) ;{{=it.separator}}\n\n$blankline\nEXECUTE sp_addextendedproperty N'MS_Description', '{{= it.entity.chnname || it.entity.remark}}', N'user', N'dbo', N'table', N'{{=it.entity.title}}', NULL, NULL;{{=it.separator}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}EXECUTE sp_addextendedproperty N'MS_Description', {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}}, N'user', N'dbo', N'table', N'{{=it.entity.title}}', N'column', N'{{=field.name}}';{{=it.separator}}{{?}}\n{{~}}\n",
+        "deleteTableTemplate": "",
+        "rebuildTableTemplate": "",
+        "createFieldTemplate": "",
+        "updateFieldTemplate": "",
+        "deleteFieldTemplate": "",
+        "deleteIndexTemplate": "",
+        "createIndexTemplate": "",
+        "updateTableComment": ""
+      },
+      {
+        "code": "PostgreSQL",
+        "template": "DROP TABLE {{=it.entity.title}};\n$blankline\nCREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.pk ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.entity.chnname,it.entity.remark,';') }}'",
+        "createTableTemplate": "CREATE TABLE {{=it.entity.title}}(\n{{ pkList = [] ; }}\n{{~it.entity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}}{{? field.defaultValue}} DEFAULT {{=field.defaultValue}}{{?}}{{= field.notNull ? ' NOT NULL' : '' }}{{= index < it.entity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n);{{=it.separator}}\n$blankline\n{{? it.entity.chnname || it.entity.remark}}COMMENT ON TABLE {{=it.entity.title}} IS {{? it.entity.remark}}'{{=it.entity.remark}}'{{??}}'{{=it.entity.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~it.entity.fields:field:index}}\n{{? field.chnname || field.remark}}COMMENT ON COLUMN {{=it.entity.title}}.{{=field.name}} IS {{? field.remark}}'{{=field.remark}}'{{??}}'{{=field.chnname}}'{{?}};{{=it.separator}}{{?}}\n{{~}}",
+        "deleteTableTemplate": "DROP TABLE {{=it.entity.title}};{{=it.separator}}/*SkipError*/",
+        "rebuildTableTemplate": "create table PDMAN_UP_{{=it.oldEntity.title}}\nas select * from {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table {{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\nCREATE TABLE {{=it.newEntity.title}}(\n{{ pkList = [] ; }}\n{{~it.newEntity.fields:field:index}}\n    {{? field.pk }}{{ pkList.push(field.name) }}{{?}}\n    {{=field.name}} {{=field.type}} {{= field.notNull ? 'NOT NULL' : '' }} COMMENT '{{=it.func.join(field.chnname,field.remark,';')}}' {{= index < it.newEntity.fields.length-1 ? ',' : ( pkList.length>0 ? ',' :'' ) }}\n{{~}}\n{{? pkList.length >0 }}\n    PRIMARY KEY ({{~pkList:pkName:i}}{{= pkName }}{{= i<pkList.length-1 ? ',' : '' }}{{~}})\n{{?}}\n) COMMENT = '{{=it.func.join(it.newEntity.chnname,it.newEntity.remark,';') }}';{{=it.separator}}\n$blankline\n\n{{ sameCols = it.func.intersect(it.newEntity.fields,it.oldEntity.fields) ;}}\ninsert into {{=it.newEntity.title}}(\n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\n) \nselect \n{{~sameCols:field:index}}\n    {{=field.name}}{{? index<sameCols.length-1}},{{?}}\n{{~}}\nfrom PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}\n$blankline\n\ndrop table PDMAN_UP_{{=it.oldEntity.title}};{{=it.separator}}",
+        "createFieldTemplate": "ALTER TABLE {{=it.entity.title}} ADD COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.pk}}PRIMARY KEY{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}} {{? it.field.addAfter}}AFTER {{=it.field.addAfter}}{{?}};{{=it.separator}}",
+        "updateFieldTemplate": "ALTER TABLE {{=it.entity.title}} MODIFY COLUMN {{=it.field.name}} {{=it.field.type}} {{? it.field.notNull}}NOT NULL{{?}} {{? it.field.defaultValue}}DEFAULT {{? null==it.field.defaultValue}}NULL{{??}}'{{=it.field.defaultValue}}'{{?}}{{?}} {{? it.field.autoIncrement}}AUTO_INCREMENT{{?}} {{? it.field.chnname}}COMMENT '{{=it.field.chnname}}'{{?}};{{=it.separator}}",
+        "deleteFieldTemplate": "ALTER TABLE {{=it.entity.title}} DROP {{=it.field.name}};{{=it.separator}}",
+        "deleteIndexTemplate": "ALTER TABLE {{=it.entity.title}} DROP INDEX {{=it.index.name}};{{=it.separator}}",
+        "createIndexTemplate": "ALTER TABLE {{=it.entity.title}} ADD {{? it.index.isUnique}}UNIQUE{{??}}INDEX{{?}} {{=it.index.name}}({{=it.func.join(...it.index.fields,',')}});{{=it.separator}}",
+        "updateTableComment": "ALTER TABLE {{=it.entity.title}} COMMENT '{{=it.entity.chnname}}';{{=it.separator}}"
+      },
+      {
+        "code": "JAVA",
+        "template": "package group.rober.pdman.{{=it.module.name}}.entity;\n$blankline\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n$blankline\n\n/** {{=it.entity.chnname}} */\n@Table(name=\"{{=it.entity.title}}\")\npublic class {{=it.func.camel(it.entity.title,true) }} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    {{? field.pk }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.name,false)}} ;\n{{~}}\n$blankline\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.name,true)}}(){\n        return this.{{=it.func.camel(field.name,false)}};\n    }\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public void set{{=it.func.camel(field.name,true)}}({{=field.type}} {{= it.func.camel(field.name,false) }}){\n        this.{{=it.func.camel(field.name,false)}} = {{= it.func.camel(field.name,false) }};\n    }\n{{~}}\n}",
+        "createTableTemplate": "package group.rober.pdman.{{=it.module.name}}.entity;\n$blankline\nimport javax.persistence.*;\nimport java.io.Serializable;\nimport java.util.Date;\n$blankline\n$blankline\n@Table(name=\"{{=it.entity.title}}\")\npublic class {{=it.func.camel(it.entity.title,true) }} implements Serializable,Cloneable{\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    {{? field.pk }}\n    @Id\n    @GeneratedValue\n    {{?}}\n    private {{=field.type}} {{=it.func.camel(field.name,false)}} ;\n{{~}}\n$blankline\n{{~it.entity.fields:field:index}}\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public {{=field.type}} get{{=it.func.camel(field.name,true)}}(){\n        return this.{{=it.func.camel(field.name,false)}};\n    }\n    /** {{=it.func.join(field.chnname,field.remark,';')}} */\n    public void set{{=it.func.camel(field.name,true)}}({{=field.type}} {{= it.func.camel(field.name,false) }}){\n        this.{{=it.func.camel(field.name,false)}} = {{= it.func.camel(field.name,false) }};\n    }\n{{~}}\n}",
+        "deleteTableTemplate": "",
+        "rebuildTableTemplate": "",
+        "createFieldTemplate": "",
+        "updateFieldTemplate": "",
+        "deleteFieldTemplate": "",
+        "deleteIndexTemplate": "",
+        "createIndexTemplate": "",
+        "updateTableComment": ""
+      }
+    ]
+  },
+  "profile": {
+    "defaultFields": [
+      {
+        "name": "created_by",
+        "type": "IdOrKey",
+        "remark": "",
+        "chnname": "创建人"
+      },
+      {
+        "name": "created_time",
+        "type": "DateTime",
+        "remark": "",
+        "chnname": "创建时间"
+      },
+      {
+        "name": "updated_by",
+        "type": "IdOrKey",
+        "remark": "",
+        "chnname": "更新人"
+      },
+      {
+        "name": "updated_time",
+        "type": "DateTime",
+        "remark": "",
+        "chnname": "更新时间"
+      }
+    ],
+    "defaultFieldsType": "2",
+    "javaConfig": {
+      "JAVA_HOME": "C:\\Program Files\\Java\\jdk1.8.0_361"
+    },
+    "sqlConfig": ";",
+    "dbs": [
+      {
+        "name": "",
+        "defaultDB": true,
+        "properties": {
+          "driver_class_name": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://localhost:3306/dfd-salary?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC",
+          "password": "123456",
+          "username": "root"
+        }
+      }
+    ],
+    "wordTemplateConfig": ""
+  }
+}

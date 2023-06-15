@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.ItemSalaryMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.ItemSalary" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="item_salary_budget" property="itemSalaryBudget" jdbcType="DECIMAL" />
+    <result column="approve_item_fee" property="approveItemFee" jdbcType="DECIMAL" />
+    <result column="technology_manager_fee" property="technologyManagerFee" jdbcType="DECIMAL" />
+    <result column="post_salary_standard" property="postSalaryStandard" jdbcType="DECIMAL" />
+    <result column="plan_approve_factor" property="planApproveFactor" jdbcType="VARCHAR" />
+    <result column="declare_factor" property="declareFactor" jdbcType="VARCHAR" />
+    <result column="declare_grant" property="declareGrant" jdbcType="DECIMAL" />
+    <result column="item_stage" property="itemStage" jdbcType="VARCHAR" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>
