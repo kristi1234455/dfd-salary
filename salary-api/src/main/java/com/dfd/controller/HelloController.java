@@ -3,6 +3,7 @@ package com.dfd.controller;
 //import com.dfd.entity.User;
 //import com.dfd.utils.BusinessException;
 import com.dfd.anno.BusLog;
+import com.dfd.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 //todo:日志测试
 @BusLog(name = "内部日志管理测试")
+@RequestMapping("hello")
 public class HelloController {
 
     @RequestMapping("index")
@@ -32,5 +34,15 @@ public class HelloController {
         }
         log.info("测试成功！");
         return "测试成功";
+    }
+
+    @RequestMapping("token")
+    @BusLog(descrip = "生成token")
+    public String token(){
+        String username ="13419876445";
+        String password = "123";
+        String token = TokenUtil.token(username,password);
+        System.out.println(token);
+        return token;
     }
 }

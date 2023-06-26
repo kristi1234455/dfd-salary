@@ -66,8 +66,8 @@ public class ItemMemberInfoDTO implements Serializable {
     /**
      * 职级
      */
-    @ApiModelProperty(value = "职级", name = "rank")
-    private String rank;
+    @ApiModelProperty(value = "职级", name = "ranks")
+    private String ranks;
 
     /**
      * 流程节点：1、项目经理；2、部门分管领导；3、部门职能领导；4、部门负责人；
