@@ -20,8 +20,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2 implements WebMvcConfigurer {
 
-//    http://localhost:8088/swagger-ui.html     原路径，是swagger的官方的访问路径，页面没有任何特殊效果
-//    http://localhost:8088/doc.html     原路径，是swagger-bootstrap-ui包中的访问路径，页面有特殊效果，分为左右
+//    http://localhost:9003/swagger-ui.html     原路径，是swagger的官方的访问路径，页面没有任何特殊效果
+//    http://localhost:9003/doc.html     原路径，是swagger-bootstrap-ui包中的访问路径，页面有特殊效果，分为左右
 
     // 配置swagger2核心配置 docket
     //加上bean注解之后，与Configuration一起，表示这个是一个配置类对象，可以交由spring容器进行管理
@@ -34,7 +34,7 @@ public class Swagger2 implements WebMvcConfigurer {
                 .select()
                 //填入的要是所有controller的地址包
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.dfd.controller"))   // 指定controller包
+                        .basePackage("com.dfd"))   // 指定controller包
                 //这里表示所有包下面的所有controller要加入swagger
                 .paths(PathSelectors.any())         // 所有controller
                 .build();
