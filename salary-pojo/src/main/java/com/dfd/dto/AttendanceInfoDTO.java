@@ -31,12 +31,6 @@ public class AttendanceInfoDTO extends Query implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 年
      */
     @ApiModelProperty(value = "年", name = "year")

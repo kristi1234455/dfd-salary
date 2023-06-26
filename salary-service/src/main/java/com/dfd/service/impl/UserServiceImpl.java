@@ -1,9 +1,13 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.dto.UserLoginInDTO;
 import com.dfd.dto.UserRegistDTO;
 import com.dfd.dto.UserResetDTO;
+import com.dfd.entity.Attendance;
 import com.dfd.entity.User;
 import com.dfd.mapper.UserMapper;
 import com.dfd.org.n3r.idworker.Sid;
@@ -12,19 +16,19 @@ import com.dfd.utils.BusinessException;
 import com.dfd.utils.CookieUtils;
 import com.dfd.utils.JsonUtils;
 import com.dfd.utils.MD5Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     public UserMapper userMapper;
@@ -32,10 +36,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     @Override
     public Boolean queryPhoneIsExist(String phone) {
-        Example userExample = new Example(User.class);
-        Example.Criteria userCriteria = userExample.createCriteria();
-        userCriteria.andEqualTo("phone", phone);
-//        User result = userMapper.selectOneByExample(userExample);
+//        Example userExample = new Example(User.class);
+//        Example.Criteria userCriteria = userExample.createCriteria();
+//        userCriteria.andEqualTo("phone", phone);
+////        User result = userMapper.selectOneByExample(userExample);
         User result = null;
         if (ObjectUtil.isNotEmpty(result)) {
             throw new BusinessException("用户名已经存在");
@@ -120,15 +124,22 @@ public class UserServiceImpl implements UserService {
         return userMapper.insert(user);
     }
 
+    @Override
+    public User selectByPhone(String phone) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(phone), User:: getPhone, phone);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
     /**
      * 检索用户名和密码是否匹配，用于登录
      */
     @Transactional(propagation = Propagation.SUPPORTS)
     public User queryUserForLogin(String phone, String password) {
-        Example userExample = new Example(User.class);
-        Example.Criteria userCriteria = userExample.createCriteria();
-        userCriteria.andEqualTo("phone", phone);
-        userCriteria.andEqualTo("password", password);
+//        Example userExample = new Example(User.class);
+//        Example.Criteria userCriteria = userExample.createCriteria();
+//        userCriteria.andEqualTo("phone", phone);
+//        userCriteria.andEqualTo("password", password);
 //        User result = userMapper.selectOneByExample(userExample);
         User result = null;
         return result;

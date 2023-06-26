@@ -2,9 +2,14 @@ package com.dfd.utils;
 
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,21 +17,25 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @ApiModel(value = "分页对象")
 public class PageResult<T> implements Iterable<T>, Serializable {
 
     private static final long serialVersionUID = -3720998571176536865L;
 
     /**
-     * 数据条数
+     * 数据
      */
-    @ApiModelProperty(value = "数据条数", name = "records")
+    @ApiModelProperty(value = "数据", name = "records")
     private List<T> records = new ArrayList<>();
 
     /**
-     * 一共有多少条数据
+     * 总数据条数
      */
-    @ApiModelProperty(value = "一共有多少条数据", name = "totalRecords")
+    @ApiModelProperty(value = "总数据条数", name = "totalRecords")
     private long totalRecords;
 
     /**
@@ -36,38 +45,29 @@ public class PageResult<T> implements Iterable<T>, Serializable {
     private long currentPage;
 
     /**
-     * 一页数据最多有多少条数据
+     * 当前页最大数据条数
      */
-    @ApiModelProperty(value = "一页数据最多有多少条数据", name = "pageSize")
+    @ApiModelProperty(value = "当前页最大数据条数", name = "pageSize")
     private long pageSize;
 
     /**
-     * 一共有多少页
+     * 总页数
      */
-    @ApiModelProperty(value = "一共有多少页", name = "totalPages")
+    @ApiModelProperty(value = "总页数", name = "totalPages")
     private long totalPages;
 
-    /**
-     * 当前页数有多少条数据
-     */
-    @ApiModelProperty(value = "当前页数有多少条数据", name = "numberOfElements")
-    private int numberOfElements;
-
-    public PageResult() {
-    }
 
     /**
      * 构造方法，只用把原来的page类放进来即可
      *
      * @param page 查出来的分页对象
      */
-    public PageResult(Page<T> page) {
+    public PageResult(IPage<T> page) {
         this.records = page.getRecords();
-        this.totalRecords = page.getTotal();
+        this.totalRecords = page.getRecords().size();
         this.currentPage = page.getCurrent();
         this.pageSize = page.getSize();
-        this.numberOfElements = page.getRecords().size();
-        this.totalPages = page.getPages();
+        this.totalPages = (page.getRecords().size() + page.getSize() - 1) / page.getSize();
     }
 
     /**
@@ -88,33 +88,6 @@ public class PageResult<T> implements Iterable<T>, Serializable {
         return getCurrentPage() + 1 < getTotalPages();
     }
 
-    /**
-     * 获取总的页数
-     *
-     * @return long
-     */
-    public long getTotalPages() {
-        return this.totalPages;
-    }
-
-
-    /**
-     * 获取当前页的数据
-     *
-     * @return List<T>
-     */
-    public List<T> getRecords() {
-        return Collections.unmodifiableList(records);
-    }
-
-    /**
-     * 设置内容
-     *
-     * @param records 内容
-     */
-    public void setRecords(List<T> records) {
-        this.records = records;
-    }
 
     /**
      * 是否有内容
@@ -122,67 +95,8 @@ public class PageResult<T> implements Iterable<T>, Serializable {
      * @return boolean
      */
     public boolean hasRecords() {
-        return getNumberOfElements() > 0;
+        return getRecords().size() > 0;
     }
-
-    /**
-     * 获取单页大小
-     */
-    public Long getPageSize() {
-        return pageSize;
-    }
-
-    /**
-     * 设置单页大小
-     */
-    public void setPageSize(Long pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * 获取全部元素数目
-     */
-    public long getTotalRecords() {
-        return totalRecords;
-    }
-
-    /**
-     * 设置全部元素数目
-     */
-    public void setTotalRecords(long totalRecords) {
-        this.totalRecords = totalRecords;
-    }
-
-
-    /**
-     * 获取当前页号
-     */
-    public Long getCurrentPage() {
-        return currentPage;
-    }
-
-    /**
-     * 设置当前页号
-     */
-    public void setCurrentPage(Long currentPage) {
-        this.currentPage = currentPage;
-    }
-
-
-    /**
-     * 获取单页元素数目
-     */
-    public int getNumberOfElements() {
-        return numberOfElements;
-    }
-
-    /**
-     * 设置单页元素数目
-     */
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
-    }
-
 
     /**
      * 迭代器

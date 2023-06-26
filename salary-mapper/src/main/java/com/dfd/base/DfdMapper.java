@@ -1,8 +1,6 @@
 package com.dfd.base;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.common.MySqlMapper;
 
 /**
  * @author yy

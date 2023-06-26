@@ -1,18 +1,22 @@
 package com.dfd.config;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.dfd.handler.CurrentUserMethodArgumentResolver;
 import com.dfd.interceptor.LoginInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 
 /**
@@ -20,6 +24,9 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("${file.userfiles-path}")
+    private String filePath;
 
     @Autowired
     private LoginInterceptor loginInterceptor;
@@ -30,6 +37,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/oauth/sdk/sign/verify");
     }
+
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**")
+//                .addResourceLocations("classpath:/META-INF/resources/")
+//                .addResourceLocations("classpath:/static/page/")
+//                .addResourceLocations("classpath:/static/templates/")
+//                .addResourceLocations("file:" + filePath);
+//    }
 
     @Bean
     public LoginInterceptor loginInterceptor(){
@@ -48,4 +64,15 @@ public class WebConfig implements WebMvcConfigurer {
         b1.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
         return b1.getObject();
     }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(currentUserMethodArgumentResolver());
+    }
+
+    @Bean
+    public CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver() {
+        return new CurrentUserMethodArgumentResolver();
+    }
+
 }

@@ -3,15 +3,17 @@ package com.dfd.service;
 //import com.imooc.pojo.Users;
 //import com.imooc.pojo.bo.UserBO;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.UserLoginInDTO;
 import com.dfd.dto.UserRegistDTO;
 import com.dfd.dto.UserResetDTO;
+import com.dfd.entity.Attendance;
 import com.dfd.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface UserService {
+public interface UserService extends IService<User> {
 
     /**
      * 判断用户名是否存在
@@ -43,4 +45,9 @@ public interface UserService {
      * @return
      */
     Integer resetUser(UserResetDTO userResetDTO, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 通过唯一手机号查询用户信息
+     */
+    public User selectByPhone(String phone);
 }

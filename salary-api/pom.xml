@@ -22,5 +22,10 @@
             <groupId>com.dfd</groupId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.5.3.1</version>
+        </dependency>
     </dependencies>
 </project>

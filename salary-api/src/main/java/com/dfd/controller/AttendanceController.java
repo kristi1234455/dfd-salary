@@ -1,16 +1,19 @@
 package com.dfd.controller;
 
+import cn.hutool.log.Log;
+import com.dfd.anno.BusLog;
+import com.dfd.anno.CurrentUser;
 import com.dfd.dto.AttendanceDTO;
 import com.dfd.dto.AttendanceDelDTO;
 import com.dfd.dto.AttendanceInfoDTO;
-import com.dfd.dto.ItemSalaryInfoDTO;
+import com.dfd.entity.User;
 import com.dfd.service.AttendanceService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
-import com.dfd.vo.ItemSalaryInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("attendance")
 @CrossOrigin
+@Slf4j
 public class AttendanceController {
 
     @Autowired
@@ -37,7 +41,7 @@ public class AttendanceController {
 
     @ApiOperation(value = "新增项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/add")
-    public DFDResult add(@RequestBody @Valid AttendanceDTO attendanceInfoDTO){
+    public DFDResult add(@RequestBody @Valid AttendanceDTO attendanceInfoDTO, @CurrentUser User currentUser){
         attendanceService.add(attendanceInfoDTO);
         return DFDResult.sucess();
     }

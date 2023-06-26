@@ -100,15 +100,15 @@ public class TokenUtil {
     }
 
     public static void main(String[] args) {
-        String username ="zhangsan";
+        String username ="13419876445";
         String password = "123";
         String token = token(username,password);
         System.out.println(token);
 
-        boolean b = verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4Mzc3NjA0MiwidXNlcm5hbWUiOiJ6aGFuZ3NhbiJ9.gkrsAhvCBUsvcJT6QxlI3VIVlkrkUr5Wmzv7pOLykvU");
+        boolean b = verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4NzY4NTcyOSwidXNlcm5hbWUiOiIxMzQxOTg3NjQ0NSJ9.Q4JGrkAPlxqp7SQz9ZvTr3z4xuQNpm-ml1zy0No3B5Y");
         System.out.println("校验结果： "+b);
 
-        Claim username1 = JWT.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4Mzc3NjA0MiwidXNlcm5hbWUiOiJ6aGFuZ3NhbiJ9.gkrsAhvCBUsvcJT6QxlI3VIVlkrkUr5Wmzv7pOLykvU")
+        Claim username1 = JWT.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4NzY4NTcyOSwidXNlcm5hbWUiOiIxMzQxOTg3NjQ0NSJ9.Q4JGrkAPlxqp7SQz9ZvTr3z4xuQNpm-ml1zy0No3B5Y")
                 .getClaim("username");
         System.out.println("我是从token中获取的信息： "+username1.asString());
 
