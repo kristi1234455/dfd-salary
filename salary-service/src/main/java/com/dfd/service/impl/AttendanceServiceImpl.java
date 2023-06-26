@@ -2,6 +2,7 @@ package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         queryWrapper.eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemUid()), Attendance:: getItemUid, attendanceInfoDTO.getItemUid())
                 .eq(ObjectUtils.isNotEmpty(attendanceInfoDTO.getYear()), Attendance:: getYear, attendanceInfoDTO.getYear())
                 .eq(ObjectUtils.isNotEmpty(attendanceInfoDTO.getMonth()), Attendance:: getMonth, attendanceInfoDTO.getMonth());
-        queryWrapper.orderByDesc(Attendance :: getId);
+        queryWrapper.orderByDesc(Attendance :: getCreatedTime);
 
         Page<Attendance> pageReq = new Page(attendanceInfoDTO.getCurrentPage(), attendanceInfoDTO.getPageSize());
         IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
@@ -84,6 +86,8 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         BeanUtil.copyProperties(attendanceInfoDTO,attendance);
         attendance.setCreatedBy(currentUser.getPhone());
         attendance.setUpdatedBy(currentUser.getPhone());
+        attendance.setCreatedTime(new Date());
+        attendance.setUpdatedTime(new Date());
         int insert = baseMapper.insert(attendance);
         if (insert < 0) {
             throw new BusinessException("考勤状态保存失败");
@@ -97,7 +101,14 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
 
     @Override
     public void delete(AttendanceDelDTO attendanceDelDTO) {
-
+        LambdaUpdateWrapper<Attendance> updateWrapper = new LambdaUpdateWrapper();
+        updateWrapper.eq(StringUtils.isNotBlank(attendanceDelDTO.getItemUid()), Attendance:: getItemUid, attendanceDelDTO.getItemUid())
+                .in(CollectionUtils.isEmpty(attendanceDelDTO.getItemMemberIds()), Attendance:: getId, attendanceDelDTO.getItemMemberIds())
+                .set(Attendance:: getIsDeleted, System.currentTimeMillis());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("考勤状态更新失败");
+        }
     }
 
 }

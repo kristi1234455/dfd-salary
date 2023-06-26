@@ -1,24 +1,17 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
-//import org.springframework.data.annotation.CreatedDate;
-//import org.springframework.data.annotation.LastModifiedDate;
-//import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
 import java.util.Date;
 
-//@EntityListeners(AuditingEntityListener.class)
-@Entity
 public class Attendance {
     /**
      * 主键
      */
     @ApiModelProperty(value = "主键", name = "id")
-    @Id
-    private Long id;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Integer id;
 
     /**
      * uid
@@ -84,7 +77,6 @@ public class Attendance {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间", name = "createdTime")
-//    @CreatedDate
     private Date createdTime;
 
     /**
@@ -97,7 +89,6 @@ public class Attendance {
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间", name = "updatedTime")
-//    @LastModifiedDate
     private Date updatedTime;
 
     /**
@@ -110,7 +101,7 @@ public class Attendance {
      * 主键
      * @return id 主键
      */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -118,7 +109,7 @@ public class Attendance {
      * 主键
      * @param id 主键
      */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

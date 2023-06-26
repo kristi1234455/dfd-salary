@@ -30,12 +30,6 @@ public class AttendanceDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 项目人员Uid
      */
     @ApiModelProperty(value = "项目人员Uid", name = "itemMemberUid", required = true)
