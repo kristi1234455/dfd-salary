@@ -1,9 +1,12 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dfd.constant.LoginConstant;
 import com.dfd.dto.UserLoginInDTO;
 import com.dfd.dto.UserRegistDTO;
 import com.dfd.dto.UserResetDTO;
@@ -22,10 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+
+import static com.dfd.utils.TokenUtil.token;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -72,33 +79,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUpdatedBy(userRegistDTO.getPhone());
         user.setCreatedTime(new Date());
         user.setUpdatedTime(new Date());
-//        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
-        // TODO 生成用户token，存入redis会话 封装到service中
+        CookieUtils.setCookie(request, response, LoginConstant.CURRENT_USER, JSON.toJSONString(user), true);
         return userMapper.insert(user);
     }
 
     @Override
     public User loginInUser(UserLoginInDTO userLoginDTO, HttpServletRequest request, HttpServletResponse response) {
-        User userResult = new User();
+        User user = new User();
         try {
-            userResult= queryUserForLogin(userLoginDTO.getPhone(), MD5Utils.getMD5Str(userLoginDTO.getPassword()));
+            user= queryUserForLogin(userLoginDTO.getPhone(), MD5Utils.getMD5Str(userLoginDTO.getPassword()));
         } catch (Exception e) {
             throw new BusinessException(e.toString());
         }
-        if (ObjectUtil.isEmpty(userResult)) {
+        if (ObjectUtil.isEmpty(user)) {
             throw new BusinessException("用户名或密码不正确");
         }
-        // TODO 生成用户token，存入redis会话
-//        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
-        return userResult;
+        CookieUtils.setCookie(request, response, user.getId().toString(), token(user.getPhone(),user.getPassword()), true);
+        return user;
     }
 
     @Override
     public User logOutUser(String userId, HttpServletRequest request, HttpServletResponse response) {
         // 清除用户的相关信息的cookie
-        CookieUtils.deleteCookie(request, response, "user");
-        // TODO 用户退出登录，需要清空redis和cookie
-        // TODO 分布式会话中需要清除用户数据
+        CookieUtils.deleteCookie(request, response, userId);
         return null;
     }
 
@@ -119,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 默认头像
         user.setUpdatedBy(userResetDTO.getPhone());
         user.setUpdatedTime(new Date());
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+        CookieUtils.setCookie(request, response, user.getId().toString(), token(user.getPhone(),user.getPassword()), true);
         // TODO 生成用户token，存入redis会话 封装到service中
         return userMapper.insert(user);
     }
@@ -136,12 +139,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Transactional(propagation = Propagation.SUPPORTS)
     public User queryUserForLogin(String phone, String password) {
-//        Example userExample = new Example(User.class);
-//        Example.Criteria userCriteria = userExample.createCriteria();
-//        userCriteria.andEqualTo("phone", phone);
-//        userCriteria.andEqualTo("password", password);
-//        User result = userMapper.selectOneByExample(userExample);
-        User result = null;
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(phone), User:: getPhone, phone)
+                .eq(StringUtils.isNotEmpty(password), User:: getPassword, password);
+        User result = baseMapper.selectOne(queryWrapper);
         return result;
     }
 }
