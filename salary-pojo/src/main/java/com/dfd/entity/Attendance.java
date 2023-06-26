@@ -1,14 +1,23 @@
 package com.dfd.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+//import org.springframework.data.annotation.CreatedDate;
+//import org.springframework.data.annotation.LastModifiedDate;
+//import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
 import java.util.Date;
 
+//@EntityListeners(AuditingEntityListener.class)
+@Entity
 public class Attendance {
     /**
      * 主键
      */
     @ApiModelProperty(value = "主键", name = "id")
+    @Id
     private Long id;
 
     /**
@@ -75,6 +84,7 @@ public class Attendance {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间", name = "createdTime")
+//    @CreatedDate
     private Date createdTime;
 
     /**
@@ -87,6 +97,7 @@ public class Attendance {
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间", name = "updatedTime")
+//    @LastModifiedDate
     private Date updatedTime;
 
     /**

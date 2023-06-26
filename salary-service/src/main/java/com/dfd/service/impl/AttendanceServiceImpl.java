@@ -19,6 +19,7 @@ import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.AttendanceService;
 import com.dfd.service.util.UserRequest;
+import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +80,14 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
     @Override
     public void add(AttendanceDTO attendanceInfoDTO) {
         User currentUser = UserRequest.getCurrentUser();
-
+        Attendance attendance = new Attendance();
+        BeanUtil.copyProperties(attendanceInfoDTO,attendance);
+        attendance.setCreatedBy(currentUser.getPhone());
+        attendance.setUpdatedBy(currentUser.getPhone());
+        int insert = baseMapper.insert(attendance);
+        if (insert < 0) {
+            throw new BusinessException("考勤状态保存失败");
+        }
     }
 
     @Override

@@ -41,7 +41,7 @@ public class AttendanceController {
 
     @ApiOperation(value = "新增项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/add")
-    public DFDResult add(@RequestBody @Valid AttendanceDTO attendanceInfoDTO, @CurrentUser User currentUser){
+    public DFDResult add(@RequestBody @Valid AttendanceDTO attendanceInfoDTO){
         attendanceService.add(attendanceInfoDTO);
         return DFDResult.sucess();
     }
