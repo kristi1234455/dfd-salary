@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @ApiModel(value = "分页对象")
+@Accessors(chain = true)
 public class PageResult<T> implements Iterable<T>, Serializable {
 
     private static final long serialVersionUID = -3720998571176536865L;

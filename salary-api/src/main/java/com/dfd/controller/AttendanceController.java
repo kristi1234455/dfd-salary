@@ -1,16 +1,14 @@
 package com.dfd.controller;
 
-import cn.hutool.log.Log;
-import com.dfd.anno.BusLog;
-import com.dfd.anno.CurrentUser;
 import com.dfd.dto.AttendanceDTO;
 import com.dfd.dto.AttendanceDelDTO;
 import com.dfd.dto.AttendanceInfoDTO;
-import com.dfd.entity.User;
+import com.dfd.dto.AttendanceMonInfoDTO;
 import com.dfd.service.AttendanceService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
+import com.dfd.vo.AttendanceMonInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +31,16 @@ public class AttendanceController {
     @Autowired
     private AttendanceService attendanceService;
 
-    @ApiOperation(value = "获取项目人员考勤状态", httpMethod = "POST")
+    @ApiOperation(value = "获取项目人员每天考勤状态", httpMethod = "POST")
     @PostMapping("/info")
     public DFDResult<PageResult<AttendanceInfoVO>> info(@RequestBody @Valid AttendanceInfoDTO attendanceInfoDTO){
         return DFDResult.sucess(attendanceService.info(attendanceInfoDTO));
+    }
+
+    @ApiOperation(value = "获取项目人员月度考勤汇总", httpMethod = "POST")
+    @PostMapping("/month/info")
+    public DFDResult<PageResult<AttendanceMonInfoVO>> monInfo(@RequestBody @Valid AttendanceMonInfoDTO attendanceMonInfoDTO){
+        return DFDResult.sucess(attendanceService.monInfo(attendanceMonInfoDTO));
     }
 
     @ApiOperation(value = "新增项目的人员考勤状态", httpMethod = "POST")

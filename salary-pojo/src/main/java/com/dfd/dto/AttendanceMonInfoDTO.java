@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(value = "考勤信息对象", description = "封装考勤信息对象")
-public class AttendanceInfoDTO extends Query implements Serializable {
+public class AttendanceMonInfoDTO extends Query implements Serializable {
     private static final long serialVersionUID = 6111805323634341948L;
 
     /**
@@ -36,20 +35,13 @@ public class AttendanceInfoDTO extends Query implements Serializable {
      * 年
      */
     @ApiModelProperty(value = "年", name = "year", required = true)
-    @NotNull(message = "年不能为空")
+    @NotEmpty(message = "年不能为空")
     private Integer year;
 
     /**
      * 月
      */
     @ApiModelProperty(value = "月", name = "month", required = true)
-    @NotNull(message = "月不能为空")
+    @NotEmpty(message = "月不能为空")
     private Integer month;
-
-    /**
-     * 日
-     */
-    @ApiModelProperty(value = "日", name = "day", required = true)
-    @NotNull(message = "日不能为空")
-    private Integer day;
 }

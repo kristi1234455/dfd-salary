@@ -9,9 +9,11 @@ import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.AttendanceDTO;
 import com.dfd.dto.AttendanceDelDTO;
 import com.dfd.dto.AttendanceInfoDTO;
+import com.dfd.dto.AttendanceMonInfoDTO;
 import com.dfd.entity.Attendance;
 import com.dfd.entity.Item;
 import com.dfd.entity.ItemMember;
@@ -24,15 +26,15 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
+import com.dfd.vo.AttendanceMonInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,43 +54,85 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
     public PageResult<AttendanceInfoVO> info(AttendanceInfoDTO attendanceInfoDTO) {
         LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemUid()), Attendance:: getItemUid, attendanceInfoDTO.getItemUid())
-                .eq(ObjectUtils.isNotEmpty(attendanceInfoDTO.getYear()), Attendance:: getYear, attendanceInfoDTO.getYear())
-                .eq(ObjectUtils.isNotEmpty(attendanceInfoDTO.getMonth()), Attendance:: getMonth, attendanceInfoDTO.getMonth());
+                .eq(attendanceInfoDTO.getYear() !=null, Attendance:: getYear, attendanceInfoDTO.getYear())
+                .eq(attendanceInfoDTO.getMonth() !=null, Attendance:: getMonth, attendanceInfoDTO.getMonth())
+                .eq(attendanceInfoDTO.getDay() !=null, Attendance:: getDay, attendanceInfoDTO.getDay());
         queryWrapper.orderByDesc(Attendance :: getCreatedTime);
 
         Page<Attendance> pageReq = new Page(attendanceInfoDTO.getCurrentPage(), attendanceInfoDTO.getPageSize());
         IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<AttendanceInfoVO> pageResult = new PageResult(page);
-        pageResult.setRecords(convertToBannerVO(page.getRecords()));
+        PageResult<AttendanceInfoVO> pageResult = new PageResult(page)
+                .setRecords(convertToAttendanceInfoVO(page.getRecords()));
         return pageResult;
     }
 
-    private List<AttendanceInfoVO> convertToBannerVO(List<Attendance> list) {
+    @Override
+    public PageResult<AttendanceMonInfoVO> monInfo(AttendanceMonInfoDTO attendanceMonInfoDTO) {
+        LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(attendanceMonInfoDTO.getItemUid()), Attendance:: getItemUid, attendanceMonInfoDTO.getItemUid())
+                .eq(attendanceMonInfoDTO.getYear() !=null, Attendance:: getYear, attendanceMonInfoDTO.getYear())
+                .eq(attendanceMonInfoDTO.getMonth() !=null, Attendance:: getMonth, attendanceMonInfoDTO.getMonth());
+        queryWrapper.orderByDesc(Attendance :: getCreatedTime);
+
+        Page<Attendance> pageReq = new Page(attendanceMonInfoDTO.getCurrentPage(), attendanceMonInfoDTO.getPageSize());
+        IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
+        PageResult<AttendanceMonInfoVO> pageResult = new PageResult(page)
+                .setRecords(convertToAttendanceMonInfoVO(page.getRecords()));
+        return pageResult;
+    }
+
+    private List<AttendanceMonInfoVO> convertToAttendanceMonInfoVO(List<Attendance> list) {
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
+        List<AttendanceMonInfoVO> result = list.stream().map(attendance -> {
+            if(Optional.of(attendance).isPresent()){
+                throw new BusinessException("考勤数据为空");
+            }
+            AttendanceMonInfoVO attendanceMonInfoVO = new AttendanceMonInfoVO();
+            BeanUtil.copyProperties(attendance,attendanceMonInfoVO);
+            return attendanceMonInfoVO;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    private List<AttendanceInfoVO> convertToAttendanceInfoVO(List<Attendance> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
+        List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
+        List<Item> items = itemMapper.selectBatchIds(itemIdList);
+        Map<Long, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+
+        List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
+        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
+        Map<Long, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
+        Map<Long, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
         List<AttendanceInfoVO> result = list.stream().map(attendance -> {
+            if(!Optional.ofNullable(attendance).isPresent()){
+                throw new BusinessException("考勤数据为空");
+            }
             AttendanceInfoVO attendanceInfoVO = new AttendanceInfoVO();
             BeanUtil.copyProperties(attendance,attendanceInfoVO);
-            Item item = StringUtils.isNotEmpty(attendance.getItemUid()) ? itemMapper.selectById(attendance.getItemUid()) : null;
-            attendanceInfoVO.setItemName(ObjectUtils.isNotEmpty(item) ? item.getItemName() : null);
-            ItemMember itemMember = StringUtils.isNotEmpty(attendance.getItemUid()) ? itemMemberMapper.selectById(attendance.getItemMemberUid()) : null;
-            attendanceInfoVO.setName(ObjectUtils.isNotEmpty(itemMember) ? itemMember.getName() : null);
-            attendanceInfoVO.setNumber(ObjectUtils.isNotEmpty(itemMember) ? itemMember.getNumber() : null);
+            attendanceInfoVO.setItemName(!itemNames.isEmpty() ? itemNames.get(attendance.getItemUid()) : null)
+                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(attendance.getItemMemberUid()) : null)
+                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(attendance.getItemMemberUid()) : null);
             return attendanceInfoVO;
         }).collect(Collectors.toList());
         return result;
     }
+
 
     @Override
     public void add(AttendanceDTO attendanceInfoDTO) {
         User currentUser = UserRequest.getCurrentUser();
         Attendance attendance = new Attendance();
         BeanUtil.copyProperties(attendanceInfoDTO,attendance);
-        attendance.setCreatedBy(currentUser.getPhone());
-        attendance.setUpdatedBy(currentUser.getPhone());
-//        attendance.setCreatedTime(new Date());
-//        attendance.setUpdatedTime(new Date());
+        attendance.setCreatedBy(currentUser.getPhone())
+                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedTime(new Date())
+                .setUpdatedTime(new Date())
+                .setIsDeleted(GlobalConstant.GLOBAL_INT_ZERO);
         int insert = baseMapper.insert(attendance);
         if (insert < 0) {
             throw new BusinessException("考勤状态保存失败");
@@ -97,18 +141,38 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
 
     @Override
     public void update(AttendanceDTO attendanceInfoDTO) {
-
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
+                .lambda()
+                .eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemUid()), Attendance:: getItemUid, attendanceInfoDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceInfoDTO.getItemMemberUid())
+                .set((attendanceInfoDTO.getYear()!=null), Attendance:: getYear, attendanceInfoDTO.getYear())
+                .set((attendanceInfoDTO.getMonth()!=null), Attendance:: getMonth, attendanceInfoDTO.getMonth())
+                .set((attendanceInfoDTO.getDay()!=null), Attendance:: getDay, attendanceInfoDTO.getDay())
+                .set((attendanceInfoDTO.getStatus()!=null), Attendance:: getStatus, attendanceInfoDTO.getStatus())
+                .set((attendanceInfoDTO.getOutgoingTotalDays()!=null), Attendance:: getOutgoingTotalDays, attendanceInfoDTO.getOutgoingTotalDays())
+                .set((attendanceInfoDTO.getDutyTotalDays()!=null), Attendance:: getDutyTotalDays, attendanceInfoDTO.getDutyTotalDays())
+                .set(Attendance:: getUpdatedBy, currentUser.getPhone())
+                .set(Attendance:: getUpdatedTime, new Date());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("考勤状态更新失败");
+        }
     }
 
     @Override
     public void delete(AttendanceDelDTO attendanceDelDTO) {
-        LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>().lambda()
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
+                .lambda()
                 .eq(StringUtils.isNotBlank(attendanceDelDTO.getItemUid()), Attendance:: getItemUid, attendanceDelDTO.getItemUid())
                 .in(!CollectionUtils.isEmpty(attendanceDelDTO.getItemMemberIds()), Attendance:: getItemMemberUid, attendanceDelDTO.getItemMemberIds())
-                .set(Attendance:: getIsDeleted, System.currentTimeMillis());
+                .set(Attendance:: getIsDeleted, System.currentTimeMillis())
+                .set(Attendance:: getUpdatedBy, currentUser.getPhone())
+                .set(Attendance:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
-            throw new BusinessException("考勤状态更新失败");
+            throw new BusinessException("考勤状态删除失败");
         }
     }
 

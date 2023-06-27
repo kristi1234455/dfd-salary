@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -39,37 +40,42 @@ public class AttendanceDTO implements Serializable {
     /**
      * 工号
      */
-    @ApiModelProperty(value = "工号", name = "number")
+    @ApiModelProperty(value = "工号", name = "number", required = true)
+    @NotBlank(message = "工号不能为空")
     private String number;
 
     /**
      * 名字
      */
-    @ApiModelProperty(value = "名字", name = "name")
+    @ApiModelProperty(value = "名字", name = "name", required = true)
+    @NotBlank(message = "名字不能为空")
     private String name;
 
     /**
      * 年
      */
-    @ApiModelProperty(value = "年", name = "year")
+    @ApiModelProperty(value = "年", name = "year", required = true)
+    @NotNull(message = "年不能为空")
     private Integer year;
 
     /**
      * 月
      */
-    @ApiModelProperty(value = "月", name = "month")
+    @ApiModelProperty(value = "月", name = "month", required = true)
+    @NotNull(message = "月不能为空")
     private Integer month;
 
     /**
      * 日
      */
-    @ApiModelProperty(value = "日", name = "day")
+    @ApiModelProperty(value = "日", name = "day", required = true)
+    @NotNull(message = "日不能为空")
     private Integer day;
 
     /**
-     * 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
+     * 考勤状态 1驻现场；2项目出差；3本地办公；4休假；
      */
-    @ApiModelProperty(value = "考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；", name = "status")
+    @ApiModelProperty(value = "考勤状态 1驻现场；2项目出差；3本地办公；4休假；", name = "status")
     private Integer status;
 
     /**

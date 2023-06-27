@@ -3,8 +3,19 @@ package com.dfd.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Accessors(chain = true)
 public class Attendance {
     /**
      * 主键
@@ -50,9 +61,9 @@ public class Attendance {
     private Integer day;
 
     /**
-     * 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
+     * 考勤状态 1驻现场；2项目出差；3本地办公；4休假；
      */
-    @ApiModelProperty(value = "考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；", name = "status")
+    @ApiModelProperty(value = "考勤状态 1驻现场；2项目出差；3本地办公；4休假；", name = "status")
     private Integer status;
 
     /**
@@ -96,244 +107,4 @@ public class Attendance {
      */
     @ApiModelProperty(value = "是否删除：0:未删除；其他时间，删除", name = "isDeleted")
     private String isDeleted;
-
-    /**
-     * 主键
-     * @return id 主键
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * 主键
-     * @param id 主键
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * uid
-     * @return uid uid
-     */
-    public String getUid() {
-        return uid;
-    }
-
-    /**
-     * uid
-     * @param uid uid
-     */
-    public void setUid(String uid) {
-        this.uid = uid == null ? null : uid.trim();
-    }
-
-    /**
-     * 项目信息表uid
-     * @return item_uid 项目信息表uid
-     */
-    public String getItemUid() {
-        return itemUid;
-    }
-
-    /**
-     * 项目信息表uid
-     * @param itemUid 项目信息表uid
-     */
-    public void setItemUid(String itemUid) {
-        this.itemUid = itemUid == null ? null : itemUid.trim();
-    }
-
-    /**
-     * 项目人员表uid
-     * @return item_member_uid 项目人员表uid
-     */
-    public String getItemMemberUid() {
-        return itemMemberUid;
-    }
-
-    /**
-     * 项目人员表uid
-     * @param itemMemberUid 项目人员表uid
-     */
-    public void setItemMemberUid(String itemMemberUid) {
-        this.itemMemberUid = itemMemberUid == null ? null : itemMemberUid.trim();
-    }
-
-    /**
-     * 年
-     * @return year 年
-     */
-    public Integer getYear() {
-        return year;
-    }
-
-    /**
-     * 年
-     * @param year 年
-     */
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    /**
-     * 月
-     * @return month 月
-     */
-    public Integer getMonth() {
-        return month;
-    }
-
-    /**
-     * 月
-     * @param month 月
-     */
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    /**
-     * 日
-     * @return day 日
-     */
-    public Integer getDay() {
-        return day;
-    }
-
-    /**
-     * 日
-     * @param day 日
-     */
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    /**
-     * 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
-     * @return status 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
-     */
-    public Integer getStatus() {
-        return status;
-    }
-
-    /**
-     * 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
-     * @param status 考勤状态 1全勤√；2事假О；3病假±；4探亲△；5婚假H；6丧假S；7工伤假T；8产假⊕；9公假I；10护理假F；11迟到/；12早退C；13旷工×；14公差D；15加班※；
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    /**
-     * 驻外天数
-     * @return outgoing_total_days 驻外天数
-     */
-    public Integer getOutgoingTotalDays() {
-        return outgoingTotalDays;
-    }
-
-    /**
-     * 驻外天数
-     * @param outgoingTotalDays 驻外天数
-     */
-    public void setOutgoingTotalDays(Integer outgoingTotalDays) {
-        this.outgoingTotalDays = outgoingTotalDays;
-    }
-
-    /**
-     * 出勤天数
-     * @return duty_total_days 出勤天数
-     */
-    public Integer getDutyTotalDays() {
-        return dutyTotalDays;
-    }
-
-    /**
-     * 出勤天数
-     * @param dutyTotalDays 出勤天数
-     */
-    public void setDutyTotalDays(Integer dutyTotalDays) {
-        this.dutyTotalDays = dutyTotalDays;
-    }
-
-    /**
-     * 创建人
-     * @return created_by 创建人
-     */
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    /**
-     * 创建人
-     * @param createdBy 创建人
-     */
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy == null ? null : createdBy.trim();
-    }
-
-    /**
-     * 创建时间
-     * @return created_time 创建时间
-     */
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    /**
-     * 创建时间
-     * @param createdTime 创建时间
-     */
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    /**
-     * 更新人
-     * @return updated_by 更新人
-     */
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    /**
-     * 更新人
-     * @param updatedBy 更新人
-     */
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy == null ? null : updatedBy.trim();
-    }
-
-    /**
-     * 更新时间
-     * @return updated_time 更新时间
-     */
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    /**
-     * 更新时间
-     * @param updatedTime 更新时间
-     */
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    /**
-     * 是否删除：0:未删除；其他时间，删除
-     * @return is_deleted 是否删除：0:未删除；其他时间，删除
-     */
-    public String getIsDeleted() {
-        return isDeleted;
-    }
-
-    /**
-     * 是否删除：0:未删除；其他时间，删除
-     * @param isDeleted 是否删除：0:未删除；其他时间，删除
-     */
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted == null ? null : isDeleted.trim();
-    }
 }

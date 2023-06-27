@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author yy
@@ -21,7 +22,7 @@ import java.io.Serializable;
 @Builder
 @ApiModel(value = "考勤信息对象", description = "封装考勤信息对象")
 @Accessors(chain = true)
-public class AttendanceInfoVO implements Serializable {
+public class AttendanceMonInfoVO implements Serializable {
 
     private static final long serialVersionUID = -8119785685718706166L;
     /**
@@ -68,27 +69,10 @@ public class AttendanceInfoVO implements Serializable {
     @ApiModelProperty(value = "月", name = "month")
     private Integer month;
 
-    /**
-     * 日
-     */
-    @ApiModelProperty(value = "日", name = "day")
-    private Integer day;
 
     /**
-     * 考勤状态 1驻现场；2项目出差；3本地办公；4休假；
+     * 考勤对象
      */
-    @ApiModelProperty(value = "考勤状态 1驻现场；2项目出差；3本地办公；4休假；", name = "status")
-    private Integer status;
-
-    /**
-     * 驻外天数
-     */
-    @ApiModelProperty(value = "驻外天数", name = "outgoingTotalDays")
-    private Integer outgoingTotalDays;
-
-    /**
-     * 出勤天数
-     */
-    @ApiModelProperty(value = "出勤天数", name = "dutyTotalDays")
-    private Integer dutyTotalDays;
+    @ApiModelProperty(value = "月", name = "month")
+    private List<AttendanceMonDataVO> attendanceMonDataVOList;
 }
