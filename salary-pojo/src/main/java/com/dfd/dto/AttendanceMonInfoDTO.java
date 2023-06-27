@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -35,13 +36,13 @@ public class AttendanceMonInfoDTO extends Query implements Serializable {
      * 年
      */
     @ApiModelProperty(value = "年", name = "year", required = true)
-    @NotEmpty(message = "年不能为空")
+    @NotNull(message = "年不能为空")
     private Integer year;
 
     /**
      * 月
      */
     @ApiModelProperty(value = "月", name = "month", required = true)
-    @NotEmpty(message = "月不能为空")
+    @NotNull(message = "月不能为空")
     private Integer month;
 }

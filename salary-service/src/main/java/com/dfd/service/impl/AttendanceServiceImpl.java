@@ -26,6 +26,7 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
+import com.dfd.vo.AttendanceMonDataVO;
 import com.dfd.vo.AttendanceMonInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,12 +86,39 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
+        List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
+        List<Item> items = itemMapper.selectBatchIds(itemIdList);
+        Map<Long, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+
+        List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
+        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
+        Map<Long, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
+        Map<Long, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+
+        Map<String, List<AttendanceMonDataVO>> dataCollect = new HashMap<>();
+        list.stream().collect(Collectors.groupingBy(o ->
+                (o.getItemUid() + o.getItemMemberUid() + o.getYear() + o.getMonth()), Collectors.toList()))
+                .forEach((id,transfer)->{
+            List<AttendanceMonDataVO> dataVOList = transfer.stream().map(a ->{
+                                AttendanceMonDataVO dataVO = new AttendanceMonDataVO();
+                                BeanUtil.copyProperties(a, dataVO);
+//                                dataVO.setDutyTotalDays(status=1)
+//                                        .setOutgoingTotalDays(status=2);
+                                return dataVO;
+                            }).collect(Collectors.toList());
+            dataCollect.put(id, dataVOList);
+                });
+
         List<AttendanceMonInfoVO> result = list.stream().map(attendance -> {
-            if(Optional.of(attendance).isPresent()){
+            if(!Optional.ofNullable(attendance).isPresent()){
                 throw new BusinessException("考勤数据为空");
             }
             AttendanceMonInfoVO attendanceMonInfoVO = new AttendanceMonInfoVO();
             BeanUtil.copyProperties(attendance,attendanceMonInfoVO);
+
+            attendanceMonInfoVO.setItemName(!itemNames.isEmpty() ? itemNames.get(attendance.getItemUid()) : null)
+                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(attendance.getItemMemberUid()) : null)
+                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(attendance.getItemMemberUid()) : null);
             return attendanceMonInfoVO;
         }).collect(Collectors.toList());
         return result;

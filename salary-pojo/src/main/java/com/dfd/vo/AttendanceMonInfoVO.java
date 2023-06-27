@@ -73,6 +73,6 @@ public class AttendanceMonInfoVO implements Serializable {
     /**
      * 考勤对象
      */
-    @ApiModelProperty(value = "月", name = "month")
+    @ApiModelProperty(value = "考勤对象", name = "attendanceMonDataVOList")
     private List<AttendanceMonDataVO> attendanceMonDataVOList;
 }
