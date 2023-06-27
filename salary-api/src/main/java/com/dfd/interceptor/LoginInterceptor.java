@@ -1,12 +1,13 @@
 package com.dfd.interceptor;
 
-import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.dfd.constant.LoginConstant;
 import com.dfd.entity.User;
+import com.dfd.enums.DYDResultEnum;
 import com.dfd.service.UserService;
+import com.dfd.utils.BusinessException;
 import com.dfd.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("token：{}",headerToken);
         if (!TokenUtil.verify(headerToken)) {
             // 未登录跳转到登录界面
-            throw new RuntimeException("headerToken校验失败，请重新登录!");
+            throw new BusinessException(DYDResultEnum.ERROR_TOKEN.getCode(),DYDResultEnum.ERROR_TOKEN.getDesc());
         } else {
             Claim phone = JWT.decode(headerToken).getClaim("username");
             User currentUser = userService.selectByPhone(phone.asString());

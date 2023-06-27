@@ -8,7 +8,7 @@ public enum DYDResultEnum {
 
     SUCCESS(200,"成功"),
     ERROR(500,"失败"),
-    ERROR_TOKEN(501,"失败");
+    ERROR_TOKEN(401,"headerToken校验失败，请重新登录!");
 
 
     private Integer Code;
