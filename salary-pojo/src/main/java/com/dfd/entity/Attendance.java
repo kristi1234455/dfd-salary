@@ -2,6 +2,7 @@ package com.dfd.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
@@ -16,12 +18,13 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Accessors(chain = true)
+@TableName("attendance")
 public class Attendance {
     /**
      * 主键
      */
     @ApiModelProperty(value = "主键", name = "id")
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(value="id",type = IdType.AUTO)
     private Integer id;
 
     /**

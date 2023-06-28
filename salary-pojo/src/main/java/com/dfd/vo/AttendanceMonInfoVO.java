@@ -71,6 +71,18 @@ public class AttendanceMonInfoVO implements Serializable {
 
 
     /**
+     * 驻外天数
+     */
+    @ApiModelProperty(value = "驻外天数", name = "outgoingTotalDays")
+    private Integer outgoingTotalDays;
+
+    /**
+     * 出勤天数
+     */
+    @ApiModelProperty(value = "出勤天数", name = "dutyTotalDays")
+    private Integer dutyTotalDays;
+
+    /**
      * 考勤对象
      */
     @ApiModelProperty(value = "考勤对象", name = "attendanceMonDataVOList")

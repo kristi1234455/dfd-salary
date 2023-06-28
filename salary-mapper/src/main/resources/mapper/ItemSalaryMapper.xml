@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dfd.mapper.ItemSalaryMapper" >
   <resultMap id="BaseResultMap" type="com.dfd.entity.ItemSalary" >
-    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
     <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
     <result column="item_salary_budget" property="itemSalaryBudget" jdbcType="DECIMAL" />

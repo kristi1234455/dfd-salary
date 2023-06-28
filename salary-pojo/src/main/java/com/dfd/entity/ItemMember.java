@@ -1,5 +1,8 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,13 +16,15 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@TableName("item_member")
 public class ItemMember implements Serializable {
     private static final long serialVersionUID = -3389887143839160084L;
     /**
      * 主键
      */
+    @TableId(value="id",type = IdType.AUTO)
     @ApiModelProperty(value = "主键",name = "id")
-    private Long id;
+    private Integer id;
 
     /**
      * uid

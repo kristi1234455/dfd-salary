@@ -73,6 +73,13 @@ public class PageResult<T> implements Iterable<T>, Serializable {
     }
 
     /**
+     * 根据数据总条数计算出总页面
+     */
+    public static long countTotalPage(int totalRecords, long size){
+        return (totalRecords + size - 1) / size;
+    }
+
+    /**
      * 是否有前一页
      *
      * @return boolean

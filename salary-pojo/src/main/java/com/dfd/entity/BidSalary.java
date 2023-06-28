@@ -1,5 +1,9 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +16,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@TableName("bid_salary")
 public class BidSalary {
     /**
      * 主键
      */
-    private Long id;
-
+    @TableId(value="id",type = IdType.AUTO)
+    private Integer id;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
     /**
      * 投标计划表uid
      */

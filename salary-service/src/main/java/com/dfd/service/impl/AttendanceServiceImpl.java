@@ -25,6 +25,7 @@ import com.dfd.service.AttendanceService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
+import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.AttendanceInfoVO;
 import com.dfd.vo.AttendanceMonDataVO;
 import com.dfd.vo.AttendanceMonInfoVO;
@@ -77,51 +78,60 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
 
         Page<Attendance> pageReq = new Page(attendanceMonInfoDTO.getCurrentPage(), attendanceMonInfoDTO.getPageSize());
         IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<AttendanceMonInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToAttendanceMonInfoVO(page.getRecords()));
-        return pageResult;
+        return convertToAttendanceMonInfoVO(page);
     }
 
-    private List<AttendanceMonInfoVO> convertToAttendanceMonInfoVO(List<Attendance> list) {
+    private PageResult<AttendanceMonInfoVO> convertToAttendanceMonInfoVO(IPage<Attendance> page) {
+        PageResult<AttendanceMonInfoVO> pageResult = new PageResult(page);
+        List<Attendance> list = page.getRecords();
         if (CollectionUtils.isEmpty(list)) {
-            return Collections.emptyList();
+            return pageResult
+                    .setTotalRecords(GlobalConstant.GLOBAL_Lon_ZERO)
+                    .setTotalPages(GlobalConstant.GLOBAL_Lon_ZERO)
+                    .setRecords(Collections.emptyList());
         }
         List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
         List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Long, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
         List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
         List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Long, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Long, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
+        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
 
-        Map<String, List<AttendanceMonDataVO>> dataCollect = new HashMap<>();
-        list.stream().collect(Collectors.groupingBy(o ->
-                (o.getItemUid() + o.getItemMemberUid() + o.getYear() + o.getMonth()), Collectors.toList()))
-                .forEach((id,transfer)->{
-            List<AttendanceMonDataVO> dataVOList = transfer.stream().map(a ->{
-                                AttendanceMonDataVO dataVO = new AttendanceMonDataVO();
-                                BeanUtil.copyProperties(a, dataVO);
-//                                dataVO.setDutyTotalDays(status=1)
-//                                        .setOutgoingTotalDays(status=2);
-                                return dataVO;
-                            }).collect(Collectors.toList());
-            dataCollect.put(id, dataVOList);
-                });
-
-        List<AttendanceMonInfoVO> result = list.stream().map(attendance -> {
-            if(!Optional.ofNullable(attendance).isPresent()){
-                throw new BusinessException("考勤数据为空");
+        List<AttendanceMonInfoVO> result = new ArrayList<>();
+        Map<String, List<Attendance>> attCollect = list.stream().collect(Collectors.groupingBy(o ->
+                (o.getItemUid() + o.getItemMemberUid() + o.getYear() + o.getMonth()), Collectors.toList()));
+        for(Map.Entry<String, List<Attendance>> entry : attCollect.entrySet()){
+            List<Attendance> value = entry.getValue();
+            AttendanceMonInfoVO infoVO = new AttendanceMonInfoVO();
+            int duty = 0;
+            int out = 0;
+            List<AttendanceMonDataVO> dataVOList = new ArrayList<>();
+            for(Attendance a : value){
+                BeanUtil.copyProperties(a,infoVO);
+                infoVO.setItemName(!itemNames.isEmpty() ? itemNames.get(a.getItemUid()) : null)
+                        .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(a.getItemMemberUid()) : null)
+                        .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(a.getItemMemberUid()) : null);
+                AttendanceMonDataVO dataVO = new AttendanceMonDataVO();
+                BeanUtil.copyProperties(a, dataVO);
+                if(a.getStatus() == 1){
+                    duty++;
+                }
+                if (a.getStatus() == 2) {
+                    out++;
+                }
+                dataVOList.add(dataVO);
             }
-            AttendanceMonInfoVO attendanceMonInfoVO = new AttendanceMonInfoVO();
-            BeanUtil.copyProperties(attendance,attendanceMonInfoVO);
-
-            attendanceMonInfoVO.setItemName(!itemNames.isEmpty() ? itemNames.get(attendance.getItemUid()) : null)
-                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(attendance.getItemMemberUid()) : null)
-                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(attendance.getItemMemberUid()) : null);
-            return attendanceMonInfoVO;
-        }).collect(Collectors.toList());
-        return result;
+            infoVO.setDutyTotalDays(duty)
+                    .setOutgoingTotalDays(out)
+                    .setAttendanceMonDataVOList(dataVOList);
+            result.add(infoVO);
+        }
+        return pageResult
+                .setTotalRecords(result.size())
+                .setTotalPages(PageResult.countTotalPage(result.size(),page.getSize()))
+                .setRecords(result);
     }
 
     private List<AttendanceInfoVO> convertToAttendanceInfoVO(List<Attendance> list) {
@@ -130,12 +140,12 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         }
         List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
         List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Long, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
         List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
         List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Long, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Long, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
+        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
         List<AttendanceInfoVO> result = list.stream().map(attendance -> {
             if(!Optional.ofNullable(attendance).isPresent()){
                 throw new BusinessException("考勤数据为空");
@@ -156,7 +166,8 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         User currentUser = UserRequest.getCurrentUser();
         Attendance attendance = new Attendance();
         BeanUtil.copyProperties(attendanceInfoDTO,attendance);
-        attendance.setCreatedBy(currentUser.getPhone())
+        attendance.setUid(UUIDUtil.getUUID32Bits())
+                .setCreatedBy(currentUser.getPhone())
                 .setUpdatedBy(currentUser.getPhone())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())

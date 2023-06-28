@@ -1,4 +1,4 @@
-package com.dfd.vo;
+package com.dfd.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Builder
 @ApiModel(value = "考勤信息对象", description = "封装考勤信息对象")
 @Accessors(chain = true)
-public class AttendanceMonDataVO implements Serializable {
+public class AttendanceMonDataDTO implements Serializable {
 
     private static final long serialVersionUID = 5099547899999541753L;
     /**
