@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "专岗工资信息对象",description = "封装专岗工资信息对象")
+@ApiModel
 public class SpecialInfoDTO implements Serializable {
 
     private static final long serialVersionUID = 2049639490366198003L;

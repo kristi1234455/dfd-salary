@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "加班补助信息对象",description = "封装加班补助信息对象")
+@ApiModel
 public class SubsidyOvertimeInfoDTO extends Query implements Serializable {
     private static final long serialVersionUID = 1323273775230805202L;
 

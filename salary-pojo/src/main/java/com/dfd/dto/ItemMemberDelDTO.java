@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "项目人员信息对象",description = "删除项目人员对象")
+@ApiModel
 public class ItemMemberDelDTO {
 
     /**

@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "项目人员基本岗位工资信息对象",description = "删除项目人员基本岗位工资对象")
+@ApiModel
 public class ItemSalaryDelDTO implements Serializable {
 
     private static final long serialVersionUID = -6947249829491865328L;

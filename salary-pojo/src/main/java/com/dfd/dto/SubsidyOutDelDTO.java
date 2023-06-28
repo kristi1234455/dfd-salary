@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "驻外信息删除对象",description = "封装驻外信息删除对象")
+@ApiModel
 public class SubsidyOutDelDTO implements Serializable {
 
     /**

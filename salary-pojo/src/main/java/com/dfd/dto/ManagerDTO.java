@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "职能对象")
+@ApiModel
 public class ManagerDTO implements Serializable {
 
     private static final long serialVersionUID = 8925654125130028643L;

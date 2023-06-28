@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "新增科研工资对象", description = "新增科研工资对象")
+@ApiModel
 public class ScientificSalaryDTO implements Serializable {
 
     private static final long serialVersionUID = 3109683482105547098L;

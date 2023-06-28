@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "投标工资信息对象",description = "封装投标工资信息对象")
+@ApiModel
 public class BidSalaryInfoVO implements Serializable {
 
     private static final long serialVersionUID = 4439318983223035254L;

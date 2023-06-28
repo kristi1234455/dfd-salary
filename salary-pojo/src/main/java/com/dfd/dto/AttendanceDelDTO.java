@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "考勤信息删除对象", description = "封装考勤信息删除对象")
+@ApiModel
 public class AttendanceDelDTO implements Serializable {
 
     private static final long serialVersionUID = -3770206178853823870L;

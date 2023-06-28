@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "高温补助信息对象",description = "封装高温补助信息对象")
+@ApiModel
 public class SubsidyHeatingInfoVO {
     /**
      * 项目uid

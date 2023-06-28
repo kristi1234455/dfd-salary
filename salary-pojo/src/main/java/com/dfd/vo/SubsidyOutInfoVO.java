@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "驻外补助信息对象",description = "封装驻外补助信息对象")
+@ApiModel
 public class SubsidyOutInfoVO implements Serializable {
 
     private static final long serialVersionUID = 2806852272106196689L;

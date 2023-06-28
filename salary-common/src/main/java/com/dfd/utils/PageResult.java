@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ApiModel(value = "分页对象")
+@ApiModel
 @Accessors(chain = true)
 public class PageResult<T> implements Iterable<T>, Serializable {
 

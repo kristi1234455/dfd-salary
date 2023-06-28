@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "考勤信息对象", description = "封装考勤信息对象")
+@ApiModel
 public class AttendanceMonInfoDTO extends Query implements Serializable {
     private static final long serialVersionUID = 6111805323634341948L;
 

@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ApiModel
-public class AttendanceDTO implements Serializable {
+public class AttendanceDayDTO implements Serializable {
 
     private static final long serialVersionUID = 5973207165741597324L;
     /**
@@ -67,11 +67,18 @@ public class AttendanceDTO implements Serializable {
     private Integer month;
 
     /**
-     * 考勤数据对象
+     * 日
      */
-    @ApiModelProperty(value = "考勤数据对象", name = "attendanceDataDTOList", required = true)
-    @NotNull(message = "考勤数据对象不能为空")
-    private List<AttendanceDataDTO> attendanceDataDTOList;
+    @ApiModelProperty(value = "日", name = "day", required = true)
+    @NotNull(message = "日不能为空")
+    private Integer day;
+
+    /**
+     * 考勤状态 1驻现场；2项目出差；3本地办公；4休假；；
+     */
+    @ApiModelProperty(value = "考勤状态 1驻现场；2项目出差；3本地办公；4休假；", name = "status", required = true)
+    @NotNull(message = "考勤状态不能为空")
+    private Integer status;
 
     /**
      * 驻外天数

@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value="投标工资对象")
+@ApiModel
 public class BidSalaryDTO implements Serializable {
 
     /**

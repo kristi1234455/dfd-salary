@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(value = "绩效工资对象",description = "封装绩效工资对象")
+@ApiModel
 public class PerformanceSalaryDTO implements Serializable {
     private static final long serialVersionUID = -6754740015714616110L;
 

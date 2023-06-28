@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "封装设计工资对象", description = "用于封装设计工资对象")
+@ApiModel
 public class DesignSalaryInfoVO implements Serializable {
 
     /**

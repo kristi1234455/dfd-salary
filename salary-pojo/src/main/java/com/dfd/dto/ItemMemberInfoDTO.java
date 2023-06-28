@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "新增人员信息对象",description = "用来保存新增人员信息对象")
+@ApiModel
 public class ItemMemberInfoDTO implements Serializable {
 
     /**

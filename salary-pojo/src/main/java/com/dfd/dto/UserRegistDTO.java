@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@ApiModel(value = "用户注册对象", description = "从客户端，由用户传入的数据封装在此entity中")
+@ApiModel
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

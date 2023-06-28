@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "查询对象")
+@ApiModel
 @Component
 public class Query {
 

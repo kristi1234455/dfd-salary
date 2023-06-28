@@ -19,7 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "考勤信息对象", description = "封装考勤信息对象")
+@ApiModel
 @Accessors(chain = true)
 public class AttendanceInfoVO implements Serializable {
 

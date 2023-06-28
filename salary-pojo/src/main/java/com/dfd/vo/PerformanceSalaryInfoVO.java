@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "绩效信息对象", description = "封装绩效信息对象")
+@ApiModel
 public class PerformanceSalaryInfoVO implements Serializable {
 
     /**

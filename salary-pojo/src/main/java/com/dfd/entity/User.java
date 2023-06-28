@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "用户信息对象")
+@ApiModel
 @TableName("user")
 public class User implements Serializable {
     /**

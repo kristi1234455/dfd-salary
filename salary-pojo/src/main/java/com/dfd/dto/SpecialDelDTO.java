@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "专岗津贴删除对象",description = "用于封装专岗津贴删除对象")
+@ApiModel
 public class SpecialDelDTO implements Serializable {
 
     private static final long serialVersionUID = 1643445127113196166L;

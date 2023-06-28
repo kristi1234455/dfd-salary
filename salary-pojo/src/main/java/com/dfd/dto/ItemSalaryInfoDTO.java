@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "项目人员基本岗位工资信息对象",description = "获取项目人员基本岗位工资对象")
+@ApiModel
 public class ItemSalaryInfoDTO extends Query implements Serializable {
 
     /**

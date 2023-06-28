@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "绩效对象")
+@ApiModel
 public class PerformanceSalaryInfoDTO implements Serializable {
     private static final long serialVersionUID = -6754740015714616110L;
 

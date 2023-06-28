@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "封装设计工资对象",description = "用于封装设计工资对象")
+@ApiModel
 public class DesignSalaryDTO implements Serializable {
     private static final long serialVersionUID = -2630512229883746766L;
 

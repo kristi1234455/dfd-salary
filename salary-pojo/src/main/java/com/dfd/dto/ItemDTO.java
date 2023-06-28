@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "项目信息保存对象")
+@ApiModel
 public class ItemDTO implements Serializable {
     private static final long serialVersionUID = 1535395190750036262L;
 

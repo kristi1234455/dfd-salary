@@ -30,7 +30,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ApiModel(value = "返回值对象")
+@ApiModel
 public class DFDResult<T> implements Serializable {
 
     // 响应业务状态

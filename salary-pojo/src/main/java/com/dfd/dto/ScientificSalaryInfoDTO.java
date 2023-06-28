@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "职能对象")
+@ApiModel
 public class ScientificSalaryInfoDTO extends Query implements Serializable {
 
     private static final long serialVersionUID = 4698006363524509510L;

@@ -15,7 +15,7 @@ import java.util.Date;
  * @author yy
  * @date 2023/3/31 17:20
  */
-@ApiModel(value = "项目信息对象")
+@ApiModel
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

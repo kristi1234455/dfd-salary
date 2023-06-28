@@ -10,10 +10,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.AttendanceDTO;
-import com.dfd.dto.AttendanceDelDTO;
-import com.dfd.dto.AttendanceInfoDTO;
-import com.dfd.dto.AttendanceMonInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.Attendance;
 import com.dfd.entity.Item;
 import com.dfd.entity.ItemMember;
@@ -162,35 +159,52 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
 
 
     @Override
-    public void add(AttendanceDTO attendanceInfoDTO) {
+    public void add(AttendanceDayDTO attendanceDTO) {
+        LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(attendanceDTO.getItemUid()), Attendance:: getItemUid, attendanceDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(attendanceDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceDTO.getItemMemberUid())
+                .eq(attendanceDTO.getYear() !=null, Attendance:: getYear, attendanceDTO.getYear())
+                .eq(attendanceDTO.getMonth() !=null, Attendance:: getMonth, attendanceDTO.getMonth())
+                .eq(attendanceDTO.getDay() !=null, Attendance:: getDay, attendanceDTO.getDay());
+        if(baseMapper.exists(queryWrapper)){
+            throw new BusinessException("添加失败，该用户考勤数据已经存在！");
+        }
         User currentUser = UserRequest.getCurrentUser();
         Attendance attendance = new Attendance();
-        BeanUtil.copyProperties(attendanceInfoDTO,attendance);
+        BeanUtil.copyProperties(attendanceDTO,attendance);
         attendance.setUid(UUIDUtil.getUUID32Bits())
                 .setCreatedBy(currentUser.getPhone())
                 .setUpdatedBy(currentUser.getPhone())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_INT_ZERO);
-        int insert = baseMapper.insert(attendance);
-        if (insert < 0) {
+        boolean b = this.saveOrUpdate(attendance);
+        if (!b) {
             throw new BusinessException("考勤状态保存失败");
         }
     }
 
     @Override
-    public void update(AttendanceDTO attendanceInfoDTO) {
+    public void update(AttendanceDTO attendanceDTO) {
+        LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(attendanceDTO.getItemUid()), Attendance:: getItemUid, attendanceDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(attendanceDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceDTO.getItemMemberUid())
+                .eq(attendanceDTO.getYear() !=null, Attendance:: getYear, attendanceDTO.getYear())
+                .eq(attendanceDTO.getMonth() !=null, Attendance:: getMonth, attendanceDTO.getMonth());
+        if(!baseMapper.exists(queryWrapper)){
+            throw new BusinessException("更新失败，该用户考勤数据不存在！");
+        }
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemUid()), Attendance:: getItemUid, attendanceInfoDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(attendanceInfoDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceInfoDTO.getItemMemberUid())
-                .set((attendanceInfoDTO.getYear()!=null), Attendance:: getYear, attendanceInfoDTO.getYear())
-                .set((attendanceInfoDTO.getMonth()!=null), Attendance:: getMonth, attendanceInfoDTO.getMonth())
-                .set((attendanceInfoDTO.getDay()!=null), Attendance:: getDay, attendanceInfoDTO.getDay())
-                .set((attendanceInfoDTO.getStatus()!=null), Attendance:: getStatus, attendanceInfoDTO.getStatus())
-                .set((attendanceInfoDTO.getOutgoingTotalDays()!=null), Attendance:: getOutgoingTotalDays, attendanceInfoDTO.getOutgoingTotalDays())
-                .set((attendanceInfoDTO.getDutyTotalDays()!=null), Attendance:: getDutyTotalDays, attendanceInfoDTO.getDutyTotalDays())
+                .eq(StringUtils.isNotBlank(attendanceDTO.getItemUid()), Attendance:: getItemUid, attendanceDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(attendanceDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceDTO.getItemMemberUid())
+                .set((attendanceDTO.getYear()!=null), Attendance:: getYear, attendanceDTO.getYear())
+                .set((attendanceDTO.getMonth()!=null), Attendance:: getMonth, attendanceDTO.getMonth())
+//                .set((attendanceDTO.getDay()!=null), Attendance:: getDay, attendanceDTO.getDay())
+//                .set((attendanceDTO.getStatus()!=null), Attendance:: getStatus, attendanceDTO.getStatus())
+                .set((attendanceDTO.getOutgoingTotalDays()!=null), Attendance:: getOutgoingTotalDays, attendanceDTO.getOutgoingTotalDays())
+                .set((attendanceDTO.getDutyTotalDays()!=null), Attendance:: getDutyTotalDays, attendanceDTO.getDutyTotalDays())
                 .set(Attendance:: getUpdatedBy, currentUser.getPhone())
                 .set(Attendance:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
@@ -214,5 +228,4 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             throw new BusinessException("考勤状态删除失败");
         }
     }
-
 }

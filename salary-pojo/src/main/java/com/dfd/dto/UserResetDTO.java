@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author yy
  * @date 2023/3/31 16:53
  */
-@ApiModel(value = "密码重置对象", description = "从客户端，由用户传入的数据封装在此entity中")
+@ApiModel
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

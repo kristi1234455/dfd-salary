@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "投标工资信息对象", description = "封装投标工资信息对象")
+@ApiModel
 public class BidSalaryInfoDTO extends Query implements Serializable {
 
     /**

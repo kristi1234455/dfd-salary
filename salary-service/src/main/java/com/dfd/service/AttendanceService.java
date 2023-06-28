@@ -1,10 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.AttendanceDTO;
-import com.dfd.dto.AttendanceDelDTO;
-import com.dfd.dto.AttendanceInfoDTO;
-import com.dfd.dto.AttendanceMonInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.Attendance;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
@@ -20,7 +17,7 @@ public interface AttendanceService extends IService<Attendance> {
 
     PageResult<AttendanceMonInfoVO> monInfo(AttendanceMonInfoDTO attendanceMonInfoDTO);
 
-    void add(AttendanceDTO attendanceInfoDTO);
+    void add(AttendanceDayDTO attendanceInfoDTO);
 
     void update(AttendanceDTO attendanceInfoDTO);
 

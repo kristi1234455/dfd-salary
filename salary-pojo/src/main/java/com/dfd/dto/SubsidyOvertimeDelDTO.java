@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "补助信息删除对象",description = "封装补助信息删除对象")
+@ApiModel
 public class SubsidyOvertimeDelDTO implements Serializable {
 
     private static final long serialVersionUID = 6699633442309954528L;

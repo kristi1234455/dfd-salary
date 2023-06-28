@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "投标对象")
+@ApiModel
 public class BidItemDTO implements Serializable {
 
     private static final long serialVersionUID = -6798444832590243255L;

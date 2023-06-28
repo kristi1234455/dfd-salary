@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "驻外补助信息对象",description = "封装驻外补助信息对象")
+@ApiModel
 public class SubsidyOutDTO implements Serializable {
 
     /**

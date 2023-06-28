@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "阶段策划系数对象")
+@ApiModel
 public class PlanCoefficientDTO implements Serializable {
 
     private static final long serialVersionUID = 2517652235173564026L;

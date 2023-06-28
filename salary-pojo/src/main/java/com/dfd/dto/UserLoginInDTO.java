@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author yy
  * @date 2023/3/31 11:19
  */
-@ApiModel(value = "用户登录对象", description = "从客户端，由用户传入的数据封装在此entity中")
+@ApiModel
 @Data
 @Builder
 @AllArgsConstructor

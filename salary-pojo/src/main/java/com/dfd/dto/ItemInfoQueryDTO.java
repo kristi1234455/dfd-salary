@@ -20,7 +20,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(value = "项目查询对象",description = "用来封装查询条件的item对象")
+@ApiModel
 public class ItemInfoQueryDTO extends Query implements Serializable {
 
     /**

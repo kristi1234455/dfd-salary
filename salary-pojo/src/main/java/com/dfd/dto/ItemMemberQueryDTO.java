@@ -19,7 +19,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(value = "人员信息查询对象",description = "用来封装查询条件的人员信息对象")
+@ApiModel
 public class ItemMemberQueryDTO extends Query implements Serializable {
 
     /**

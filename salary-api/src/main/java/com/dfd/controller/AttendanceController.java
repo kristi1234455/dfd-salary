@@ -1,9 +1,6 @@
 package com.dfd.controller;
 
-import com.dfd.dto.AttendanceDTO;
-import com.dfd.dto.AttendanceDelDTO;
-import com.dfd.dto.AttendanceInfoDTO;
-import com.dfd.dto.AttendanceMonInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.service.AttendanceService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
@@ -45,15 +42,15 @@ public class AttendanceController {
 
     @ApiOperation(value = "新增项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/add")
-    public DFDResult add(@RequestBody @Valid AttendanceDTO attendanceInfoDTO){
-        attendanceService.add(attendanceInfoDTO);
+    public DFDResult add(@RequestBody @Valid AttendanceDayDTO attendanceDTO){
+        attendanceService.add(attendanceDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/update")
-    public DFDResult update(@RequestBody @Valid AttendanceDTO attendanceInfoDTO){
-        attendanceService.update(attendanceInfoDTO);
+    public DFDResult update(@RequestBody @Valid AttendanceDTO attendanceDTO){
+        attendanceService.update(attendanceDTO);
         return DFDResult.sucess();
     }
 

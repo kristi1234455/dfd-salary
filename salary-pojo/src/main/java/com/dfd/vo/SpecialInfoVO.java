@@ -19,7 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(value = "专岗工资信息对象",description = "封装专岗工资信息对象")
+@ApiModel
 public class SpecialInfoVO extends Query implements Serializable {
     private static final long serialVersionUID = 2812845239417651576L;
 

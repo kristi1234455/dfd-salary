@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel(value = "职能对象")
+@ApiModel
 public class ScientificItemDTO implements Serializable {
     private static final long serialVersionUID = 2281771843044746872L;
 
