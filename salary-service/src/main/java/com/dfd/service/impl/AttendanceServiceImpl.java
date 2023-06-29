@@ -204,37 +204,6 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             params.add(attendance);
         });
         attendanceMapper.updateByItemUid(params);
-
-//        LambdaQueryWrapper<Attendance> queryWrapper = new LambdaQueryWrapper();
-//        queryWrapper.eq(StringUtils.isNotBlank(attendanceDTO.getItemUid()), Attendance:: getItemUid, attendanceDTO.getItemUid())
-//                .eq(StringUtils.isNotBlank(attendanceDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceDTO.getItemMemberUid())
-//                .eq(attendanceDTO.getYear() !=null, Attendance:: getYear, attendanceDTO.getYear())
-//                .eq(attendanceDTO.getMonth() !=null, Attendance:: getMonth, attendanceDTO.getMonth());
-//        if(!baseMapper.exists(queryWrapper)){
-//            throw new BusinessException("更新失败，该用户考勤数据不存在！");
-//        }
-//        boolean b = saveOrUpdateBatch(params);
-//        if (!b) {
-//            throw new BusinessException("考勤状态更新失败");
-//        }
-//
-//        LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
-//                .lambda()
-//                .eq(StringUtils.isNotBlank(attendanceDTO.getItemUid()), Attendance:: getItemUid, attendanceDTO.getItemUid())
-//                .eq(StringUtils.isNotBlank(attendanceDTO.getItemMemberUid()), Attendance:: getItemMemberUid, attendanceDTO.getItemMemberUid())
-//                .set((attendanceDTO.getYear()!=null), Attendance:: getYear, attendanceDTO.getYear())
-//                .set((attendanceDTO.getMonth()!=null), Attendance:: getMonth, attendanceDTO.getMonth())
-////                .set((attendanceDTO.getDay()!=null), Attendance:: getDay, attendanceDTO.getDay())
-////                .set((attendanceDTO.getStatus()!=null), Attendance:: getStatus, attendanceDTO.getStatus())
-//                .set((attendanceDTO.getOutgoingTotalDays()!=null), Attendance:: getOutgoingTotalDays, attendanceDTO.getOutgoingTotalDays())
-//                .set((attendanceDTO.getDutyTotalDays()!=null), Attendance:: getDutyTotalDays, attendanceDTO.getDutyTotalDays())
-//                .set(Attendance:: getUpdatedBy, currentUser.getPhone())
-//                .set(Attendance:: getUpdatedTime, new Date());
-//
-//        boolean update = this.update(updateWrapper);
-//        if (!update) {
-//            throw new BusinessException("考勤状态更新失败");
-//        }
     }
 
     @Override

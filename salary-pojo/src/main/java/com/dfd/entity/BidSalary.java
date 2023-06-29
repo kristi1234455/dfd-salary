@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @TableName("bid_salary")
+@Accessors(chain = true)
 public class BidSalary {
     /**
      * 主键
@@ -32,6 +34,11 @@ public class BidSalary {
      * 投标计划表uid
      */
     private String bidUid;
+    /**
+     * 项目表uid
+     */
+    @ApiModelProperty(value = "项目表uid", name = "itemUid")
+    private String itemUid;
 
     /**
      * 项目人员表uid

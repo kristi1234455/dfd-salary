@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -21,9 +22,15 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class BidSalaryInfoVO implements Serializable {
 
     private static final long serialVersionUID = 4439318983223035254L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
     /**
      * itemUid
      */

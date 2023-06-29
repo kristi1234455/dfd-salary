@@ -31,14 +31,8 @@ public class BidSalaryInfoDTO extends Query implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
+     * 申报时间
      */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
-     * 月份
-     */
-    @ApiModelProperty(value = "月份", name = "month")
-    private Date month;
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private Date declareTime;
 }

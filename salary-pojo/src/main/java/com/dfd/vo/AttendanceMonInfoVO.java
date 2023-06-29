@@ -26,6 +26,11 @@ public class AttendanceMonInfoVO implements Serializable {
 
     private static final long serialVersionUID = -8119785685718706166L;
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
+    /**
      * itemUid
      */
     @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)

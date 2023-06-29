@@ -29,12 +29,6 @@ public class BidSalaryDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 项目人员uid
      */
     @ApiModelProperty(value = "项目人员uid", name = "itemUid", required = true)
@@ -124,6 +118,11 @@ public class BidSalaryDTO implements Serializable {
      */
     @ApiModelProperty(value = "分配总金额", name = "distributeTotalFee")
     private BigDecimal distributeTotalFee;
+    /**
+     * 申报时间
+     */
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private Date declareTime;
 
     /**
      * 创建人
