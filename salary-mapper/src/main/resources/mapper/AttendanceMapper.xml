@@ -1,23 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dfd.mapper.AttendanceMapper" >
-  <resultMap id="BaseResultMap" type="com.dfd.entity.Attendance" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uid" property="uid" jdbcType="VARCHAR" />
-    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
-    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
-    <result column="year" property="year" jdbcType="INTEGER" />
-    <result column="month" property="month" jdbcType="INTEGER" />
-    <result column="day" property="day" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="outgoing_total_days" property="outgoingTotalDays" jdbcType="INTEGER" />
-    <result column="duty_total_days" property="dutyTotalDays" jdbcType="INTEGER" />
-    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
-    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
-    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
-    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
-    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
-  </resultMap>
+<mapper namespace="com.dfd.mapper.AttendanceMapper">
+    <resultMap id="BaseResultMap" type="com.dfd.entity.Attendance">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="item_uid" property="itemUid" jdbcType="VARCHAR"/>
+        <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="INTEGER"/>
+        <result column="month" property="month" jdbcType="INTEGER"/>
+        <result column="day" property="day" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="outgoing_total_days" property="outgoingTotalDays" jdbcType="INTEGER"/>
+        <result column="duty_total_days" property="dutyTotalDays" jdbcType="INTEGER"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR"/>
+    </resultMap>
 
 
+    <update id="updateByItemUid" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE attendance
+            <set>
+                <if test="item.day != null">
+                    day = #{item.day,jdbcType=INTEGER}
+                </if>
+                <if test="item.status != null">
+                    and status = #{item.status,jdbcType=INTEGER}
+                </if>
+                <if test="item.outgoingTotalDays != null">
+                    and outgoing_total_days = #{item.outgoingTotalDays,jdbcType=INTEGER}
+                </if>
+                <if test="item.dutyTotalDays != null">
+                    and duty_total_days = #{item.dutyTotalDays,jdbcType=INTEGER}
+                </if>
+                <if test="item.updatedBy != null">
+                    and updated_by = #{item.updatedBy,jdbcType=VARCHAR}
+                </if>
+                <if test="item.updatedTime != null">
+                    and updated_time = #{item.updatedTime,jdbcType=TIMESTAMP}
+                </if>
+            </set>
+            <where>
+                <if test="item.isDeleted != null">
+                    is_deleted = #{item.isDeleted,jdbcType=VARCHAR}
+                </if>
+                <if test="item.itemUid != null">
+                    and item_uid = #{item.itemUid,jdbcType=VARCHAR}
+                </if>
+                <if test="item.itemMemberUid != null">
+                    and item_member_uid = #{item.itemMemberUid,jdbcType=VARCHAR}
+                </if>
+                <if test="item.year != null">
+                    and year = #{item.year,jdbcType=INTEGER}
+                </if>
+                <if test="item.month != null">
+                    and month = #{item.month,jdbcType=INTEGER}
+                </if>
+            </where>
+        </foreach>
+    </update>
 </mapper>

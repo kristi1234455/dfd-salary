@@ -6,7 +6,7 @@ package com.dfd.constant;
  */
 public class GlobalConstant {
 
-    public final static String GLOBAL_INT_ZERO = "0";
+    public final static String GLOBAL_STR_ZERO = "0";
     public final static Long GLOBAL_Lon_ZERO = 0L;
 
 }
