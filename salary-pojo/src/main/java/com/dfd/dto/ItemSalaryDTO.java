@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author yy
@@ -35,7 +36,11 @@ public class ItemSalaryDTO implements Serializable {
      */
     @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
-
+    /**
+     * 项目人员表uid
+     */
+    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    private String itemMemberUid;
     /**
      * 工号
      */
@@ -77,6 +82,12 @@ public class ItemSalaryDTO implements Serializable {
      */
     @ApiModelProperty(value = "项目阶段：1、设计阶段；2、采购阶段；3、制造阶段；4、安装调试阶段；5、安装验收阶段；6、终验收阶段；7、质保阶段；", name = "itemStage")
     private String itemStage;
+
+    /**
+     * 申报时间
+     */
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private Date declareTime;
 
     /**
      * 备注

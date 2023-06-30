@@ -31,12 +31,6 @@ public class ItemSalaryInfoDTO extends Query implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间", name = "declareTime")
