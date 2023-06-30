@@ -30,11 +30,7 @@ public class SubsidyOutInfoDTO extends Query implements Serializable {
     @ApiModelProperty(value = "项目uid", name = "itemUid",required = true)
     @NotBlank(message = "项目uid不能为空")
     private String itemUid;
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
+
     /**
      * 驻外申报时间
      */

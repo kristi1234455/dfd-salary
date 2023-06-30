@@ -64,8 +64,8 @@ public class SubsidyHeatingDTO implements Serializable {
     /**
      * 高温补助标准（元/天）
      */
-    @ApiModelProperty(value = "高温补助标准（元/天）", name = "heatingSubsidyStandart")
-    private BigDecimal heatingSubsidyStandart;
+    @ApiModelProperty(value = "高温补助标准（元/天）", name = "heatingSubsidyStandard")
+    private BigDecimal heatingSubsidyStandard;
 
     /**
      * 高温天数

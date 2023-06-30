@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class PerformanceSalaryInfoVO implements Serializable {
 
     /**

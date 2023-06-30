@@ -36,6 +36,11 @@ public class ScientificSalary {
      */
     @ApiModelProperty(value = "科研计划表uid",name = "scientificPlanUid")
     private String scientificPlanUid;
+    /**
+     * 项目信息表uid
+     */
+    @ApiModelProperty(value = "项目信息表uid", name = "itemUid")
+    private String itemUid;
 
     /**
      * 项目人员表uid

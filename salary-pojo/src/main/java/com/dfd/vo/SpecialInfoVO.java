@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class SpecialInfoVO extends Query implements Serializable {
     private static final long serialVersionUID = 2812845239417651576L;
 

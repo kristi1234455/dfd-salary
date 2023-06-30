@@ -33,12 +33,6 @@ public class ScientificSalaryDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称",name = "itemName")
-    private String itemName;
-
-    /**
      * 项目人员uid
      */
     @ApiModelProperty(value = "项目人员uid",name = "itemMemberUid",required = true)

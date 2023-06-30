@@ -5,6 +5,7 @@
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="scientific_plan_uid" property="scientificPlanUid" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR"/>
     <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
     <result column="technical_fee" property="technicalFee" jdbcType="DECIMAL" />
     <result column="main_major" property="mainMajor" jdbcType="VARCHAR" />

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class SubsidyNightInfoVO implements Serializable {
     private static final long serialVersionUID = -3430081037095527844L;
 

@@ -1,5 +1,6 @@
 package com.dfd.dto;
 
+import com.dfd.utils.Query;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @ApiModel
-public class PerformanceSalaryInfoDTO implements Serializable {
+public class PerformanceSalaryInfoDTO extends Query implements Serializable {
     private static final long serialVersionUID = -6754740015714616110L;
 
     /**
@@ -29,12 +30,6 @@ public class PerformanceSalaryInfoDTO implements Serializable {
     @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
     @NotBlank(message = "项目Uid不能为空")
     private String itemUid;
-
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
 
     /**
      * 申报时间

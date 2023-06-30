@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class SubsidyHeatingInfoVO {
     /**
      * 项目uid
@@ -58,8 +60,8 @@ public class SubsidyHeatingInfoVO {
     /**
      * 高温补助标准（元/天）
      */
-    @ApiModelProperty(value = "高温补助标准（元/天）", name = "heatingSubsidyStandart")
-    private BigDecimal heatingSubsidyStandart;
+    @ApiModelProperty(value = "高温补助标准（元/天）", name = "heatingSubsidyStandard")
+    private BigDecimal heatingSubsidyStandard;
 
     /**
      * 高温天数

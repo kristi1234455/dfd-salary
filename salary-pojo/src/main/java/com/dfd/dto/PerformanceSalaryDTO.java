@@ -31,12 +31,6 @@ public class PerformanceSalaryDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 项目人员Uid
      */
     @ApiModelProperty(value = "项目人员Uid", name = "itemMemberUid",required = true)
@@ -78,6 +72,11 @@ public class PerformanceSalaryDTO implements Serializable {
      */
     @ApiModelProperty(value = "本次发放绩效工资", name = "performanceSalary")
     private BigDecimal performanceSalary;
+    /**
+     * 申报时间
+     */
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private String declareTime;
 
     /**
      * 备注
