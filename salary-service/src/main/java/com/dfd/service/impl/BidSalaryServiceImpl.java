@@ -20,7 +20,6 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
-import com.dfd.vo.AttendanceInfoVO;
 import com.dfd.vo.BidSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +37,6 @@ import java.util.stream.Collectors;
 public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary> implements BidSalaryService {
 
     @Autowired
-    private BidSalaryMapper bidSalaryMapper;
-    @Autowired
     private ItemMapper itemMapper;
 
     @Autowired
@@ -56,11 +53,11 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         Page<BidSalary> pageReq = new Page(bidSalaryInfoDTO.getCurrentPage(), bidSalaryInfoDTO.getPageSize());
         IPage<BidSalary> page = baseMapper.selectPage(pageReq, queryWrapper);
         PageResult<BidSalaryInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToBidSalaryInfoVO(page.getRecords()));
+                .setRecords(convertToSalaryInfoVO(page.getRecords()));
         return pageResult;
     }
 
-    private List<BidSalaryInfoVO> convertToBidSalaryInfoVO(List<BidSalary> list) {
+    private List<BidSalaryInfoVO> convertToSalaryInfoVO(List<BidSalary> list) {
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
@@ -136,7 +133,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .set(BidSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
-            throw new BusinessException("考勤状态更新失败!");
+            throw new BusinessException("投标状态更新失败!");
         }
     }
 
@@ -152,7 +149,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .set(BidSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
-            throw new BusinessException("考勤状态删除失败!");
+            throw new BusinessException("投标状态删除失败!");
         }
     }
 }

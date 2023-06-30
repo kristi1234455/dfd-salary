@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @TableName("subsidy")
+@Accessors(chain = true)
 public class Subsidy {
     /**
      * 主键

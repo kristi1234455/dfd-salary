@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +24,12 @@ import java.util.Date;
 public class DesignSalaryInfoDTO extends Query implements Serializable {
 
     private static final long serialVersionUID = -7232416727000836006L;
+    /**
+     * itemUid
+     */
+    @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
+    @NotBlank(message = "项目uid不能为空")
+    private String itemUid;
 
     /**
      * 申报时间

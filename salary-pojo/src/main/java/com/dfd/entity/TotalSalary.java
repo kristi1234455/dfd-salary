@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 @Builder
@@ -15,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @TableName("total_salary")
+@Accessors(chain = true)
 public class TotalSalary {
     /**
      * 主键
