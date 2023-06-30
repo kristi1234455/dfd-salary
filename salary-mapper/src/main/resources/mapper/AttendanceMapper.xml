@@ -47,18 +47,21 @@
                 <if test="item.isDeleted != null">
                     is_deleted = #{item.isDeleted,jdbcType=VARCHAR}
                 </if>
-                <if test="item.itemUid != null">
-                    and item_uid = #{item.itemUid,jdbcType=VARCHAR}
+                <if test="item.uid != null">
+                    and uid = #{item.uid,jdbcType=VARCHAR}
                 </if>
-                <if test="item.itemMemberUid != null">
-                    and item_member_uid = #{item.itemMemberUid,jdbcType=VARCHAR}
-                </if>
-                <if test="item.year != null">
-                    and year = #{item.year,jdbcType=INTEGER}
-                </if>
-                <if test="item.month != null">
-                    and month = #{item.month,jdbcType=INTEGER}
-                </if>
+<!--                <if test="item.itemUid != null">-->
+<!--                    and item_uid = #{item.itemUid,jdbcType=VARCHAR}-->
+<!--                </if>-->
+<!--                <if test="item.itemMemberUid != null">-->
+<!--                    and item_member_uid = #{item.itemMemberUid,jdbcType=VARCHAR}-->
+<!--                </if>-->
+<!--                <if test="item.year != null">-->
+<!--                    and year = #{item.year,jdbcType=INTEGER}-->
+<!--                </if>-->
+<!--                <if test="item.month != null">-->
+<!--                    and month = #{item.month,jdbcType=INTEGER}-->
+<!--                </if>-->
             </where>
         </foreach>
     </update>

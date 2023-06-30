@@ -25,6 +25,12 @@ public class SubsidyNightDTO implements Serializable {
 
     private static final long serialVersionUID = 6939688258716749432L;
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
+    /**
      * 项目uid
      */
     @ApiModelProperty(value = "项目uid", name = "itemUid",required = true)

@@ -113,8 +113,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
     public void update(BidSalaryDTO bidSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<BidSalary> updateWrapper = new LambdaUpdateWrapper<BidSalary>();
-        updateWrapper.eq(StringUtils.isNotBlank(bidSalaryDTO.getItemUid()), BidSalary:: getItemUid, bidSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(bidSalaryDTO.getItemMemberUid()), BidSalary:: getItemMemberUid, bidSalaryDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(bidSalaryDTO.getUid()), BidSalary:: getUid, bidSalaryDTO.getUid())
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getDeviceCategory()), BidSalary:: getDeviceCategory, bidSalaryDTO.getDeviceCategory())
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getDeviceName()), BidSalary:: getDeviceName, bidSalaryDTO.getDeviceName())
@@ -127,8 +126,8 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getAdjustedCoefficient()), BidSalary:: getAdjustedCoefficient, bidSalaryDTO.getAdjustedCoefficient())
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getRatio()), BidSalary:: getRatio, bidSalaryDTO.getRatio())
                 .set((bidSalaryDTO.getBidFee()!=null), BidSalary:: getBidFee, bidSalaryDTO.getBidFee())
-                .set((bidSalaryDTO.getDistributeTotalFee()!=null), BidSalary:: getDistributeTotalFee, bidSalaryDTO.getDistributeTotalFee())
                 .set((bidSalaryDTO.getDeclareTime()!=null), BidSalary:: getDeclareTime, bidSalaryDTO.getDeclareTime())
+                .set((bidSalaryDTO.getDistributeTotalFee()!=null), BidSalary:: getDistributeTotalFee, bidSalaryDTO.getDistributeTotalFee())
                 .set(BidSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(BidSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
@@ -142,8 +141,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<BidSalary> updateWrapper = new UpdateWrapper<BidSalary>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(bidSalaryDelDTO.getItemUid()), BidSalary:: getItemUid, bidSalaryDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(bidSalaryDelDTO.getItemMemberIds()), BidSalary:: getItemMemberUid, bidSalaryDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(bidSalaryDelDTO.getUids()), BidSalary:: getUid, bidSalaryDelDTO.getUids())
                 .set(BidSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(BidSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(BidSalary:: getUpdatedTime, new Date());

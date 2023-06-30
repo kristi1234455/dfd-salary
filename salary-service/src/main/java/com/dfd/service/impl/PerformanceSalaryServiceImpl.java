@@ -116,12 +116,13 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         LambdaUpdateWrapper<PerformanceSalary> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemMemberUid()), PerformanceSalary:: getItemMemberUid, performanceSalaryDTO.getItemMemberUid())
+                .eq(StringUtils.isNotBlank(performanceSalaryDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set((performanceSalaryDTO.getPostSalaryStandard()!=null), PerformanceSalary:: getPostSalaryStandard, performanceSalaryDTO.getPostSalaryStandard())
                 .set(StringUtils.isNotBlank(performanceSalaryDTO.getPerformanceRatio()), PerformanceSalary:: getPerformanceRatio, performanceSalaryDTO.getPerformanceRatio())
                 .set((performanceSalaryDTO.getAttendanceMonths()!=null), PerformanceSalary:: getAttendanceMonths, performanceSalaryDTO.getAttendanceMonths())
                 .set(performanceSalaryDTO.getPerformanceSalary()!=null, PerformanceSalary:: getPerformanceSalary, performanceSalaryDTO.getPerformanceSalary())
-                .set(performanceSalaryDTO.getDeclareTime()!=null, PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
+                .set((performanceSalaryDTO.getDeclareTime()!=null), PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(performanceSalaryDTO.getRemarks()), PerformanceSalary:: getRemarks, performanceSalaryDTO.getRemarks())
                 .set(PerformanceSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(PerformanceSalary:: getUpdatedTime, new Date());
@@ -137,6 +138,7 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         LambdaUpdateWrapper<PerformanceSalary> updateWrapper = new UpdateWrapper<PerformanceSalary>()
                 .lambda()
                 .eq(StringUtils.isNotBlank(performanceSalaryDelDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryDelDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(performanceSalaryDelDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDelDTO.getDeclareTime())
                 .in(!CollectionUtils.isEmpty(performanceSalaryDelDTO.getItemMemberIds()), PerformanceSalary:: getItemMemberUid, performanceSalaryDelDTO.getItemMemberIds())
                 .set(PerformanceSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(PerformanceSalary:: getUpdatedBy, currentUser.getPhone())

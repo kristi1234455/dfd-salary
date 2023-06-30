@@ -24,6 +24,7 @@ import java.util.List;
 public class AttendanceDTO implements Serializable {
 
     private static final long serialVersionUID = 5973207165741597324L;
+
     /**
      * 项目uid
      */

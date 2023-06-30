@@ -112,8 +112,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
     public void update(DesignSalaryDTO designSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<DesignSalary> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(designSalaryDTO.getItemMemberUid()), DesignSalary:: getItemMemberUid, designSalaryDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getUid()), DesignSalary:: getUid, designSalaryDTO.getUid())
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(StringUtils.isNotBlank(designSalaryDTO.getMainMajor()), DesignSalary:: getMainMajor, designSalaryDTO.getMainMajor())
                 .set(StringUtils.isNotBlank(designSalaryDTO.getMinorMajor()), DesignSalary:: getMinorMajor, designSalaryDTO.getMinorMajor())
@@ -140,8 +139,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<DesignSalary> updateWrapper = new UpdateWrapper<DesignSalary>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(designSalaryDelDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(designSalaryDelDTO.getItemMemberIds()), DesignSalary:: getItemMemberUid, designSalaryDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(designSalaryDelDTO.getUids()), DesignSalary:: getUid, designSalaryDelDTO.getUids())
                 .set(DesignSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(DesignSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(DesignSalary:: getUpdatedTime, new Date());

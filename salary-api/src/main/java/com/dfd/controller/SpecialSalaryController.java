@@ -19,10 +19,10 @@ import javax.validation.Valid;
  * @date 2023/6/9 16:59
  */
 @RestController
-@RequestMapping("total")
-@Api(value = "工资汇总申报", tags = "用于工资汇总申报的管理接口")
+@RequestMapping("special")
+@Api(value = "专岗津贴申报", tags = "用于专岗津贴申报的管理接口")
 @CrossOrigin
-public class TotalSalaryController {
+public class SpecialSalaryController {
 
     @Autowired
     private TotalSalaryService totalSalaryService;

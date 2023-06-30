@@ -75,7 +75,8 @@ public class PerformanceSalaryDTO implements Serializable {
     /**
      * 申报时间
      */
-    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    @ApiModelProperty(value = "申报时间", name = "declareTime",required = true)
+    @NotBlank(message = "申报时间不能为空")
     private String declareTime;
 
     /**

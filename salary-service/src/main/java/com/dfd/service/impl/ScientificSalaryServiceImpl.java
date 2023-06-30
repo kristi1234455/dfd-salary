@@ -114,8 +114,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
     public void update(ScientificSalaryDTO scientificSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ScientificSalary> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemUid()), ScientificSalary:: getItemUid, scientificSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemMemberUid()), ScientificSalary:: getItemMemberUid, scientificSalaryDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(scientificSalaryDTO.getUid()), ScientificSalary:: getUid, scientificSalaryDTO.getUid())
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(StringUtils.isNotBlank(scientificSalaryDTO.getMainMajor()), ScientificSalary:: getMainMajor, scientificSalaryDTO.getMainMajor())
                 .set(StringUtils.isNotBlank(scientificSalaryDTO.getMinorMajor()), ScientificSalary:: getMinorMajor, scientificSalaryDTO.getMinorMajor())
@@ -142,8 +141,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ScientificSalary> updateWrapper = new UpdateWrapper<ScientificSalary>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(scientificSalaryDelDTO.getItemUid()), ScientificSalary:: getItemUid, scientificSalaryDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(scientificSalaryDelDTO.getItemMemberIds()), ScientificSalary:: getItemMemberUid, scientificSalaryDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(scientificSalaryDelDTO.getUids()), ScientificSalary:: getUid, scientificSalaryDelDTO.getUids())
                 .set(ScientificSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(ScientificSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(ScientificSalary:: getUpdatedTime, new Date());

@@ -111,8 +111,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     public void update(SubsidyOvertimeDTO subsidyOvertimeDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemUid()), Subsidy:: getItemUid, subsidyOvertimeDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOvertimeDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getUid()), Subsidy:: getUid, subsidyOvertimeDTO.getUid())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(StringUtils.isNotBlank(subsidyOvertimeDTO.getOvertime()), Subsidy:: getOvertime, subsidyOvertimeDTO.getOvertime())
                 .set(StringUtils.isNotBlank(subsidyOvertimeDTO.getOvertimeWorkContent()), Subsidy:: getOvertimeWorkContent, subsidyOvertimeDTO.getOvertimeWorkContent())
@@ -134,8 +133,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new UpdateWrapper<Subsidy>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(subsidyOvertimeDelDTO.getItemUid()), Subsidy:: getItemUid, subsidyOvertimeDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(subsidyOvertimeDelDTO.getItemMemberIds()), Subsidy:: getItemMemberUid, subsidyOvertimeDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(subsidyOvertimeDelDTO.getUids()), Subsidy:: getUid, subsidyOvertimeDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
                 .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
                 .set(Subsidy:: getUpdatedTime, new Date());
@@ -216,8 +214,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     public void update(SubsidyNightDTO subsidyNightDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(subsidyNightDTO.getItemUid()), Subsidy:: getItemUid, subsidyNightDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(subsidyNightDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyNightDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(subsidyNightDTO.getUid()), Subsidy:: getUid, subsidyNightDTO.getUid())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(StringUtils.isNotBlank(subsidyNightDTO.getNightDuty()), Subsidy:: getNightDuty, subsidyNightDTO.getNightDuty())
                 .set(StringUtils.isNotBlank(subsidyNightDTO.getNightWorkContent()), Subsidy:: getNightWorkContent, subsidyNightDTO.getNightWorkContent())
@@ -239,8 +236,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new UpdateWrapper<Subsidy>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(subsidyNightDelDTO.getItemUid()), Subsidy:: getItemUid, subsidyNightDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(subsidyNightDelDTO.getItemMemberIds()), Subsidy:: getItemMemberUid, subsidyNightDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(subsidyNightDelDTO.getUids()), Subsidy:: getUid, subsidyNightDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
                 .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
                 .set(Subsidy:: getUpdatedTime, new Date());
@@ -321,8 +317,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     public void update(SubsidyOutDTO subsidyOutDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(subsidyOutDTO.getItemUid()), Subsidy:: getItemUid, subsidyOutDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(subsidyOutDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOutDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(subsidyOutDTO.getUid()), Subsidy:: getUid, subsidyOutDTO.getUid())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set((subsidyOutDTO.getOutSubsidyStandard()!=null), Subsidy:: getOutSubsidyStandard, subsidyOutDTO.getOutSubsidyStandard())
                 .set(subsidyOutDTO.getOutDays()!=null, Subsidy:: getOutDays, subsidyOutDTO.getOutDays())
@@ -342,8 +337,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new UpdateWrapper<Subsidy>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(subsidyOutDelDTO.getItemUid()), Subsidy:: getItemUid, subsidyOutDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(subsidyOutDelDTO.getItemMemberIds()), Subsidy:: getItemMemberUid, subsidyOutDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(subsidyOutDelDTO.getUids()), Subsidy:: getUid, subsidyOutDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
                 .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
                 .set(Subsidy:: getUpdatedTime, new Date());
@@ -424,8 +418,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     public void update(SubsidyHeatingDTO subsidyHeatingDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemUid()), Subsidy:: getItemUid, subsidyHeatingDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyHeatingDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getUid()), Subsidy:: getUid, subsidyHeatingDTO.getUid())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set((subsidyHeatingDTO.getHeatingSubsidyStandard()!=null), Subsidy:: getHeatingSubsidyStandard, subsidyHeatingDTO.getHeatingSubsidyStandard())
                 .set(subsidyHeatingDTO.getHeatingDays()!=null, Subsidy:: getHeatingDays, subsidyHeatingDTO.getHeatingDays())
@@ -445,8 +438,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Subsidy> updateWrapper = new UpdateWrapper<Subsidy>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(subsidyHeatingDelDTO.getItemUid()), Subsidy:: getItemUid, subsidyHeatingDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(subsidyHeatingDelDTO.getItemMemberIds()), Subsidy:: getItemMemberUid, subsidyHeatingDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(subsidyHeatingDelDTO.getUids()), Subsidy:: getUid, subsidyHeatingDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
                 .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
                 .set(Subsidy:: getUpdatedTime, new Date());

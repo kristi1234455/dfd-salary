@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,6 +26,12 @@ import java.util.Date;
 public class SubsidyOvertimeInfoVO implements Serializable {
 
     private static final long serialVersionUID = 6518850371907250746L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
     /**
      * 项目uid
      */

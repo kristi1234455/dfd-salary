@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -24,6 +25,12 @@ import java.io.Serializable;
 public class AttendanceDataDTO implements Serializable {
 
     private static final long serialVersionUID = 5099547899999541753L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
     /**
      * 日
      */

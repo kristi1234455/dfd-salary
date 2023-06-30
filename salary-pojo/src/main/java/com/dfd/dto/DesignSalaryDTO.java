@@ -23,6 +23,12 @@ import java.util.Date;
 @ApiModel
 public class DesignSalaryDTO implements Serializable {
     private static final long serialVersionUID = -2630512229883746766L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
 
     /**
      * 项目uid

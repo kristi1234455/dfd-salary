@@ -27,17 +27,10 @@ public class SubsidyOvertimeDelDTO implements Serializable {
     private static final long serialVersionUID = 6699633442309954528L;
 
     /**
-     * 项目uid
+     * uid
      */
-    @ApiModelProperty(value = "项目uid",name = "itemUid",required = true)
-    @NotBlank(message = "项目uid不能为空")
-    private String itemUid;
-
-    /**
-     * 项目人员ids
-     */
-    @ApiModelProperty(value = "项目人员ids",name = "itemMemberIds")
-    @NotNull(message = "项目人员ids不能为空")
-    @Size(min = 1, message = "项目人员ids不能为空")
-    private List<String> itemMemberIds;
+    @ApiModelProperty(value = "uid", name = "uids", required = true)
+    @NotNull(message = "uids不能为空")
+    @Size(min = 1, message = "uids不能为空")
+    private List<String> uids;
 }

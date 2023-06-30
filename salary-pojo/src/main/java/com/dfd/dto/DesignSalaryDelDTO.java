@@ -25,18 +25,11 @@ import java.util.List;
 public class DesignSalaryDelDTO implements Serializable {
 
     /**
-     * itemUid
+     * uid
      */
-    @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
-    @NotBlank(message = "项目uid不能为空")
-    private String itemUid;
-
-    /**
-     * 项目人员ids
-     */
-    @ApiModelProperty(value = "项目人员ids",name = "itemMemberIds", required = true)
-    @NotNull(message = "项目人员ids不能为空")
-    @Size(min = 1, message = "项目人员ids不能为空")
-    private List<String> itemMemberIds;
+    @ApiModelProperty(value = "uid", name = "uids", required = true)
+    @NotNull(message = "uids不能为空")
+    @Size(min = 1, message = "uids不能为空")
+    private List<String> uids;
 
 }

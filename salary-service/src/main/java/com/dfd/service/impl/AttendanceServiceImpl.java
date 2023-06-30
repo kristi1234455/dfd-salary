@@ -198,6 +198,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             BeanUtil.copyProperties(attendanceDTO,attendance);
             attendance.setDay(e.getDay())
                     .setStatus(e.getStatus())
+                    .setUid(e.getUid())
                     .setUpdatedBy(currentUser.getPhone())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -211,8 +212,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(attendanceDelDTO.getItemUid()), Attendance:: getItemUid, attendanceDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(attendanceDelDTO.getItemMemberIds()), Attendance:: getItemMemberUid, attendanceDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(attendanceDelDTO.getUids()), Attendance:: getUid, attendanceDelDTO.getUids())
                 .set(Attendance:: getIsDeleted, System.currentTimeMillis())
                 .set(Attendance:: getUpdatedBy, currentUser.getPhone())
                 .set(Attendance:: getUpdatedTime, new Date());

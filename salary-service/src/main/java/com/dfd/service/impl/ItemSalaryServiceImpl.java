@@ -113,15 +113,14 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
     public void update(ItemSalaryDTO itemSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ItemSalary> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(itemSalaryDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(itemSalaryDTO.getItemMemberUid()), ItemSalary:: getItemMemberUid, itemSalaryDTO.getItemMemberUid())
+        updateWrapper.eq(StringUtils.isNotBlank(itemSalaryDTO.getUid()), ItemSalary:: getUid, itemSalaryDTO.getUid())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set((itemSalaryDTO.getPostSalaryStandard()!=null), ItemSalary:: getPostSalaryStandard, itemSalaryDTO.getPostSalaryStandard())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getPlanApproveFactor()), ItemSalary:: getPlanApproveFactor, itemSalaryDTO.getPlanApproveFactor())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getDeclareFactor()), ItemSalary:: getDeclareFactor, itemSalaryDTO.getDeclareFactor())
                 .set((itemSalaryDTO.getDeclareGrant()!=null), ItemSalary:: getDeclareGrant, itemSalaryDTO.getDeclareGrant())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getItemStage()), ItemSalary:: getItemStage, itemSalaryDTO.getItemStage())
-                .set(itemSalaryDTO.getDeclareTime()!=null, ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
+                .set((itemSalaryDTO.getDeclareTime()!=null), ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getRemarks()), ItemSalary:: getRemarks, itemSalaryDTO.getRemarks())
                 .set(ItemSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(ItemSalary:: getUpdatedTime, new Date());
@@ -136,8 +135,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ItemSalary> updateWrapper = new UpdateWrapper<ItemSalary>()
                 .lambda()
-                .eq(StringUtils.isNotBlank(itemSalaryDelDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryDelDTO.getItemUid())
-                .in(!CollectionUtils.isEmpty(itemSalaryDelDTO.getItemMemberIds()), ItemSalary:: getItemMemberUid, itemSalaryDelDTO.getItemMemberIds())
+                .in(!CollectionUtils.isEmpty(itemSalaryDelDTO.getUids()), ItemSalary:: getUid, itemSalaryDelDTO.getUids())
                 .set(ItemSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(ItemSalary:: getUpdatedBy, currentUser.getPhone())
                 .set(ItemSalary:: getUpdatedTime, new Date());

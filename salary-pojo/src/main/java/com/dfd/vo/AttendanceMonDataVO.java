@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -23,6 +24,11 @@ import java.io.Serializable;
 public class AttendanceMonDataVO implements Serializable {
 
     private static final long serialVersionUID = 5099547899999541753L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
     /**
      * 日
      */
