@@ -7,6 +7,7 @@ import com.dfd.dto.UserResetDTO;
 import com.dfd.entity.User;
 import com.dfd.service.UserService;
 import com.dfd.utils.DFDResult;
+import com.dfd.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +31,8 @@ public class PassportController {
     @ApiOperation(value = "用户名是否存在", httpMethod = "GET")
     @GetMapping("/usernameIsExist")
     @ApiImplicitParam(name = "phone", value = "手机号")
-    public DFDResult<Boolean> usernameIsExist(@RequestParam  @NotBlank(message = "手机号不能为空")String phone) {
-        return DFDResult.sucess(userService.queryPhoneIsExist(phone));
+    public DFDResult<Boolean> usernameIsExist(@RequestParam  @NotBlank(message = "工号不能为空")String number) {
+        return DFDResult.sucess(userService.queryNumberIsExist(number));
     }
 
     @ApiOperation(value = "用户注册", httpMethod = "POST")
@@ -44,9 +45,9 @@ public class PassportController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
     @PostMapping("/loginIn")
-    public DFDResult<User> login(@RequestBody UserLoginInDTO userLoginDTO,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response){
+    public DFDResult<UserVO> login(@RequestBody UserLoginInDTO userLoginDTO,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response){
         return DFDResult.sucess(userService.loginInUser(userLoginDTO,request,response));
     }
 

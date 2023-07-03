@@ -9,6 +9,7 @@ import com.dfd.dto.UserRegistDTO;
 import com.dfd.dto.UserResetDTO;
 import com.dfd.entity.Attendance;
 import com.dfd.entity.User;
+import com.dfd.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public interface UserService extends IService<User> {
     /**
      * 判断用户名是否存在
      */
-    Boolean queryPhoneIsExist(String phone);
+    Boolean queryNumberIsExist(String phone);
 
     /**
      * 用户注册
@@ -28,7 +29,7 @@ public interface UserService extends IService<User> {
     /**
      * 用户登录
      */
-    User loginInUser(UserLoginInDTO userLoginDTO, HttpServletRequest request, HttpServletResponse response);
+    UserVO loginInUser(UserLoginInDTO userLoginDTO, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 用户登出
@@ -49,5 +50,5 @@ public interface UserService extends IService<User> {
     /**
      * 通过唯一手机号查询用户信息
      */
-    public User selectByPhone(String phone);
+    public User selectByNumber(String number);
 }

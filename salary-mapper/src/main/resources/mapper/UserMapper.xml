@@ -6,6 +6,7 @@
     <result column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />

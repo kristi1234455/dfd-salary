@@ -23,9 +23,9 @@ public class UserRegistDTO implements Serializable {
     @ApiModelProperty(value = "用户名", name = "username", example = "dfd")
     private String username;
 
-    @ApiModelProperty(value = "手机号", name = "phone", example = "13412345667", required = true)
-    @NotBlank(message = "手机号不能为空")
-    private String phone;
+    @ApiModelProperty(value = "工号", name = "number", example = "13412345667", required = true)
+    @NotBlank(message = "工号不能为空")
+    private String number;
 
     @ApiModelProperty(value = "密码", name = "password", example = "123456", required = true)
     @NotBlank(message = "密码不能为空")

@@ -69,9 +69,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             // 未登录跳转到登录界面
             throw new BusinessException(DYDResultEnum.ERROR_TOKEN.getCode(),DYDResultEnum.ERROR_TOKEN.getDesc());
         } else {
-            Claim phone = JWT.decode(headerToken).getClaim("username");
-            User currentUser = userService.selectByPhone(phone.asString());
-            log.info("登录后的用户信息：{}", currentUser.toString());
+            Claim number = JWT.decode(headerToken).getClaim("username");
+            User currentUser = userService.selectByNumber(number.asString());
+            log.info("登录后的用户信息：{}", JSON.toJSONString(currentUser));
+
             arg0.setAttribute(LoginConstant.CURRENT_USER, JSON.toJSONString(currentUser));
             return true;
         }

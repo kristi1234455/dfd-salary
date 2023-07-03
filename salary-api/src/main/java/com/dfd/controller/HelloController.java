@@ -45,4 +45,12 @@ public class HelloController {
         System.out.println(token);
         return token;
     }
+
+    @RequestMapping("token/generate")
+    @BusLog(descrip = "通过工号和密码生成token")
+    public String tokenGenerate(String number, String password){
+        String token = TokenUtil.token(number,password);
+        System.out.println(token);
+        return token;
+    }
 }

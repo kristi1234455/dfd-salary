@@ -25,7 +25,7 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @ApiOperation(value = "根据登录名字获取所有项目信息", httpMethod = "POST")
+    @ApiOperation(value = "根据登录用户获取项目信息", httpMethod = "POST")
     @PostMapping("/info")
     public DFDResult<PageResult<ItemInfoVO>> info(@RequestBody @Valid ItemInfoQueryDTO itemInfoQueryDTO) {
         return DFDResult.sucess(itemService.queryItemList(itemInfoQueryDTO));

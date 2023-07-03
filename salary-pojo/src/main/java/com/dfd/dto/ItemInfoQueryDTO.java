@@ -1,5 +1,7 @@
 package com.dfd.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.dfd.utils.Query;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,6 +24,12 @@ import java.io.Serializable;
 @Builder
 @ApiModel
 public class ItemInfoQueryDTO extends Query implements Serializable {
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "登录用户uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
 
     /**
      * 项目名称

@@ -46,6 +46,11 @@ public class User implements Serializable {
      */
     @ApiModelProperty(value = "手机号", name = "phone")
     private String phone;
+    /**
+     * 工号
+     */
+    @ApiModelProperty(value = "工号",name = "number")
+    private String number;
 
     /**
      * 用户昵称
