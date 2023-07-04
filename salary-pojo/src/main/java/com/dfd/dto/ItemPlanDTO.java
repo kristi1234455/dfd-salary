@@ -21,6 +21,12 @@ import java.io.Serializable;
 public class ItemPlanDTO implements Serializable {
 
     private static final long serialVersionUID = 2517652235173564026L;
+
+    /**
+     * 项目人员表uid
+     */
+    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    private String itemMemberUid;
     /**
      * 工号
      */

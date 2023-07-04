@@ -1,6 +1,7 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,6 +16,7 @@ import com.dfd.entity.User;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemPlanMapper;
 import com.dfd.mapper.UserMapper;
+import com.dfd.service.ItemPlanService;
 import com.dfd.service.ItemService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
@@ -28,10 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.beans.Transient;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author yy
@@ -47,7 +50,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     private UserMapper userMapper;
 
     @Autowired
-    private ItemPlanMapper itemPlanMapper;
+    private ItemPlanService itemPlanService;
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -89,18 +92,36 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User currentUser = UserRequest.getCurrentUser();
         Item item = new Item();
         BeanUtil.copyProperties(itemDTO,item);
-        item.setUid(UUIDUtil.getUUID32Bits())
+        String uuid = UUIDUtil.getUUID32Bits();
+        item.setUid(uuid)
                 .setCreatedBy(currentUser.getPhone())
                 .setUpdatedBy(currentUser.getPhone())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-        boolean b = this.saveOrUpdate(item);
+        boolean var1 = this.saveOrUpdate(item);
 
-        ItemPlan itemPlan = new ItemPlan();
-        //批量更新
-        if (!b) {
-            throw new BusinessException("EPC项目数据保存失败");
+        List<ItemPlanDTO> itemPlanDTOList = itemDTO.getItemPlanDTOList();
+        if(CollectionUtil.isNotEmpty(itemPlanDTOList)){
+            List<ItemPlan> collect = itemPlanDTOList.stream().map(itemPlanDTO -> {
+                ItemPlan itemPlan = new ItemPlan();
+                BeanUtils.copyProperties(itemPlanDTO, itemPlan);
+                itemPlan.setUid(UUIDUtil.getUUID32Bits())
+                        .setItemUid(uuid)
+                        .setCreatedBy(currentUser.getPhone())
+                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                return itemPlan;
+            }).collect(Collectors.toList());
+            boolean var2 = itemPlanService.saveBatch(collect);
+            //批量更新
+            if (!var1 || !var2) {
+                throw new BusinessException("EPC项目数据保存失败");
+            }
+        }else{
+            throw new BusinessException("阶段策划系数为空，请添加相关数据");
         }
     }
 

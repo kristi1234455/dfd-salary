@@ -104,14 +104,14 @@ public class ItemPlan {
     /**
      * 更新人
      */
-    @ApiModelProperty(value = "更新人", name = "updateBy")
-    private String updateBy;
+    @ApiModelProperty(value = "更新人", name = "updatedBy")
+    private String updatedBy;
 
     /**
      * 更新时间
      */
-    @ApiModelProperty(value = "更新时间", name = "updateTime")
-    private Date updateTime;
+    @ApiModelProperty(value = "更新时间", name = "updatedTime")
+    private Date updatedTime;
 
     /**
      * 是否删除：0:未删除；其他时间，删除

@@ -73,8 +73,8 @@ public class ItemDTO implements Serializable {
     /**
      * 阶段策划系数对象
      */
-    @ApiModelProperty(value = "阶段策划系数对象", name = "planCoefficient")
-    private List<ItemPlanDTO> planCoefficient;
+    @ApiModelProperty(value = "阶段策划系数对象", name = "itemPlanDTOList")
+    private List<ItemPlanDTO> itemPlanDTOList;
 
     /**
      * 项目管理所
