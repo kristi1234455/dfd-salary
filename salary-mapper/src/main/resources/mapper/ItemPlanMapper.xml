@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.ItemPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.ItemPlan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="design_coefficient" property="designCoefficient" jdbcType="DECIMAL" />
+    <result column="purchase_coefficient" property="purchaseCoefficient" jdbcType="DECIMAL" />
+    <result column="manufacture_coefficient" property="manufactureCoefficient" jdbcType="DECIMAL" />
+    <result column="installation_coefficient" property="installationCoefficient" jdbcType="DECIMAL" />
+    <result column="inspection_coefficient" property="inspectionCoefficient" jdbcType="DECIMAL" />
+    <result column="final_coefficient" property="finalCoefficient" jdbcType="DECIMAL" />
+    <result column="guarantee_coefficient" property="guaranteeCoefficient" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>

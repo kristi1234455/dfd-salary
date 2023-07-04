@@ -35,14 +35,12 @@ public class AttendanceMonInfoDTO extends Query implements Serializable {
     /**
      * 年
      */
-    @ApiModelProperty(value = "年", name = "year", required = true)
-    @NotNull(message = "年不能为空")
+    @ApiModelProperty(value = "年", name = "year")
     private Integer year;
 
     /**
      * 月
      */
-    @ApiModelProperty(value = "月", name = "month", required = true)
-    @NotNull(message = "月不能为空")
+    @ApiModelProperty(value = "月", name = "month")
     private Integer month;
 }

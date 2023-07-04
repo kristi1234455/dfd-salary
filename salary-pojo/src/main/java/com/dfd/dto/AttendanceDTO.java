@@ -26,6 +26,12 @@ public class AttendanceDTO implements Serializable {
     private static final long serialVersionUID = 5973207165741597324L;
 
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
+    /**
      * 项目uid
      */
     @ApiModelProperty(value = "项目uid", name = "itemUid", required = true)
@@ -42,15 +48,13 @@ public class AttendanceDTO implements Serializable {
     /**
      * 工号
      */
-    @ApiModelProperty(value = "工号", name = "number", required = true)
-    @NotBlank(message = "工号不能为空")
+    @ApiModelProperty(value = "工号", name = "number")
     private String number;
 
     /**
      * 名字
      */
-    @ApiModelProperty(value = "名字", name = "name", required = true)
-    @NotBlank(message = "名字不能为空")
+    @ApiModelProperty(value = "名字", name = "name")
     private String name;
 
     /**

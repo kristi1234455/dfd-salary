@@ -26,13 +26,6 @@ public class ScientificItemDTO implements Serializable {
     private static final long serialVersionUID = 2281771843044746872L;
 
     /**
-     * itemUid
-     */
-    @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
-    @NotBlank(message = "项目uid不能为空")
-    private String itemUid;
-
-    /**
      * 项目名称
      */
     @ApiModelProperty(value = "项目名称", name = "itemName", required = true)

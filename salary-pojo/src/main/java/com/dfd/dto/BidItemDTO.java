@@ -30,7 +30,8 @@ public class BidItemDTO implements Serializable {
     /**
      * 项目名称
      */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
+    @ApiModelProperty(value = "项目名称", name = "itemName", required = true)
+    @NotBlank(message = "项目名称不能为空")
     private String itemName;
 
     /**

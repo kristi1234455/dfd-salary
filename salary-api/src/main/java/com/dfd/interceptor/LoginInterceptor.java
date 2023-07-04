@@ -63,7 +63,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             resultWriter.close();
             return false;
         }
-        // TODO: 2023/6/5  :开启；根据token获取用户名，存放在redis中，保存时间2个小时，否则重新登录
         log.info("token：{}",headerToken);
         if (!TokenUtil.verify(headerToken)) {
             // 未登录跳转到登录界面

@@ -1,10 +1,21 @@
 package com.dfd.aspect;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Aspect
 @Component
@@ -18,6 +29,12 @@ public class ServiceLogAspect {
     public Object recordTime(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info("==============================开始执行:{}.{}==============================",joinPoint.getTarget().getClass().getName(),joinPoint.getSignature().getName());
         long startTime = System.currentTimeMillis();
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        log.info("请求地址:{}", Optional.ofNullable(request.getRequestURI().toString()).orElse(null));
+        log.info("请求方式:{}",request.getMethod());
+        log.info("请求类方法:{}",joinPoint.getSignature());
+        log.info("请求类方法参数:{}", JSONObject.toJSONString(filterArgs(joinPoint.getArgs())));
         Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         long takeTime = endTime - startTime;
@@ -29,5 +46,11 @@ public class ServiceLogAspect {
             log.info("==============================执行结束，耗时：{}毫秒==============================", takeTime);
         }
         return result;
+    }
+
+    private List<Object> filterArgs(Object[] objects) {
+        return Arrays.stream(objects).filter(obj -> !(obj instanceof MultipartFile)
+                && !(obj instanceof HttpServletResponse)
+                && !(obj instanceof HttpServletRequest)).collect(Collectors.toList());
     }
 }

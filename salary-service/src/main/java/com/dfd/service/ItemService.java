@@ -1,13 +1,10 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.BidItemDTO;
-import com.dfd.dto.ItemDTO;
-import com.dfd.dto.ItemInfoQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.Item;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.ItemInfoVO;
-import com.dfd.dto.ScientificItemDTO;
 
 import java.util.List;
 
@@ -42,4 +39,6 @@ public interface ItemService extends IService<Item> {
      * @return
      */
     void saveScientific(ScientificItemDTO scientificVO);
+
+    void updateEpc(ItemUpDTO itemDTO);
 }

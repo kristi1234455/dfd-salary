@@ -32,7 +32,7 @@ public class AttendanceInfoVO implements Serializable {
     /**
      * itemUid
      */
-    @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
+    @ApiModelProperty(value = "itemUid", name = "itemUid")
     private String itemUid;
 
     /**
@@ -44,8 +44,7 @@ public class AttendanceInfoVO implements Serializable {
     /**
      * itemMemberUid
      */
-    @ApiModelProperty(value = "itemMemberUid", name = "itemMemberUid",required = true)
-    @NotBlank(message = "项目人员uid不能为空")
+    @ApiModelProperty(value = "itemMemberUid", name = "itemMemberUid")
     private String itemMemberUid;
 
     /**

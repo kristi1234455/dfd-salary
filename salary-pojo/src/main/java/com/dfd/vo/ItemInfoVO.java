@@ -54,12 +54,13 @@ public class ItemInfoVO implements Serializable {
     @ApiModelProperty(value = "投标经理", name = "bidDirector")
     private String bidDirector;
 
+//没有数据
     /**
      * 投标：投标工资
      */
     @ApiModelProperty(value = "投标工资", name = "bidSalary")
     private BigDecimal bidSalary;
-
+//没有数据
     /**
      * 投标：已用投标工资
      */
@@ -71,7 +72,7 @@ public class ItemInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "技术管理费", name = "technicalFee")
     private BigDecimal technicalFee;
-
+//没有数据
     /**
      * ECP：已用技术管理费
      */
@@ -81,9 +82,9 @@ public class ItemInfoVO implements Serializable {
     /**
      * ECP：项目工资
      */
-    @ApiModelProperty(value = "项目工资", name = "itemTotalSalary")
-    private BigDecimal itemTotalSalary;
-
+    @ApiModelProperty(value = "项目工资", name = "itemSalary")
+    private BigDecimal itemSalary;
+//没有数据
     /**
      * ECP：已用项目工资
      */
@@ -102,12 +103,13 @@ public class ItemInfoVO implements Serializable {
     @ApiModelProperty(value = "设计经理", name = "designManager")
     private String designManager;
 
+//没有数据
     /**
      * 科研：科研工资
      */
     @ApiModelProperty(value = "科研工资", name = "scientificSalary")
     private BigDecimal scientificSalary;
-
+//没有数据
     /**
      * 科研：已用科研工资
      */

@@ -41,15 +41,13 @@ public class AttendanceDayDTO implements Serializable {
     /**
      * 工号
      */
-    @ApiModelProperty(value = "工号", name = "number", required = true)
-    @NotBlank(message = "工号不能为空")
+    @ApiModelProperty(value = "工号", name = "number")
     private String number;
 
     /**
      * 名字
      */
-    @ApiModelProperty(value = "名字", name = "name", required = true)
-    @NotBlank(message = "名字不能为空")
+    @ApiModelProperty(value = "名字", name = "name")
     private String name;
 
     /**

@@ -38,6 +38,20 @@ public class ItemController {
         return DFDResult.sucess();
     }
 
+    @ApiOperation(value = "更新EPC项目信息", httpMethod = "POST")
+    @PostMapping("/update/epc")
+    public DFDResult updateEpc(@RequestBody @Valid ItemUpDTO itemDTO){
+        itemService.updateEpc(itemDTO);
+        return DFDResult.sucess();
+    }
+
+//    @ApiOperation(value = "删除EPC项目信息", httpMethod = "POST")
+//    @PostMapping("/delete/epc")
+//    public DFDResult deleteEpc(@RequestBody @Valid ItemDeDTO itemDTO){
+//        itemService.deleteEpc(itemDTO);
+//        return DFDResult.sucess();
+//    }
+
     @ApiOperation(value = "保存投标项目信息", httpMethod = "POST")
     @PostMapping("/save/bid")
     public DFDResult saveBid(@RequestBody @Valid BidItemDTO bidVO){
