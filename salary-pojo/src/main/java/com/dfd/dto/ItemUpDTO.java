@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ public class ItemUpDTO implements Serializable {
      * 项目uid
      */
     @ApiModelProperty(value = "项目uid",name = "uid", required = true)
-    @NotNull(message = "项目uid不能为空")
+    @NotBlank(message = "项目uid不能为空")
     private String uid;
 
     /**
@@ -120,8 +121,8 @@ public class ItemUpDTO implements Serializable {
     /**
      * 阶段策划系数对象
      */
-    @ApiModelProperty(value = "阶段策划系数对象", name = "planCoefficient")
-    private List<ItemPlanDTO> planCoefficient;
+    @ApiModelProperty(value = "阶段策划系数对象", name = "itemPlanDTOList")
+    private List<ItemPlanDTO> itemPlanDTOList;
 
 
 }

@@ -77,7 +77,7 @@ public class ItemPlan {
     @ApiModelProperty(value = "终验收阶段系数", name = "finalCoefficient")
     private Integer finalCoefficient;
 
-    /**
+    /**+
      * 质保阶段系数
      */
     @ApiModelProperty(value = "质保阶段系数", name = "guaranteeCoefficient")

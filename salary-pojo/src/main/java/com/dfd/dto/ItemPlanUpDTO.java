@@ -9,43 +9,35 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
-/**
- * @author yy
- * @date 2023/6/7 14:19
- */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @ApiModel
-public class ItemPlanDTO implements Serializable {
-
-    private static final long serialVersionUID = 2517652235173564026L;
+public class ItemPlanUpDTO implements Serializable {
+    private static final long serialVersionUID = 1535395190750036262L;
 
     /**
-     * 主键
+     * uid
      */
-    @ApiModelProperty(value = "主键", name = "id", required = true)
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
     @NotNull(message = "主键不能为空")
-    private Integer id;
+    private String uid;
 
+//    /**
+//     * 项目表uid
+//     */
+//    @ApiModelProperty(value = "项目表uid", name = "itemUid")
+//    private String itemUid;
+//
 //    /**
 //     * 项目人员表uid
 //     */
 //    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
 //    private String itemMemberUid;
-//    /**
-//     * 工号
-//     */
-//    @ApiModelProperty(value = "工号", name = "number")
-//    private String number;
-//
-//    /**
-//     * 姓名
-//     */
-//    @ApiModelProperty(value = "姓名", name = "name")
-//    private String name;
 
     /**
      * 设计阶段系数
@@ -83,9 +75,11 @@ public class ItemPlanDTO implements Serializable {
     @ApiModelProperty(value = "终验收阶段系数", name = "finalCoefficient")
     private Integer finalCoefficient;
 
-    /**
+    /**+
      * 质保阶段系数
      */
     @ApiModelProperty(value = "质保阶段系数", name = "guaranteeCoefficient")
     private Integer guaranteeCoefficient;
+
+
 }

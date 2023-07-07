@@ -41,4 +41,10 @@ public interface ItemService extends IService<Item> {
     void saveScientific(ScientificItemDTO scientificVO);
 
     void updateEpc(ItemUpDTO itemDTO);
+
+    void updateEpcItemPlan(ItemPlanUpDTO itemPlanUpDTO);
+
+    void deleteEpc(ItemDelDTO itemDTO);
+
+    void deleteEpcItemPlan(ItemPlanDelDTO itemPlanDelDTO);
 }

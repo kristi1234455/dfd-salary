@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dfd.mapper.ItemMemberMapper" >
   <resultMap id="BaseResultMap" type="com.dfd.entity.ItemMember" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />

@@ -9,10 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
-import com.dfd.entity.Item;
-import com.dfd.entity.ItemPlan;
-import com.dfd.entity.ItemSalary;
-import com.dfd.entity.User;
+import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemPlanMapper;
 import com.dfd.mapper.UserMapper;
@@ -149,8 +146,73 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(Item:: getUpdatedBy, currentUser.getPhone())
                 .set(Item:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
-        if (!update) {
-            throw new BusinessException("项目工资更新失败!");
+        List<ItemPlanDTO> itemPlanDTOList = itemDTO.getItemPlanDTOList();
+        List<ItemPlan> list = new ArrayList<>();
+        if(CollectionUtil.isNotEmpty(itemPlanDTOList)) {
+            itemPlanDTOList.stream().forEach(itemPlanDTO -> {
+                ItemPlan itemPlan = new ItemPlan();
+                BeanUtil.copyProperties(itemPlanDTO, itemPlan);
+                itemPlan.setUpdatedBy(currentUser.getPhone())
+                        .setUpdatedTime(new Date());
+                list.add(itemPlan);
+            });
+            boolean b = itemPlanService.updateBatchById(list);
+            if (!update || !b) {
+                throw new BusinessException("项目工资更新失败!");
+            }
+        }
+
+    }
+
+    @Override
+    public void updateEpcItemPlan(ItemPlanUpDTO itemPlanUpDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<ItemPlan> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(StringUtils.isNotBlank(itemPlanUpDTO.getUid()), ItemPlan:: getUid, itemPlanUpDTO.getUid())
+                .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set((itemPlanUpDTO.getDesignCoefficient()!=null), ItemPlan:: getDesignCoefficient, itemPlanUpDTO.getDesignCoefficient())
+                .set((itemPlanUpDTO.getPurchaseCoefficient()!=null), ItemPlan:: getPurchaseCoefficient, itemPlanUpDTO.getPurchaseCoefficient())
+                .set((itemPlanUpDTO.getManufactureCoefficient()!=null), ItemPlan:: getManufactureCoefficient, itemPlanUpDTO.getManufactureCoefficient())
+                .set((itemPlanUpDTO.getInstallationCoefficient()!=null), ItemPlan:: getInstallationCoefficient, itemPlanUpDTO.getInstallationCoefficient())
+                .set((itemPlanUpDTO.getInspectionCoefficient()!=null), ItemPlan:: getInspectionCoefficient, itemPlanUpDTO.getInspectionCoefficient())
+                .set((itemPlanUpDTO.getFinalCoefficient()!=null), ItemPlan:: getFinalCoefficient, itemPlanUpDTO.getFinalCoefficient())
+                .set((itemPlanUpDTO.getGuaranteeCoefficient()!=null), ItemPlan:: getGuaranteeCoefficient, itemPlanUpDTO.getGuaranteeCoefficient())
+                .set(ItemPlan:: getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan:: getUpdatedTime, new Date());
+        boolean update = itemPlanService.update(wrapper);
+        if(!update){
+            throw new BusinessException("阶段策划系数更新失败!");
+        }
+    }
+
+    @Override
+    public void deleteEpc(ItemDelDTO itemDelDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Item> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), Item:: getUid, itemDelDTO.getUid())
+                .set(Item:: getUpdatedBy, currentUser.getPhone())
+                .set(Item:: getIsDeleted, System.currentTimeMillis());
+        boolean var = this.update(wrapper);
+        LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), ItemPlan:: getItemUid, itemDelDTO.getUid())
+                .set(ItemPlan:: getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan:: getIsDeleted, System.currentTimeMillis());
+        boolean var1 = itemPlanService.update(updateWrapper);
+        if(!var || !var1){
+            throw new BusinessException("EPC项目删除失败!");
+        }
+    }
+
+    @Override
+    public void deleteEpcItemPlan(ItemPlanDelDTO itemPlanDelDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(StringUtils.isNotBlank(itemPlanDelDTO.getUid()), ItemPlan:: getUid, itemPlanDelDTO.getUid())
+                .set(ItemPlan:: getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan:: getIsDeleted, System.currentTimeMillis());
+        boolean var = itemPlanService.update(updateWrapper);
+        if(!var){
+            throw new BusinessException("EPC项目策划系数删除失败!");
         }
     }
 
