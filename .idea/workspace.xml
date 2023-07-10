@@ -4,94 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="EPC项目业务逻辑开发">
-      <change afterPath="$PROJECT_DIR$/salary-mapper/src/main/java/com/dfd/mapper/MemberMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/MemberMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidItemDelDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidItemUpdateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ItemMemberDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/Member.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/MemberService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/MemberServiceImpl.java" afterDir="false" />
+    <list default="true" id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="项目成员表和基本成员表数据结构更改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-api/src/main/java/com/dfd/controller/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-api/src/main/java/com/dfd/controller/ItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-api/target/classes/com/dfd/controller/ItemController.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-api/target/classes/com/dfd/controller/ItemController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/java/com/dfd/mapper/AttendanceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/java/com/dfd/mapper/AttendanceMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/java/com/dfd/mapper/ItemMemberMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/java/com/dfd/mapper/ItemMemberMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/AttendanceMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/AttendanceMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/BidSalaryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/BidSalaryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/DesignSalaryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/DesignSalaryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ItemMemberMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ItemMemberMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ItemSalaryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ItemSalaryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ScientificSalaryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/ScientificSalaryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/SubsidyMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/SubsidyMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/TotalSalaryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper/TotalSalaryMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/target/classes/com/dfd/mapper/AttendanceMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/target/classes/com/dfd/mapper/AttendanceMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/target/classes/mapper/AttendanceMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/target/classes/mapper/AttendanceMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-mapper/target/classes/mapper/ItemMemberMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/salary-mapper/target/classes/mapper/ItemMemberMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/AttendanceDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/AttendanceDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/AttendanceDataDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/AttendanceDataDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidItemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidSalaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidSalaryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidSalaryInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/BidSalaryInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/DesignSalaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/DesignSalaryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/DesignSalaryInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/DesignSalaryInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ItemSalaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ItemSalaryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ItemSalaryInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ItemSalaryInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/PerformanceSalaryInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/PerformanceSalaryInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ScientificSalaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/ScientificSalaryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SpecialInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SpecialInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyHeatingDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyHeatingDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyHeatingInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyHeatingInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyNightDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyNightDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyNightInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyNightInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOutDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOutInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOutInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOvertimeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOvertimeDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOvertimeInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/dto/SubsidyOvertimeInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/BidSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/BidSalary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/DesignSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/DesignSalary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ItemMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ItemMember.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ItemSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ItemSalary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ScientificSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/ScientificSalary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/Subsidy.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/Subsidy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/TotalSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/entity/TotalSalary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/DesignSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/DesignSalaryInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ItemSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ItemSalaryInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/PerformanceSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/PerformanceSalaryInfoVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ScientificSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ScientificSalaryInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyHeatingInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyHeatingInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyNightInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyNightInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyOutInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyOutInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyOvertimeInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SubsidyOvertimeInfoVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/AttendanceDTO$AttendanceDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/AttendanceDTO$AttendanceDTOBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/AttendanceDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/AttendanceDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/BidItemDTO$BidItemDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/BidItemDTO$BidItemDTOBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/BidItemDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/dto/BidItemDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/entity/ItemMember$ItemMemberBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/entity/ItemMember$ItemMemberBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/entity/ItemMember.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/target/classes/com/dfd/entity/ItemMember.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/ItemMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/ItemMemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/ItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/ItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/AttendanceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/AttendanceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/BidSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/BidSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/DesignSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/DesignSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemMemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemMemberServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/PerformanceSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/PerformanceSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ScientificSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ScientificSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/SubsidyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/SubsidyServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/TotalSalaryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/TotalSalaryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/ItemMemberService.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/ItemMemberService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/ItemService.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/ItemService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/AttendanceServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/AttendanceServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/BidSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/BidSalaryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/DesignSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/DesignSalaryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemMemberServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemMemberServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemSalaryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ItemServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/PerformanceSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/PerformanceSalaryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ScientificSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/ScientificSalaryServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/SubsidyServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/SubsidyServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/TotalSalaryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/target/classes/com/dfd/service/impl/TotalSalaryServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SpecialInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SpecialInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemPlanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemPlanServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,7 +186,7 @@
       <workItem from="1688612202891" duration="18533000" />
       <workItem from="1688721383244" duration="1000000" />
       <workItem from="1688723461185" duration="1774000" />
-      <workItem from="1688725297549" duration="27308000" />
+      <workItem from="1688725297549" duration="28138000" />
     </task>
     <task id="LOCAL-00001" summary="EPC项目业务逻辑开发">
       <created>1688719771042</created>
@@ -276,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688719771042</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="项目成员表和基本成员表数据结构更改">
+      <created>1688982697730</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688982697731</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,7 +233,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="EPC项目业务逻辑开发" />
-    <option name="LAST_COMMIT_MESSAGE" value="EPC项目业务逻辑开发" />
+    <MESSAGE value="项目成员表和基本成员表数据结构更改" />
+    <option name="LAST_COMMIT_MESSAGE" value="项目成员表和基本成员表数据结构更改" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
