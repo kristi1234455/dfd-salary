@@ -141,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User selectByNumber(String number) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotBlank(number), User:: getPhone, number)
+        queryWrapper.eq(StringUtils.isNotBlank(number), User:: getNumber, number)
                 .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         return baseMapper.selectOne(queryWrapper);
     }
