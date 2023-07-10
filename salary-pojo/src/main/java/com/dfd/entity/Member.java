@@ -1,9 +1,21 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
+@TableName("member")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Accessors(chain = true)
 public class Member {
     /**
      * 主键
@@ -90,5 +102,5 @@ public class Member {
     private String isDeleted;
 
 
-    
+
 }
