@@ -23,9 +23,16 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @ApiModel
-public class BidItemDTO implements Serializable {
+public class BidItemUpdateDTO implements Serializable {
 
     private static final long serialVersionUID = -6798444832590243255L;
+
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    @NotBlank(message = "项目uid不能为空")
+    private String uid;
 
     /**
      * 项目名称
@@ -45,7 +52,7 @@ public class BidItemDTO implements Serializable {
      * 技术管理费
      */
     @ApiModelProperty(value = "技术管理费", name = "technologyManagerFee")
-    private BigDecimal technologyManagerFee;
+    private BigDecimal technicalFee;
 
     /**
      * 项目工资
@@ -57,7 +64,7 @@ public class BidItemDTO implements Serializable {
      * 项目绩效
      */
     @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
-    private BigDecimal performanceSalary;
+    private BigDecimal itemPerformance;
 
     /**
      * 投标经理

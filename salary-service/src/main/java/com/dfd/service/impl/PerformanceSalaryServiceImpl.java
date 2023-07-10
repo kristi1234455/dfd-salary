@@ -13,14 +13,14 @@ import com.dfd.dto.PerformanceSalaryDelDTO;
 import com.dfd.dto.PerformanceSalaryInfoDTO;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
-import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.mapper.PerformanceSalaryMapper;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.PerformanceSalaryService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
-import com.dfd.vo.DesignSalaryInfoVO;
 import com.dfd.vo.PerformanceSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +38,16 @@ import java.util.stream.Collectors;
 public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryMapper, PerformanceSalary> implements PerformanceSalaryService {
 
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemService itemService;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
+    private MemberService memberService;
 
     @Override
     public PageResult<PerformanceSalaryInfoVO> info(PerformanceSalaryInfoDTO performanceSalaryInfoDTO) {
         LambdaQueryWrapper<PerformanceSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(performanceSalaryInfoDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryInfoDTO.getItemUid())
-                .eq(performanceSalaryInfoDTO.getDeclareTime() !=null, PerformanceSalary:: getDeclareTime, performanceSalaryInfoDTO.getDeclareTime())
+                .likeRight(performanceSalaryInfoDTO.getDeclareTime() !=null, PerformanceSalary:: getDeclareTime, performanceSalaryInfoDTO.getDeclareTime())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(PerformanceSalary :: getCreatedTime);
 
@@ -62,14 +62,13 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-        List<String> itemIdList = list.stream().map(PerformanceSalary::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
-        List<String> itemMemIdList = list.stream().map(PerformanceSalary::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        List<String> itemUIdList = list.stream().map(PerformanceSalary::getItemUid).collect(Collectors.toList());
+        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+
+        List<String> memUIdList = list.stream().map(PerformanceSalary::getItemMemberUid).collect(Collectors.toList());
+        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<PerformanceSalaryInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){

@@ -1,6 +1,7 @@
 package com.dfd.dto;
 
-import com.dfd.utils.Query;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,30 +10,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author yy
- * @date 2023/6/9 9:35
+ * @date 2023/6/8 16:41
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @ApiModel
-public class BidSalaryInfoDTO extends Query implements Serializable {
+public class ItemMemberDTO implements Serializable {
 
     /**
-     * itemUid
+     * 项目人员主键
      */
-    @ApiModelProperty(value = "itemUid", name = "itemUid", required = true)
-    @NotBlank(message = "项目uid不能为空")
-    private String itemUid;
+    @ApiModelProperty(value = "项目人员主键",name = "id")
+    @NotNull(message = "项目人员主键不能为空")
+    private Integer memberUid;
 
-    /**
-     * 申报时间
-     */
-    @ApiModelProperty(value = "申报时间", name = "declareTime")
-    private String declareTime;
+
 }

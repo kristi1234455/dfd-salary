@@ -108,7 +108,7 @@ public class BidSalary {
     /**
      * 申报时间
      */
-    private Date declareTime;
+    private String declareTime;
 
     /**
      * 创建人

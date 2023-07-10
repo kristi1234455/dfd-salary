@@ -68,8 +68,22 @@ public class ItemController {
 
     @ApiOperation(value = "保存投标项目信息", httpMethod = "POST")
     @PostMapping("/save/bid")
-    public DFDResult saveBid(@RequestBody @Valid BidItemDTO bidVO) {
-        itemService.saveBid(bidVO);
+    public DFDResult saveBid(@RequestBody @Valid BidItemDTO bidItemDTO) {
+        itemService.saveBid(bidItemDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "更新投标项目信息", httpMethod = "POST")
+    @PostMapping("/update/bid")
+    public DFDResult updateBid(@RequestBody @Valid BidItemUpdateDTO bidItemDTO) {
+        itemService.updateBid(bidItemDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "删除投标项目信息", httpMethod = "POST")
+    @DeleteMapping("/delete/bid")
+    public DFDResult deleteBid(@RequestBody @Valid BidItemDelDTO bidItemDTO) {
+        itemService.deleteBid(bidItemDTO);
         return DFDResult.sucess();
     }
 

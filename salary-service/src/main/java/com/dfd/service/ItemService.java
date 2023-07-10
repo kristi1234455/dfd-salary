@@ -7,6 +7,7 @@ import com.dfd.utils.PageResult;
 import com.dfd.vo.ItemInfoVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yy
@@ -26,20 +27,6 @@ public interface ItemService extends IService<Item> {
      */
     void saveEpc(ItemDTO itemDTO);
 
-    /**
-     * 保存投标项目信息
-     * @param bidVO
-     * @return
-     */
-    void saveBid(BidItemDTO bidVO);
-
-    /**
-     * 保存科研项目信息
-     * @param scientificVO
-     * @return
-     */
-    void saveScientific(ScientificItemDTO scientificVO);
-
     void updateEpc(ItemUpDTO itemDTO);
 
     void updateEpcItemPlan(ItemPlanUpDTO itemPlanUpDTO);
@@ -47,4 +34,23 @@ public interface ItemService extends IService<Item> {
     void deleteEpc(ItemDelDTO itemDTO);
 
     void deleteEpcItemPlan(ItemPlanDelDTO itemPlanDelDTO);
+
+    /**
+     * 保存投标项目信息
+     * @param bidItemDTO
+     * @return
+     */
+    void saveBid(BidItemDTO bidItemDTO);
+
+    void updateBid(BidItemUpdateDTO bidItemDTO);
+
+    void deleteBid(BidItemDelDTO bidItemDTO);
+    /**
+     * 保存科研项目信息
+     * @param scientificVO
+     * @return
+     */
+    void saveScientific(ScientificItemDTO scientificVO);
+
+    Map<Integer, String> queryNameByUids(List<String> uids);
 }

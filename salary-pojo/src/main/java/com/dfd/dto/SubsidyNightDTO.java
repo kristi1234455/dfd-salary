@@ -102,5 +102,5 @@ public class SubsidyNightDTO implements Serializable {
      */
     @ApiModelProperty(value = "夜班申报时间", name = "nightDeclareTime",required = true)
     @NotBlank(message = "夜班申报时间不能为空")
-    private Date nightDeclareTime;
+    private String nightDeclareTime;
 }

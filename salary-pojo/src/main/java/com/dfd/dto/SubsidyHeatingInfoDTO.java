@@ -39,5 +39,5 @@ public class SubsidyHeatingInfoDTO extends Query implements Serializable {
      * 高温申报时间
      */
     @ApiModelProperty(value = "高温申报时间", name = "heatingDeclareTime")
-    private Date heatingDeclareTime;
+    private String heatingDeclareTime;
 }

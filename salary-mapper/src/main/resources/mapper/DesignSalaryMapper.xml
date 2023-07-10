@@ -18,7 +18,7 @@
     <result column="subtotal" property="subtotal" jdbcType="DECIMAL" />
     <result column="ratio_census" property="ratioCensus" jdbcType="VARCHAR" />
     <result column="total" property="total" jdbcType="DECIMAL" />
-    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="declare_time" property="declareTime" jdbcType="VARCHAR" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />

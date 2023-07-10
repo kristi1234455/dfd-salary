@@ -39,4 +39,12 @@ public interface ItemMemberService extends IService<ItemMember> {
 
     void delete(ItemMemberDelDTO itemMemberDelDTO);
 
+
+    /**
+     * 根据itemUid更新项目下的项目成员
+     * @param itemUid
+     * @param nitemIds
+     */
+    void updateMembersByItemId(String itemUid, List<Integer> nitemIds);
+
 }

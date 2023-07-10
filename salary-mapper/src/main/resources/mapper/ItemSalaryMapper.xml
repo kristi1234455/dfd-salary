@@ -14,7 +14,7 @@
     <result column="declare_factor" property="declareFactor" jdbcType="VARCHAR" />
     <result column="declare_grant" property="declareGrant" jdbcType="DECIMAL" />
     <result column="item_stage" property="itemStage" jdbcType="VARCHAR" />
-    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="declare_time" property="declareTime" jdbcType="VARCHAR" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />

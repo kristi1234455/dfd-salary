@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface AttendanceMapper extends DfdMapper<Attendance> {
-    void updateByItemUid(@Param("list") List<Attendance> list);
+    Integer updateByItemUid(@Param("list") List<Attendance> list);
 }

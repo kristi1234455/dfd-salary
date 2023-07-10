@@ -13,15 +13,15 @@ import com.dfd.dto.ItemSalaryDelDTO;
 import com.dfd.dto.ItemSalaryInfoDTO;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
-import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.mapper.ItemSalaryMapper;
 import com.dfd.service.ItemSalaryService;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.ItemSalaryInfoVO;
-import com.dfd.vo.PerformanceSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,16 +37,15 @@ import java.util.stream.Collectors;
 @Service
 public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSalary> implements ItemSalaryService {
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemService itemService;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
-
+    private MemberService memberService;
     @Override
     public PageResult<ItemSalaryInfoVO> info(ItemSalaryInfoDTO itemSalaryInfoDTO) {
         LambdaQueryWrapper<ItemSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(itemSalaryInfoDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryInfoDTO.getItemUid())
-                .eq(itemSalaryInfoDTO.getDeclareTime() !=null, ItemSalary:: getDeclareTime, itemSalaryInfoDTO.getDeclareTime())
+                .likeRight(itemSalaryInfoDTO.getDeclareTime() !=null, ItemSalary:: getDeclareTime, itemSalaryInfoDTO.getDeclareTime())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ItemSalary :: getCreatedTime);
 
@@ -61,14 +60,13 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-        List<String> itemIdList = list.stream().map(ItemSalary::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
-        List<String> itemMemIdList = list.stream().map(ItemSalary::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        List<String> itemUIdList = list.stream().map(ItemSalary::getItemUid).collect(Collectors.toList());
+        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+
+        List<String> memUIdList = list.stream().map(ItemSalary::getItemMemberUid).collect(Collectors.toList());
+        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<ItemSalaryInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){

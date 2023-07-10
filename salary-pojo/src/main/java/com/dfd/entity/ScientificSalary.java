@@ -118,7 +118,7 @@ public class ScientificSalary {
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间",name = "declareTime")
-    private Date declareTime;
+    private String declareTime;
 
     /**
      * 备注

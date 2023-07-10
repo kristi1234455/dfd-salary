@@ -10,27 +10,27 @@
     <result column="out_days" property="outDays" jdbcType="INTEGER" />
     <result column="out_subsidy" property="outSubsidy" jdbcType="DECIMAL" />
     <result column="out_remarks" property="outRemarks" jdbcType="VARCHAR" />
-    <result column="out_declare_time" property="outDeclareTime" jdbcType="TIMESTAMP" />
+    <result column="out_declare_time" property="outDeclareTime" jdbcType="VARCHAR" />
     <result column="night_duty" property="nightDuty" jdbcType="VARCHAR" />
     <result column="night_work_content" property="nightWorkContent" jdbcType="VARCHAR" />
     <result column="night_subsidy_standard" property="nightSubsidyStandard" jdbcType="DECIMAL" />
     <result column="night_days" property="nightDays" jdbcType="INTEGER" />
     <result column="night_subsidy" property="nightSubsidy" jdbcType="DECIMAL" />
     <result column="night_remarks" property="nightRemarks" jdbcType="VARCHAR" />
-    <result column="night_declare_time" property="nightDeclareTime" jdbcType="TIMESTAMP" />
+    <result column="night_declare_time" property="nightDeclareTime" jdbcType="VARCHAR" />
     <result column="overtime" property="overtime" jdbcType="VARCHAR" />
     <result column="overtime_work_content" property="overtimeWorkContent" jdbcType="VARCHAR" />
     <result column="overtime_subsidy_standard" property="overtimeSubsidyStandard" jdbcType="DECIMAL" />
     <result column="overtime_days" property="overtimeDays" jdbcType="INTEGER" />
     <result column="overtime_subsidy" property="overtimeSubsidy" jdbcType="DECIMAL" />
     <result column="overtime_remarks" property="overtimeRemarks" jdbcType="TIMESTAMP" />
-    <result column="overtime_declare_time" property="overtimeDeclareTime" jdbcType="TIMESTAMP" />
+    <result column="overtime_declare_time" property="overtimeDeclareTime" jdbcType="VARCHAR" />
     <result column="is_heating_grant" property="isHeatingGrant" jdbcType="INTEGER" />
     <result column="heating_subsidy_standart" property="heatingSubsidyStandard" jdbcType="DECIMAL" />
     <result column="heating_days" property="heatingDays" jdbcType="INTEGER" />
     <result column="heating_subsidy" property="heatingSubsidy" jdbcType="DECIMAL" />
     <result column="heating_remarks" property="heatingRemarks" jdbcType="VARCHAR" />
-    <result column="heating_declare_time" property="heatingDeclareTime" jdbcType="TIMESTAMP" />
+    <result column="heating_declare_time" property="heatingDeclareTime" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />

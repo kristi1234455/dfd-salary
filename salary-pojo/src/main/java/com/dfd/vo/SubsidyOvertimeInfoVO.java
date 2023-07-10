@@ -101,5 +101,5 @@ public class SubsidyOvertimeInfoVO implements Serializable {
      * 加班申报时间
      */
     @ApiModelProperty(value = "加班申报时间", name = "overtimeDeclareTime")
-    private Date overtimeDeclareTime;
+    private String overtimeDeclareTime;
 }

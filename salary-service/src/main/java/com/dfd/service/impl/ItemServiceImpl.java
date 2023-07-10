@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,6 +14,7 @@ import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemPlanMapper;
 import com.dfd.mapper.UserMapper;
+import com.dfd.service.ItemMemberService;
 import com.dfd.service.ItemPlanService;
 import com.dfd.service.ItemService;
 import com.dfd.service.util.UserRequest;
@@ -49,6 +51,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Autowired
     private ItemPlanService itemPlanService;
 
+    @Autowired
+    private ItemMemberService itemMemberService;
+
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public PageResult<ItemInfoVO> queryItemList(ItemInfoQueryDTO itemInfoQueryDTO) {
@@ -58,6 +63,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
         LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
         //todo：判断当前登录用户角色，是否是项目经理或管理员:如果权限是管理员，查所有的项目，如果权限是项目经理，查
+        itemLambdaQueryWrapper.eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         IPage<Item> pageReq = new Page(itemInfoQueryDTO.getCurrentPage(), itemInfoQueryDTO.getPageSize());
         IPage<Item> page = itemMapper.selectPage(pageReq, itemLambdaQueryWrapper);
 
@@ -224,20 +230,88 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户投标项目数据已经存在！");
         }
+
         User currentUser = UserRequest.getCurrentUser();
         Item item = new Item();
         BeanUtil.copyProperties(bidVO,item);
-        item.setUid(UUIDUtil.getUUID32Bits())
+        String itemUid = UUIDUtil.getUUID32Bits();
+        item.setUid(itemUid)
                 .setCreatedBy(currentUser.getPhone())
                 .setUpdatedBy(currentUser.getPhone())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-        boolean b = this.saveOrUpdate(item);
-        if (!b) {
-            throw new BusinessException("投标项目数据保存失败");
+        boolean var = this.saveOrUpdate(item);
+
+        List<ItemMemberDTO> itemMemberDTOS = bidVO.getItemMemberDTOS();
+        if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
+            List<Integer> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<ItemMember> memberList = new ArrayList<>();
+            memberUids.stream().forEach(e ->{
+                ItemMember itemMember = new ItemMember()
+                        .setItemUid(itemUid)
+                        .setMemberUid(e)
+                        .setCreatedBy(currentUser.getPhone())
+                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                memberList.add(itemMember);
+            });
+            boolean var1 = itemMemberService.saveBatch(memberList);
+            if (!var || !var1) {
+                throw new BusinessException("投标项目数据保存失败!");
+            }
         }
     }
+
+
+    @Override
+    public void updateBid(BidItemUpdateDTO bidItemDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Item> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(StringUtils.isNotBlank(bidItemDTO.getUid()), Item:: getUid, bidItemDTO.getUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(StringUtils.isNotBlank(bidItemDTO.getItemName()), Item:: getItemName, bidItemDTO.getItemName())
+                .set(StringUtils.isNotBlank(bidItemDTO.getItemProperties()), Item:: getItemProperties, bidItemDTO.getItemProperties())
+                .set((bidItemDTO.getTechnicalFee()!=null), Item:: getTechnicalFee, bidItemDTO.getTechnicalFee())
+                .set((bidItemDTO.getItemSalary()!=null), Item:: getItemSalary, bidItemDTO.getItemSalary())
+                .set((bidItemDTO.getItemPerformance()!=null), Item:: getItemPerformance, bidItemDTO.getItemPerformance())
+                .set(StringUtils.isNotBlank(bidItemDTO.getBidManager()), Item:: getItemLeader, bidItemDTO.getItemLeader())
+                .set(StringUtils.isNotBlank(bidItemDTO.getItemLeader()), Item:: getItemLeader, bidItemDTO.getItemLeader())
+                .set(StringUtils.isNotBlank(bidItemDTO.getSubLeader()), Item:: getSubLeader, bidItemDTO.getSubLeader())
+                .set(StringUtils.isNotBlank(bidItemDTO.getFunctionalLeader()), Item:: getFunctionalLeader, bidItemDTO.getFunctionalLeader())
+                .set(StringUtils.isNotBlank(bidItemDTO.getDepartmenLeader()), Item:: getDepartmenLeader, bidItemDTO.getDepartmenLeader())
+                .set(Item:: getUpdatedBy, currentUser.getPhone())
+                .set(Item:: getUpdatedTime, new Date());
+        boolean var = this.update(updateWrapper);
+        if (!var) {
+            throw new BusinessException("项目数据更新失败!");
+        }
+
+        String itemUid = bidItemDTO.getUid();
+        List<ItemMemberDTO> itemMemberDTOS = bidItemDTO.getItemMemberDTOS();
+        if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
+            List<Integer> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            itemMemberService.updateMembersByItemId(itemUid, nitemIds);
+        }
+    }
+
+    @Override
+    public void deleteBid(BidItemDelDTO bidItemDelDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Item> updateWrapper = new UpdateWrapper<Item>()
+                .lambda()
+                .eq(StringUtils.isNotBlank(bidItemDelDTO.getUid()), Item:: getUid, bidItemDelDTO.getUid())
+                .set(Item:: getIsDeleted, System.currentTimeMillis())
+                .set(Item:: getUpdatedBy, currentUser.getPhone())
+                .set(Item:: getUpdatedTime, new Date());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("投标项目删除失败!");
+        }
+    }
+
 
     @Override
     public void saveScientific(ScientificItemDTO scientificVO) {
@@ -260,6 +334,15 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (!b) {
             throw new BusinessException("科研项目数据保存失败");
         }
+    }
+
+    @Override
+    public Map<Integer, String> queryNameByUids(List<String> uids) {
+        LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
+        wrapper.in(CollectionUtil.isNotEmpty(uids), Item::getUid, uids);
+        List<Item> items = baseMapper.selectList(wrapper);
+        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+        return itemNames;
     }
 
 }

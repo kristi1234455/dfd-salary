@@ -25,22 +25,22 @@
             UPDATE attendance
             <set>
                 <if test="item.day != null">
-                    day = #{item.day,jdbcType=INTEGER}
+                    day = #{item.day,jdbcType=INTEGER},
                 </if>
                 <if test="item.status != null">
-                    and status = #{item.status,jdbcType=INTEGER}
+                     status = #{item.status,jdbcType=INTEGER},
                 </if>
                 <if test="item.outgoingTotalDays != null">
-                    and outgoing_total_days = #{item.outgoingTotalDays,jdbcType=INTEGER}
+                     outgoing_total_days = #{item.outgoingTotalDays,jdbcType=INTEGER},
                 </if>
                 <if test="item.dutyTotalDays != null">
-                    and duty_total_days = #{item.dutyTotalDays,jdbcType=INTEGER}
+                     duty_total_days = #{item.dutyTotalDays,jdbcType=INTEGER},
                 </if>
                 <if test="item.updatedBy != null">
-                    and updated_by = #{item.updatedBy,jdbcType=VARCHAR}
+                     updated_by = #{item.updatedBy,jdbcType=VARCHAR},
                 </if>
                 <if test="item.updatedTime != null">
-                    and updated_time = #{item.updatedTime,jdbcType=TIMESTAMP}
+                     updated_time = #{item.updatedTime,jdbcType=TIMESTAMP}
                 </if>
             </set>
             <where>

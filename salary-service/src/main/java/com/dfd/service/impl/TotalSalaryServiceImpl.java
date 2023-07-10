@@ -1,23 +1,17 @@
 package com.dfd.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.SpecialDTO;
 import com.dfd.dto.SpecialDelDTO;
 import com.dfd.dto.SpecialInfoDTO;
-import com.dfd.entity.PerformanceSalary;
 import com.dfd.entity.TotalSalary;
 import com.dfd.mapper.ItemMapper;
-import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.mapper.TotalSalaryMapper;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.TotalSalaryService;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.PerformanceSalaryInfoVO;
 import com.dfd.vo.SpecialInfoVO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +21,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, TotalSalary> implements TotalSalaryService {
-    @Autowired
-    private ItemMapper itemMapper;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
+    private ItemService itemService;
+
+    @Autowired
+    private MemberService memberService;
+
     @Override
     public PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO) {
 //        LambdaQueryWrapper<PerformanceSalary> queryWrapper = new LambdaQueryWrapper();
