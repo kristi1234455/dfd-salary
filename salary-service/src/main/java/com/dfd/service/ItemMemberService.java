@@ -1,10 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.ItemMemberDelDTO;
-import com.dfd.dto.ItemMemberInfoDTO;
-import com.dfd.dto.ItemMemberQueryDTO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.ItemMemberInfoVO;
@@ -22,7 +19,7 @@ public interface ItemMemberService extends IService<ItemMember> {
      * @param memberQueryDTO
      * @return
      */
-    PageResult<ItemMemberInfoVO> queryItemMemberList(MemberQueryDTO memberQueryDTO);
+    PageResult<ItemMemberInfoVO> queryItemMemberList(ItemMemQueryDTO memberQueryDTO);
 
     /**
      * 查询当前项目下的人员信息

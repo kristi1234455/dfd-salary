@@ -1,9 +1,6 @@
 package com.dfd.controller;
 
-import com.dfd.dto.ItemMemberDelDTO;
-import com.dfd.dto.ItemMemberInfoDTO;
-import com.dfd.dto.ItemMemberQueryDTO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.service.ItemMemberService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
@@ -30,7 +27,7 @@ public class ItemMemberController {
 
     @ApiOperation(value = "获取所有人员信息",httpMethod = "POST")
     @PostMapping("/info/all")
-    public DFDResult<PageResult<ItemMemberInfoVO>> info(@RequestBody @Valid MemberQueryDTO memberQueryDTO){
+    public DFDResult<PageResult<ItemMemberInfoVO>> info(@RequestBody @Valid ItemMemQueryDTO memberQueryDTO){
         return DFDResult.sucess(itemMemberService.queryItemMemberList(memberQueryDTO));
     }
 

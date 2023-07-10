@@ -4,10 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.ItemMemberDelDTO;
-import com.dfd.dto.ItemMemberInfoDTO;
-import com.dfd.dto.ItemMemberQueryDTO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
 import com.dfd.entity.User;
 import com.dfd.mapper.ItemMemberMapper;
@@ -36,7 +33,7 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
     private ItemMemberMapper itemMemberMapper;
 
     @Override
-    public PageResult<ItemMemberInfoVO> queryItemMemberList(MemberQueryDTO memberQueryDTO) {
+    public PageResult<ItemMemberInfoVO> queryItemMemberList(ItemMemQueryDTO memberQueryDTO) {
         return null;
     }
 
