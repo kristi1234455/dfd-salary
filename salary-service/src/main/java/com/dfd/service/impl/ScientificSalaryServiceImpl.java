@@ -47,7 +47,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
     public PageResult<ScientificSalaryInfoVO> info(ScientificSalaryInfoDTO scientificSalaryInfoDTO) {
         LambdaQueryWrapper<ScientificSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(scientificSalaryInfoDTO.getItemUid()), ScientificSalary:: getItemUid, scientificSalaryInfoDTO.getItemUid())
-                .eq(scientificSalaryInfoDTO.getDeclareTime() !=null, ScientificSalary:: getDeclareTime, scientificSalaryInfoDTO.getDeclareTime())
+                .likeRight(scientificSalaryInfoDTO.getDeclareTime() !=null, ScientificSalary:: getDeclareTime, scientificSalaryInfoDTO.getDeclareTime())
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ScientificSalary :: getCreatedTime);
 
