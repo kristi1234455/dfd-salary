@@ -24,12 +24,6 @@ import java.io.Serializable;
 @Builder
 @ApiModel
 public class ItemInfoQueryDTO extends Query implements Serializable {
-    /**
-     * uid
-     */
-    @ApiModelProperty(value = "登录用户uid", name = "uid", required = true)
-    @NotBlank(message = "uid不能为空")
-    private String uid;
 
     /**
      * 项目名称

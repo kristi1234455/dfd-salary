@@ -93,4 +93,18 @@ public class ItemController {
         itemService.saveScientific(scientificVO);
         return DFDResult.sucess();
     }
+
+    @ApiOperation(value = "更新科研项目信息", httpMethod = "POST")
+    @PostMapping("/update/scientific")
+    public DFDResult updateScientific(@RequestBody @Valid ScientificItemUpdateDTO scientificItemUpdateDTO) {
+        itemService.updateScientific(scientificItemUpdateDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "删除科研项目信息", httpMethod = "POST")
+    @DeleteMapping("/delete/scientific")
+    public DFDResult deleteScientific(@RequestBody @Valid ScientificItemDelDTO scientificItemDelDTO) {
+        itemService.deleteScientific(scientificItemDelDTO);
+        return DFDResult.sucess();
+    }
 }

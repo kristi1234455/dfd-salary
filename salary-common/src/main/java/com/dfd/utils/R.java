@@ -16,7 +16,7 @@
 
 package com.dfd.utils;
 
-import com.dfd.enums.CommonConstants;
+import com.dfd.constant.CommonConstants;
 import lombok.*;
 import lombok.experimental.Accessors;
 

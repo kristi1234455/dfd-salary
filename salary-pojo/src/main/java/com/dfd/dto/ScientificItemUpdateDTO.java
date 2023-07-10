@@ -23,8 +23,14 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @ApiModel
-public class ScientificItemDTO implements Serializable {
+public class ScientificItemUpdateDTO implements Serializable {
     private static final long serialVersionUID = 2281771843044746872L;
+
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
 
     /**
      * 项目名称
@@ -44,7 +50,7 @@ public class ScientificItemDTO implements Serializable {
      * 技术管理费
      */
     @ApiModelProperty(value = "技术管理费", name = "technologyManagerFee")
-    private BigDecimal technologyManagerFee;
+    private BigDecimal technicalFee;
 
     /**
      * 项目工资
