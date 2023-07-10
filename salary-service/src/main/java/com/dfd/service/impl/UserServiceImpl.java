@@ -54,6 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return result != null ? true : false;
     }
 
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Integer createUser(UserRegistDTO userRegistDTO, HttpServletRequest request, HttpServletResponse response) {
@@ -79,9 +80,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUpdatedBy(userRegistDTO.getNumber());
         user.setCreatedTime(new Date());
         user.setUpdatedTime(new Date());
+        user.setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
         CookieUtils.setCookie(request, response, LoginConstant.CURRENT_USER, JSON.toJSONString(user), true);
         return userMapper.insert(user);
     }
+
 
     @Override
     public UserVO loginInUser(UserLoginInDTO userLoginDTO, HttpServletRequest request, HttpServletResponse response) {
