@@ -22,10 +22,10 @@ public class ItemUpDTO implements Serializable {
     private static final long serialVersionUID = 1535395190750036262L;
 
     /**
-     * 项目uid
+     * uid
      */
-    @ApiModelProperty(value = "项目uid",name = "uid", required = true)
-    @NotBlank(message = "项目uid不能为空")
+    @ApiModelProperty(value = "uid", name = "uid")
+    @NotBlank(message = "uid不能为空")
     private String uid;
 
     /**

@@ -26,6 +26,6 @@ public interface ItemMemberService extends IService<ItemMember> {
      * @param itemUid
      * @param nitemIds
      */
-    void updateMembersByItemId(String itemUid, List<Integer> nitemIds);
+    void updateMembersByItemId(String itemUid, List<String> nitemIds);
 
 }

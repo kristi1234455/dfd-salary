@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
+import com.dfd.dto.DesignSalaryAddDTO;
 import com.dfd.dto.DesignSalaryDTO;
 import com.dfd.dto.DesignSalaryDelDTO;
 import com.dfd.dto.DesignSalaryInfoDTO;
@@ -83,7 +84,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
     }
 
     @Override
-    public void add(DesignSalaryDTO designSalaryDTO) {
+    public void add(DesignSalaryAddDTO designSalaryDTO) {
         LambdaQueryWrapper<DesignSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(designSalaryDTO.getItemMemberUid()), DesignSalary:: getItemMemberUid, designSalaryDTO.getItemMemberUid())

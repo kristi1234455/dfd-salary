@@ -34,7 +34,7 @@ public class SubsidyHeatingController {
 
     @ApiOperation(value = "新增高温工资信息",httpMethod = "POST")
     @PostMapping("add")
-    public DFDResult add(@RequestBody @Valid SubsidyHeatingDTO subsidyHeatingDTO){
+    public DFDResult add(@RequestBody @Valid SubsidyHeatingAddDTO subsidyHeatingDTO){
         subsidyService.add(subsidyHeatingDTO);
         return DFDResult.sucess();
     }

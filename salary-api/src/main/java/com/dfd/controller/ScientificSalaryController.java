@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.dfd.dto.ScientificSalaryAddDTO;
 import com.dfd.dto.ScientificSalaryDTO;
 import com.dfd.dto.ScientificSalaryDelDTO;
 import com.dfd.dto.ScientificSalaryInfoDTO;
@@ -36,7 +37,7 @@ public class ScientificSalaryController {
 
     @PostMapping("add")
     @ApiOperation(value = "新增科研工资信息", httpMethod = "POST")
-    public DFDResult add(@RequestBody @Valid ScientificSalaryDTO scientificSalaryDTO){
+    public DFDResult add(@RequestBody @Valid ScientificSalaryAddDTO scientificSalaryDTO){
         scientificSalaryService.add(scientificSalaryDTO);
         return DFDResult.sucess();
     }

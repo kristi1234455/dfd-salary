@@ -72,7 +72,7 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
     }
 
     @Override
-    public void updateMembersByItemId(String itemUid, List<Integer> nMemberIds) {
+    public void updateMembersByItemId(String itemUid, List<String> nMemberIds) {
         User currentUser = UserRequest.getCurrentUser();
 
         LambdaUpdateWrapper<ItemMember> itemMemberWrapper = new LambdaUpdateWrapper<>();

@@ -36,6 +36,7 @@ public class SpecialInfoVO extends Query implements Serializable {
      */
     @ApiModelProperty(value = "项目uid", name = "itemUid")
     private String itemUid;
+
     /**
      * 项目名称
      */

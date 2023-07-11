@@ -90,8 +90,6 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                     .setRecords(Collections.emptyList());
         }
 
-
-
         List<String> itemUIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
         wrapper.in(CollectionUtil.isNotEmpty(itemUIdList), Item::getUid,itemUIdList);

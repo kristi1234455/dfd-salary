@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
+import com.dfd.dto.ScientificSalaryAddDTO;
 import com.dfd.dto.ScientificSalaryDTO;
 import com.dfd.dto.ScientificSalaryDelDTO;
 import com.dfd.dto.ScientificSalaryInfoDTO;
@@ -85,7 +86,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
     }
 
     @Override
-    public void add(ScientificSalaryDTO scientificSalaryDTO) {
+    public void add(ScientificSalaryAddDTO scientificSalaryDTO) {
         LambdaQueryWrapper<ScientificSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemUid()), ScientificSalary:: getItemUid, scientificSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemMemberUid()), ScientificSalary:: getItemMemberUid, scientificSalaryDTO.getItemMemberUid())

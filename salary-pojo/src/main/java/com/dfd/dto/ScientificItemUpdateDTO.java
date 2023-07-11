@@ -30,6 +30,7 @@ public class ScientificItemUpdateDTO implements Serializable {
      * uid
      */
     @ApiModelProperty(value = "uid", name = "uid")
+    @NotBlank(message = "uid不能为空")
     private String uid;
 
     /**

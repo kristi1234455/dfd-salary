@@ -266,7 +266,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
         List<ItemMemberDTO> itemMemberDTOS = bidVO.getItemMemberDTOS();
         if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
-            List<Integer> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
             List<ItemMember> memberList = new ArrayList<>();
             memberUids.stream().forEach(e ->{
                 ItemMember itemMember = new ItemMember()
@@ -313,7 +313,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = bidItemDTO.getUid();
         List<ItemMemberDTO> itemMemberDTOS = bidItemDTO.getItemMemberDTOS();
         if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
-            List<Integer> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<String> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
             itemMemberService.updateMembersByItemId(itemUid, nitemIds);
         }
     }
@@ -357,7 +357,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
         List<ItemMemberDTO> itemMemberDTOS = scientificVO.getItemMemberDTOS();
         if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
-            List<Integer> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
             List<ItemMember> memberList = new ArrayList<>();
             memberUids.stream().forEach(e ->{
                 ItemMember itemMember = new ItemMember()
@@ -404,7 +404,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = scientificItemUpdateDTO.getUid();
         List<ItemMemberDTO> itemMemberDTOS = scientificItemUpdateDTO.getItemMemberDTOS();
         if(CollectionUtil.isNotEmpty(itemMemberDTOS)){
-            List<Integer> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<String> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
             itemMemberService.updateMembersByItemId(itemUid, nitemIds);
         }
     }

@@ -30,7 +30,7 @@ public class ItemMemberDTO implements Serializable {
      */
     @ApiModelProperty(value = "项目人员主键",name = "id")
     @NotNull(message = "项目人员主键不能为空")
-    private Integer memberUid;
+    private String memberUid;
 
 
 }

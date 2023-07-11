@@ -27,18 +27,6 @@ public class ItemPlanUpDTO implements Serializable {
     @NotNull(message = "主键不能为空")
     private String uid;
 
-//    /**
-//     * 项目表uid
-//     */
-//    @ApiModelProperty(value = "项目表uid", name = "itemUid")
-//    private String itemUid;
-//
-//    /**
-//     * 项目人员表uid
-//     */
-//    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
-//    private String itemMemberUid;
-
     /**
      * 设计阶段系数
      */

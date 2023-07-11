@@ -24,6 +24,13 @@ public class PerformanceSalaryDTO implements Serializable {
     private static final long serialVersionUID = -6754740015714616110L;
 
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
+
+    /**
      * 项目Uid
      */
     @ApiModelProperty(value = "项目Uid", name = "itemUid", required = true)

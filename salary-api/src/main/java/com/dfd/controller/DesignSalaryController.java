@@ -34,7 +34,7 @@ public class DesignSalaryController {
 
     @PostMapping("add")
     @ApiOperation(value = "新增设计工资信息", httpMethod = "POST")
-    public DFDResult add(@RequestBody @Valid DesignSalaryDTO designSalaryDTO){
+    public DFDResult add(@RequestBody @Valid DesignSalaryAddDTO designSalaryDTO){
         designSalaryService.add(designSalaryDTO);
         return DFDResult.sucess();
     }

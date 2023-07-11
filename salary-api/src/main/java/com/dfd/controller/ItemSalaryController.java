@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.dfd.dto.ItemSalaryAddDTO;
 import com.dfd.dto.ItemSalaryDTO;
 import com.dfd.dto.ItemSalaryDelDTO;
 import com.dfd.dto.ItemSalaryInfoDTO;
@@ -35,7 +36,7 @@ public class ItemSalaryController {
 
     @ApiOperation(value = "新增项目的人员岗位基本工资", httpMethod = "POST")
     @PostMapping("/add")
-    public DFDResult add(@RequestBody @Valid ItemSalaryDTO itemSalaryDTO){
+    public DFDResult add(@RequestBody @Valid ItemSalaryAddDTO itemSalaryDTO){
         itemSalaryService.add(itemSalaryDTO);
         return DFDResult.sucess();
     }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author yy
@@ -21,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel
-public class SpecialInfoDTO extends Query implements Serializable {
+public class SpecialAddDTO extends Query implements Serializable {
 
     private static final long serialVersionUID = 2049639490366198003L;
 

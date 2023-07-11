@@ -1,6 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dfd.dto.BidSalaryAddDTO;
 import com.dfd.dto.BidSalaryDelDTO;
 import com.dfd.dto.BidSalaryDTO;
 import com.dfd.dto.BidSalaryInfoDTO;
@@ -16,7 +17,7 @@ public interface BidSalaryService extends IService<BidSalary> {
 
     PageResult<BidSalaryInfoVO> info(BidSalaryInfoDTO bidSalaryInfoDTO);
 
-    void save(BidSalaryDTO bidSalaryDTO);
+    void save(BidSalaryAddDTO bidSalaryDTO);
 
     void update(BidSalaryDTO bidSalaryDTO);
 

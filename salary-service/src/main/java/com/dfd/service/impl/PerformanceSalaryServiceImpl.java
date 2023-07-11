@@ -113,9 +113,7 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
     public void update(PerformanceSalaryDTO performanceSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<PerformanceSalary> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemMemberUid()), PerformanceSalary:: getItemMemberUid, performanceSalaryDTO.getItemMemberUid())
-                .eq(StringUtils.isNotBlank(performanceSalaryDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
+        updateWrapper.eq(StringUtils.isNotBlank(performanceSalaryDTO.getUid()), PerformanceSalary:: getUid, performanceSalaryDTO.getUid())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set((performanceSalaryDTO.getPostSalaryStandard()!=null), PerformanceSalary:: getPostSalaryStandard, performanceSalaryDTO.getPostSalaryStandard())
                 .set(StringUtils.isNotBlank(performanceSalaryDTO.getPerformanceRatio()), PerformanceSalary:: getPerformanceRatio, performanceSalaryDTO.getPerformanceRatio())

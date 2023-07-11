@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.dfd.dto.SubsidyOvertimeAddDTO;
 import com.dfd.dto.SubsidyOvertimeDTO;
 import com.dfd.dto.SubsidyOvertimeDelDTO;
 import com.dfd.dto.SubsidyOvertimeInfoDTO;
@@ -35,7 +36,7 @@ public class SubsidyOvertimeController {
 
     @ApiOperation(value = "新增加班工资信息",httpMethod = "POST")
     @PostMapping("add")
-    public DFDResult add(@RequestBody @Valid SubsidyOvertimeDTO subsidyOvertimeDTO){
+    public DFDResult add(@RequestBody @Valid SubsidyOvertimeAddDTO subsidyOvertimeDTO){
         subsidyService.add(subsidyOvertimeDTO);
         return DFDResult.sucess();
     }

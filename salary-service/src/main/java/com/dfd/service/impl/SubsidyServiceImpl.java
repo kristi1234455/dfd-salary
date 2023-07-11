@@ -83,7 +83,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     }
 
     @Override
-    public void add(SubsidyOvertimeDTO subsidyOvertimeDTO) {
+    public void add(SubsidyOvertimeAddDTO subsidyOvertimeDTO) {
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemUid()), Subsidy:: getItemUid, subsidyOvertimeDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOvertimeDTO.getItemMemberUid())
@@ -185,7 +185,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     }
 
     @Override
-    public void add(SubsidyNightDTO subsidyNightDTO) {
+    public void add(SubsidyNightAddDTO subsidyNightDTO) {
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyNightDTO.getItemUid()), Subsidy:: getItemUid, subsidyNightDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyNightDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyNightDTO.getItemMemberUid())
@@ -287,7 +287,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     }
 
     @Override
-    public void add(SubsidyOutDTO subsidyOutDTO) {
+    public void add(SubsidyOutAddDTO subsidyOutDTO) {
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOutDTO.getItemUid()), Subsidy:: getItemUid, subsidyOutDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyOutDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOutDTO.getItemMemberUid())
@@ -387,7 +387,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
     }
 
     @Override
-    public void add(SubsidyHeatingDTO subsidyHeatingDTO) {
+    public void add(SubsidyHeatingAddDTO subsidyHeatingDTO) {
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemUid()), Subsidy:: getItemUid, subsidyHeatingDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyHeatingDTO.getItemMemberUid())

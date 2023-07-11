@@ -1,6 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dfd.dto.ScientificSalaryAddDTO;
 import com.dfd.dto.ScientificSalaryDTO;
 import com.dfd.dto.ScientificSalaryDelDTO;
 import com.dfd.dto.ScientificSalaryInfoDTO;
@@ -16,7 +17,7 @@ import com.dfd.vo.ScientificSalaryInfoVO;
 public interface ScientificSalaryService extends IService<ScientificSalary> {
     PageResult<ScientificSalaryInfoVO> info(ScientificSalaryInfoDTO scientificSalaryInfoDTO);
 
-    void add(ScientificSalaryDTO scientificSalaryDTO);
+    void add(ScientificSalaryAddDTO scientificSalaryDTO);
 
     void update(ScientificSalaryDTO scientificSalaryDTO);
 

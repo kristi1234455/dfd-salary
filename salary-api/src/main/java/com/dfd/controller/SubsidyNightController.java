@@ -34,7 +34,7 @@ public class SubsidyNightController {
 
     @ApiOperation(value = "新增夜班工资信息",httpMethod = "POST")
     @PostMapping("add")
-    public DFDResult add(@RequestBody @Valid SubsidyNightDTO subsidyNightDTO){
+    public DFDResult add(@RequestBody @Valid SubsidyNightAddDTO subsidyNightDTO){
         subsidyService.add(subsidyNightDTO);
         return DFDResult.sucess();
     }

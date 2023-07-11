@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Builder
@@ -15,8 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Accessors(chain = true)
-public class MemberAddDTO {
+public class MemberAddDTO implements Serializable {
 
+    private static final long serialVersionUID = -7333454034947015726L;
     /**
      * 工号
      */

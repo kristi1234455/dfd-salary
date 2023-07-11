@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.dfd.dto.SpecialAddDTO;
 import com.dfd.dto.SpecialDTO;
 import com.dfd.dto.SpecialDelDTO;
 import com.dfd.dto.SpecialInfoDTO;
@@ -35,8 +36,8 @@ public class SpecialSalaryController {
 
     @ApiOperation(value = "新增专岗津贴工资信息", httpMethod = "POST")
     @PostMapping("special/add")
-    public DFDResult addSpecial(@RequestBody @Valid SpecialDTO specialDTO){
-        totalSalaryService.addSpecial(specialDTO);
+    public DFDResult addSpecial(@RequestBody @Valid SpecialAddDTO speciaAddlDTO){
+        totalSalaryService.addSpecial(speciaAddlDTO);
         return DFDResult.sucess();
     }
 
