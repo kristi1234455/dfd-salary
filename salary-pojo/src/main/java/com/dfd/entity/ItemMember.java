@@ -38,7 +38,7 @@ public class ItemMember {
      * 基本信息表uid
      */
     @ApiModelProperty(value = "基本信息表uid", name = "memberUid")
-    private Integer memberUid;
+    private String memberUid;
 
     /**
      * 申报时间

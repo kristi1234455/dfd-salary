@@ -1,6 +1,5 @@
-package com.dfd.vo;
+package com.dfd.dto;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,26 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.Date;
-
-/**
- * @author yy
- * @date 2023/6/7 16:28
- */
-@ApiModel
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Accessors(chain = true)
-public class ItemMemberInfoVO implements Serializable {
+public class MemberUpdateDTO {
 
     /**
-     * 项目人员uid
+     * uid
      */
-    @ApiModelProperty(value = "项目人员uid", name = "itemMemberUid")
-    private String itemMemberUid;
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
 
     /**
      * 工号
@@ -44,7 +35,7 @@ public class ItemMemberInfoVO implements Serializable {
     /**
      * 部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；
      */
-    @ApiModelProperty(value = "工号", name = "number")
+    @ApiModelProperty(value = "部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；", name = "department")
     private String department;
 
     /**
@@ -74,7 +65,8 @@ public class ItemMemberInfoVO implements Serializable {
     /**
      * 备注
      */
-    @ApiModelProperty(value = "备注", name = "remark")
-    private String remark;
+    @ApiModelProperty(value = "备注", name = "remarks")
+    private String remarks;
+
 
 }

@@ -48,9 +48,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<User>();
         userLambdaQueryWrapper.eq(StringUtils.isNotBlank(number),User::getNumber, number);
         User result = userMapper.selectOne(userLambdaQueryWrapper);
-        if (ObjectUtil.isNotEmpty(result)) {
-            throw new BusinessException("该用户已经存在");
-        }
         return result != null ? true : false;
     }
 

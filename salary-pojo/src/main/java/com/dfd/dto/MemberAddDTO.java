@@ -1,4 +1,4 @@
-package com.dfd.entity;
+package com.dfd.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,24 +10,12 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 
-@TableName("member")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Accessors(chain = true)
-public class Member {
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value = "主键", name = "id")
-    private Integer id;
-
-    /**
-     * uid
-     */
-    @ApiModelProperty(value = "uid", name = "uid")
-    private String uid;
+public class MemberAddDTO {
 
     /**
      * 工号
@@ -40,12 +28,6 @@ public class Member {
      */
     @ApiModelProperty(value = "名字", name = "name")
     private String name;
-
-    /**
-     * 性别
-     */
-    @ApiModelProperty(value = "性别", name = "gender")
-    private Integer gender;
 
     /**
      * 部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；
@@ -82,37 +64,6 @@ public class Member {
      */
     @ApiModelProperty(value = "备注", name = "remarks")
     private String remarks;
-
-    /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人", name = "createdBy")
-    private String createdBy;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间", name = "createdTime")
-    private Date createdTime;
-
-    /**
-     * 更新人
-     */
-    @ApiModelProperty(value = "更新人", name = "updatedBy")
-    private String updatedBy;
-
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间", name = "updatedTime")
-    private Date updatedTime;
-
-    /**
-     * 是否删除：0：未删除，其他时间：删除
-     */
-    @ApiModelProperty(value = "是否删除：0：未删除，其他时间：删除", name = "isDeleted")
-    private String isDeleted;
-
 
 
 }

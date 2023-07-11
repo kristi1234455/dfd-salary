@@ -1,25 +1,28 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
+import com.dfd.entity.Member;
 import com.dfd.entity.User;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.ItemMemberService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.ItemMemberInfoVO;
+import com.dfd.vo.MemberInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,24 +35,40 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
     @Autowired
     private ItemMemberMapper itemMemberMapper;
 
+    @Autowired
+    private MemberService memberService;
+
     @Override
-    public PageResult<ItemMemberInfoVO> queryItemMemberList(ItemMemQueryDTO memberQueryDTO) {
-        return null;
+    public PageResult<MemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO) {
+        LambdaQueryWrapper<ItemMember> queryWrapper = new LambdaQueryWrapper();
+        String itemUid = itemMemberQueryDTO.getItemUid();
+        queryWrapper.eq(StringUtils.isNotBlank(itemUid), ItemMember:: getItemUid, itemUid)
+                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemMember> itemMembers = this.list(queryWrapper);
+        List<String> collect = itemMembers.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+
+        LambdaQueryWrapper<Member> wrapper = new LambdaQueryWrapper();
+        wrapper.in(CollectionUtil.isNotEmpty(collect),Member::getUid,collect)
+                .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<Member> members = memberService.getBaseMapper().selectList(wrapper);
+        PageResult<MemberInfoVO> pageResult = new PageResult(itemMemberQueryDTO.getCurrentPage(),itemMemberQueryDTO.getPageSize(),convertToSalaryInfoVO(itemUid,members));
+        return pageResult;
     }
 
-    @Override
-    public PageResult<ItemMemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO) {
-        return null;
-    }
-
-    @Override
-    public void add(ItemMemberInfoDTO itemMemberInfoDTO) {
-
-    }
-
-    @Override
-    public void delete(ItemMemberDelDTO itemMemberDelDTO) {
-
+    private List<MemberInfoVO> convertToSalaryInfoVO(String itemUid,List<Member> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
+        List<MemberInfoVO> result = list.stream().map(element -> {
+            if(!Optional.ofNullable(element).isPresent()){
+                throw new BusinessException("用户基本数据为空");
+            }
+            MemberInfoVO infoVO = new MemberInfoVO();
+            BeanUtil.copyProperties(element,infoVO);
+            infoVO.setItemMemberUid(itemUid);
+            return infoVO;
+        }).collect(Collectors.toList());
+        return result;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.dfd.controller;
 
-import com.dfd.dto.MemberInfoVO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.service.MemberService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
@@ -25,5 +24,26 @@ public class MemberController {
     @PostMapping("/info/all")
     public DFDResult<PageResult<MemberInfoVO>> info(@RequestBody @Valid MemberQueryDTO memberQueryDTO){
         return DFDResult.sucess(memberService.queryMemberList(memberQueryDTO));
+    }
+
+    @ApiOperation(value = "新增人员",httpMethod = "POST")
+    @PostMapping("/add")
+    public DFDResult add(@RequestBody @Valid MemberAddDTO memberAddDTO){
+        memberService.add(memberAddDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "更新人员",httpMethod = "POST")
+    @PostMapping("/update")
+    public DFDResult update(@RequestBody @Valid MemberUpdateDTO memberUpdateDTO){
+        memberService.update(memberUpdateDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "删除人员",httpMethod = "POST")
+    @PostMapping("/delete")
+    public DFDResult delete(@RequestBody @Valid MemberDelDTO memberDelDTO){
+        memberService.delete(memberDelDTO);
+        return DFDResult.sucess();
     }
 }

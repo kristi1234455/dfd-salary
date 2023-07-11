@@ -1,8 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.MemberInfoVO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.Member;
 import com.dfd.utils.PageResult;
 
@@ -17,11 +16,16 @@ public interface MemberService extends IService<Member> {
 
     PageResult<MemberInfoVO> queryMemberList(MemberQueryDTO memberQueryDTO);
 
+    void add(MemberAddDTO memberAddDTO);
+
+    void update(MemberUpdateDTO memberUpdateDTO);
+
+    void delete(MemberDelDTO memberDelDTO);
+
     List<Member> queryMemberByUids(List<String> uids);
 
     Map<Integer, String> queryNameByUids(List<String> uids);
 
     Map<Integer, String> queryNumberByUids(List<String> uids);
-
 
 }

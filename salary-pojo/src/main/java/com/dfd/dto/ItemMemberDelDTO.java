@@ -39,7 +39,7 @@ public class ItemMemberDelDTO {
     /**
      * 项目人员ids
      */
-    @ApiModelProperty(value = "项目人员ids", name = "number", required = true)
+    @ApiModelProperty(value = "项目人员ids", name = "itemMemberIds", required = true)
     @NotNull(message = "项目人员ids不能为空")
     @Size(min = 1, message = "项目人员ids不能为空")
     private List<String> itemMemberIds;

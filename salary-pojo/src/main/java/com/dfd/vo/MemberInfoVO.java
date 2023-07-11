@@ -1,5 +1,6 @@
-package com.dfd.dto;
+package com.dfd.vo;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,11 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
+/**
+ * @author yy
+ * @date 2023/6/7 16:28
+ */
+@ApiModel
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,13 +22,17 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class MemberInfoVO implements Serializable {
 
-    private static final long serialVersionUID = 8930241990900793087L;
-
     /**
      * uid
      */
     @ApiModelProperty(value = "uid", name = "uid")
     private String uid;
+
+    /**
+     * 项目人员uid
+     */
+    @ApiModelProperty(value = "项目人员uid", name = "itemMemberUid")
+    private String itemMemberUid;
 
     /**
      * 工号
@@ -37,22 +47,16 @@ public class MemberInfoVO implements Serializable {
     private String name;
 
     /**
-     * 部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；
+     * 性别
      */
-    @ApiModelProperty(value = "部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；", name = "department")
-    private String department;
+    @ApiModelProperty(value = "性别", name = "gender")
+    private Integer gender;
 
     /**
      * 职级
      */
     @ApiModelProperty(value = "职级", name = "ranks")
     private String ranks;
-
-    /**
-     * 流程节点：1、项目经理；2、部门分管领导；3、部门职能领导；4、部门负责人；
-     */
-    @ApiModelProperty(value = "流程节点：1、项目经理；2、部门分管领导；3、部门职能领导；4、部门负责人；", name = "manager")
-    private String manager;
 
     /**
      * 职务
@@ -69,6 +73,7 @@ public class MemberInfoVO implements Serializable {
     /**
      * 备注
      */
-    @ApiModelProperty(value = "备注", name = "remarks")
-    private String remarks;
+    @ApiModelProperty(value = "备注", name = "remark")
+    private String remark;
+
 }
