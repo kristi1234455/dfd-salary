@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.dfd.dto.BidSalaryAddDTO;
 import com.dfd.dto.BidSalaryDelDTO;
 import com.dfd.dto.BidSalaryDTO;
 import com.dfd.dto.BidSalaryInfoDTO;
@@ -35,7 +36,7 @@ public class BidSalaryController {
 
     @ApiOperation(value = "保存投标工资", httpMethod = "POST")
     @PostMapping("save")
-    public DFDResult sava(@RequestBody @Valid BidSalaryDTO bidSalaryDTO){
+    public DFDResult sava(@RequestBody @Valid BidSalaryAddDTO bidSalaryDTO){
         bidSalaryService.save(bidSalaryDTO);
         return DFDResult.sucess();
     }

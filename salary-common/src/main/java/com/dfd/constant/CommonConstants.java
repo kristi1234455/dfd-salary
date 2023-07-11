@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dfd.enums;
+package com.dfd.constant;
 
 /**
  * @author lengleng

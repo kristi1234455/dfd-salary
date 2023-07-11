@@ -73,6 +73,18 @@ public class PageResult<T> implements Iterable<T>, Serializable {
     }
 
     /**
+     * 构造方法，根据数据list获取对象
+     *
+     */
+    public PageResult(long currentPage,long pageSize,List records) {
+        this.records = records;
+        this.totalRecords = records.size();
+        this.currentPage = currentPage;
+        this.pageSize = pageSize;
+        this.totalPages = (records.size() + pageSize - 1) / pageSize;
+    }
+
+    /**
      * 根据数据总条数计算出总页面
      */
     public static long countTotalPage(int totalRecords, long size){

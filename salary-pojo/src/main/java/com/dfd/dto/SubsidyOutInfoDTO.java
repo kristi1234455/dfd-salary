@@ -35,6 +35,6 @@ public class SubsidyOutInfoDTO extends Query implements Serializable {
      * 驻外申报时间
      */
     @ApiModelProperty(value = "驻外申报时间", name = "outDeclareTime")
-    private Date outDeclareTime;
+    private String outDeclareTime;
 
 }

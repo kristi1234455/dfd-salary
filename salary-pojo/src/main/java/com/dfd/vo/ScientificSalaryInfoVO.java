@@ -26,6 +26,12 @@ public class ScientificSalaryInfoVO implements Serializable {
     private static final long serialVersionUID = 7259303260912686797L;
 
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
+
+    /**
      * 项目uid
      */
     @ApiModelProperty(value = "项目uid", name = "itemUid")
@@ -40,7 +46,7 @@ public class ScientificSalaryInfoVO implements Serializable {
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间", name = "declareTime")
-    private Date declareTime;
+    private String declareTime;
 
     /**
      * 项目成员uid

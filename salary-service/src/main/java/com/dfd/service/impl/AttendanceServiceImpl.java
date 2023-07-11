@@ -1,6 +1,7 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -9,14 +10,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
-import com.dfd.entity.Attendance;
-import com.dfd.entity.Item;
-import com.dfd.entity.ItemMember;
-import com.dfd.entity.User;
+import com.dfd.entity.*;
 import com.dfd.mapper.AttendanceMapper;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.AttendanceService;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -42,10 +42,10 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
     @Autowired
     private AttendanceMapper attendanceMapper;
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemService itemService;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
+    private MemberService memberService;
 
     @Override
     public PageResult<AttendanceInfoVO> info(AttendanceInfoDTO attendanceInfoDTO) {
@@ -89,14 +89,21 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                     .setTotalPages(GlobalConstant.GLOBAL_Lon_ZERO)
                     .setRecords(Collections.emptyList());
         }
-        List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
+
+        List<String> itemUIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
+        LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
+        wrapper.in(CollectionUtil.isNotEmpty(itemUIdList), Item::getUid,itemUIdList);
+        List<Item> items = itemService.getBaseMapper().selectList(wrapper);
         Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
-        List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+
+        List<String> memUIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
+        LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(Member::getUid,memUIdList);
+        List<Member> members = memberService.getBaseMapper().selectList(queryWrapper);
+        Map<Integer, String> itemMemberNames = members.stream().collect(Collectors.toMap(Member::getId, Member::getName));
+        Map<Integer, String> itemMemberNumbers = members.stream().collect(Collectors.toMap(Member::getId, Member::getNumber));
+
 
         List<AttendanceMonInfoVO> result = new ArrayList<>();
         Map<String, List<Attendance>> attCollect = list.stream().collect(Collectors.groupingBy(o ->
@@ -137,14 +144,13 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-        List<String> itemIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+        List<String> itemUIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
+        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
-        List<String> itemMemIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        List<String> memUIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
+        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+
         List<AttendanceInfoVO> result = list.stream().map(attendance -> {
             if(!Optional.ofNullable(attendance).isPresent()){
                 throw new BusinessException("考勤数据为空");
@@ -196,6 +202,9 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         }
         User currentUser = UserRequest.getCurrentUser();
         dataList.stream().forEach(e ->{
+            if(e.getUid() == null || e.getDay()==null || e.getStatus()==null){
+                throw new BusinessException("入参中考勤数据不能为空！");
+            }
             Attendance attendance = new Attendance();
             BeanUtil.copyProperties(attendanceDTO,attendance);
             attendance.setDay(e.getDay())
@@ -206,7 +215,11 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             params.add(attendance);
         });
-        attendanceMapper.updateByItemUid(params);
+        Integer var = attendanceMapper.updateByItemUid(params);
+        if(var<= 0){
+            throw new BusinessException("更新考勤数据失败");
+        }
+
     }
 
     @Override

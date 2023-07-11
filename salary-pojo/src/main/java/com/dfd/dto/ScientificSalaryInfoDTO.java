@@ -34,5 +34,5 @@ public class ScientificSalaryInfoDTO extends Query implements Serializable {
      * 申报月份
      */
     @ApiModelProperty(value = "申报月份",name = "declareTime")
-    private Date declareTime;
+    private String declareTime;
 }

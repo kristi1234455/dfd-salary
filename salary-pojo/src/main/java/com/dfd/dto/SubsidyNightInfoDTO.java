@@ -39,5 +39,5 @@ public class SubsidyNightInfoDTO extends Query implements Serializable {
      * 夜班申报时间
      */
     @ApiModelProperty(value = "夜班申报时间", name = "nightDeclareTime")
-    private Date nightDeclareTime;
+    private String nightDeclareTime;
 }

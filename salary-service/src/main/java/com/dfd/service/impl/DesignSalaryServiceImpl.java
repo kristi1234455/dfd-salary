@@ -8,19 +8,20 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
+import com.dfd.dto.DesignSalaryAddDTO;
 import com.dfd.dto.DesignSalaryDTO;
 import com.dfd.dto.DesignSalaryDelDTO;
 import com.dfd.dto.DesignSalaryInfoDTO;
 import com.dfd.entity.*;
 import com.dfd.mapper.DesignSalaryMapper;
 import com.dfd.mapper.ItemMapper;
-import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.DesignSalaryService;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
-import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +38,15 @@ import java.util.stream.Collectors;
 @Service
 public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, DesignSalary> implements DesignSalaryService {
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemService itemService;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
+    private MemberService memberService;
     @Override
     public PageResult<DesignSalaryInfoVO> info(DesignSalaryInfoDTO designSalaryInfoDTO) {
         LambdaQueryWrapper<DesignSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(designSalaryInfoDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryInfoDTO.getItemUid())
-                .eq(designSalaryInfoDTO.getDeclareTime() !=null, DesignSalary:: getDeclareTime, designSalaryInfoDTO.getDeclareTime())
+                .likeRight(designSalaryInfoDTO.getDeclareTime() !=null, DesignSalary:: getDeclareTime, designSalaryInfoDTO.getDeclareTime())
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(DesignSalary :: getCreatedTime);
 
@@ -60,14 +61,13 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-        List<String> itemIdList = list.stream().map(DesignSalary::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
-        List<String> itemMemIdList = list.stream().map(DesignSalary::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        List<String> itemUIdList = list.stream().map(DesignSalary::getItemUid).collect(Collectors.toList());
+        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+
+        List<String> memUIdList = list.stream().map(DesignSalary::getItemMemberUid).collect(Collectors.toList());
+        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<DesignSalaryInfoVO> result = list.stream().map(designSalary -> {
             if(!Optional.ofNullable(designSalary).isPresent()){
@@ -84,7 +84,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
     }
 
     @Override
-    public void add(DesignSalaryDTO designSalaryDTO) {
+    public void add(DesignSalaryAddDTO designSalaryDTO) {
         LambdaQueryWrapper<DesignSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(designSalaryDTO.getItemMemberUid()), DesignSalary:: getItemMemberUid, designSalaryDTO.getItemMemberUid())

@@ -26,10 +26,17 @@ public class SpecialInfoVO extends Query implements Serializable {
     private static final long serialVersionUID = 2812845239417651576L;
 
     /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
+
+    /**
      * 项目uid
      */
     @ApiModelProperty(value = "项目uid", name = "itemUid")
     private String itemUid;
+
     /**
      * 项目名称
      */

@@ -1,13 +1,10 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.ItemMemberDelDTO;
-import com.dfd.dto.ItemMemberInfoDTO;
-import com.dfd.dto.ItemMemberQueryDTO;
-import com.dfd.dto.MemberQueryDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.ItemMemberInfoVO;
+import com.dfd.vo.MemberInfoVO;
 
 import java.util.List;
 
@@ -18,25 +15,17 @@ import java.util.List;
 public interface ItemMemberService extends IService<ItemMember> {
 
     /**
-     * 查询所有人员信息
-     * @param memberQueryDTO
-     * @return
-     */
-    PageResult<ItemMemberInfoVO> queryItemMemberList(MemberQueryDTO memberQueryDTO);
-
-    /**
      * 查询当前项目下的人员信息
      * @param itemMemberQueryDTO
      * @return
      */
-    PageResult<ItemMemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO);
+    PageResult<MemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO);
 
     /**
-     * 新增人员
-     * @param itemMemberInfoDTO
+     * 根据itemUid更新项目下的项目成员
+     * @param itemUid
+     * @param nitemIds
      */
-    void add(ItemMemberInfoDTO itemMemberInfoDTO);
-
-    void delete(ItemMemberDelDTO itemMemberDelDTO);
+    void updateMembersByItemId(String itemUid, List<String> nitemIds);
 
 }

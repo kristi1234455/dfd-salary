@@ -30,12 +30,6 @@ public class ItemMemberInfoDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-    /**
      * 月份
      */
     @ApiModelProperty(value = "月份", name = "month", required = true)

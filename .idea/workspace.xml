@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="" />
+    <list default="true" id="93b94554-ccb9-4b3a-a1af-2da7d87573a0" name="Changes" comment="项目成员表和基本成员表数据结构更改">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ItemSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ItemSalaryInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/PerformanceSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/PerformanceSalaryInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ScientificSalaryInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/ScientificSalaryInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SpecialInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-pojo/src/main/java/com/dfd/vo/SpecialInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemPlanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemPlanServiceImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +25,14 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -26,38 +41,49 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="$PROJECT_DIR$/../../../../software/apache-maven-3.6.3" />
-        <option name="userSettingsFile" value="E:\software\apache-maven-3.6.3\conf\settings.xml" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../software/apache-maven-3.3.9" />
+        <option name="userSettingsFile" value="D:\software\apache-maven-3.3.9\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2PoPo81kl5jxxdD0jICKC30YW2c" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RequestMappingsPanelOrder0" value="0" />
-    <property name="RequestMappingsPanelOrder1" value="1" />
-    <property name="RequestMappingsPanelWidth0" value="75" />
-    <property name="RequestMappingsPanelWidth1" value="75" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/salary-mapper/src/main/resources/mapper" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/code/dfd-salary/salary-mapper/src/main/java/com/dfd/mapper&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;7df854c784cfc011ba457b6749f1c688&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code\dfd-salary\salary-mapper\src\main\java\com\dfd\mapper" />
+      <recent name="D:\code\dfd-salary\salary-pojo\src\main\java\com\dfd\entity" />
+      <recent name="D:\code\dfd-salary\salary-mapper\src\main\resources\mapper" />
       <recent name="E:\code\dy\dfd-salary\salary-mapper\src\main\resources\mapper" />
       <recent name="E:\code\dy\dfd-salary\salary-mapper\src\main\java\com\dfd\mapper" />
-      <recent name="E:\code\dy\dfd-salary\salary-pojo\src\main\java\com\dfd\entity" />
-      <recent name="E:\code\test\test-interceptor\dfd-salary\salary-api\src\main\java\com\dfd\controller" />
-      <recent name="E:\code\test\test-interceptor\dfd-salary\salary-mapper\src\main\resources\mapper" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\code\test\test-interceptor\dfd-salary\salary-service\src\main\java\com\dfd\service" />
@@ -66,21 +92,21 @@
       <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.dfd.controller" />
+      <recent name="com.dfd.service" />
       <recent name="com.dfd.dto" />
+      <recent name="com.dfd.controller" />
       <recent name="com.dfd.config" />
       <recent name="com.dfd.aspect" />
-      <recent name="com.dfd.utils" />
     </key>
   </component>
   <component name="RestServicesNavigator">
     <treeState>
       <expand>
         <path>
-          <item name="Found 58 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+          <item name="Found 67 services " type="fcff1e1b:RestServiceStructure$RootNode" />
         </path>
         <path>
-          <item name="Found 58 services " type="fcff1e1b:RestServiceStructure$RootNode" />
+          <item name="Found 67 services " type="fcff1e1b:RestServiceStructure$RootNode" />
           <item name="salary-api" type="c588b436:RestServiceStructure$ProjectNode" />
         </path>
       </expand>
@@ -106,13 +132,13 @@
     </configuration>
     <configuration name="SalaryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="salary-api" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dfd.SalaryApplication" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.dfd.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dfd.SalaryApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -147,18 +173,75 @@
       <workItem from="1686703032820" duration="8526000" />
       <workItem from="1686789299741" duration="1841000" />
       <workItem from="1686794759040" duration="56000" />
+      <workItem from="1688609590629" duration="505000" />
+      <workItem from="1688610475403" duration="38000" />
+      <workItem from="1688610558964" duration="996000" />
+      <workItem from="1688611572434" duration="45000" />
+      <workItem from="1688611627367" duration="121000" />
+      <workItem from="1688611759180" duration="19000" />
+      <workItem from="1688611788334" duration="39000" />
+      <workItem from="1688611837839" duration="85000" />
+      <workItem from="1688611933134" duration="59000" />
+      <workItem from="1688612004275" duration="184000" />
+      <workItem from="1688612202891" duration="18533000" />
+      <workItem from="1688721383244" duration="1000000" />
+      <workItem from="1688723461185" duration="1774000" />
+      <workItem from="1688725297549" duration="28138000" />
     </task>
+    <task id="LOCAL-00001" summary="EPC项目业务逻辑开发">
+      <created>1688719771042</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688719771042</updated>
+    </task>
+    <task id="LOCAL-00002" summary="项目成员表和基本成员表数据结构更改">
+      <created>1688982697730</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688982697731</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="EPC项目业务逻辑开发" />
+    <MESSAGE value="项目成员表和基本成员表数据结构更改" />
+    <option name="LAST_COMMIT_MESSAGE" value="项目成员表和基本成员表数据结构更改" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/salary-service/src/main/java/com/dfd/service/impl/ItemServiceImpl.java</url>
-          <line>41</line>
+          <line>66</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
@@ -168,5 +251,9 @@
         <watch expression="scientificSalaryDelDTO.getItemMemberIds()" language="JAVA" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

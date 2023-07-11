@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
+import com.dfd.dto.BidSalaryAddDTO;
 import com.dfd.dto.BidSalaryDelDTO;
 import com.dfd.dto.BidSalaryDTO;
 import com.dfd.dto.BidSalaryInfoDTO;
@@ -16,6 +17,9 @@ import com.dfd.mapper.BidSalaryMapper;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.BidSalaryService;
+import com.dfd.service.ItemMemberService;
+import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -37,16 +41,16 @@ import java.util.stream.Collectors;
 public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary> implements BidSalaryService {
 
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemService itemService;
 
     @Autowired
-    private ItemMemberMapper itemMemberMapper;
+    private MemberService memberService;
 
     @Override
     public PageResult<BidSalaryInfoVO> info(BidSalaryInfoDTO bidSalaryInfoDTO) {
         LambdaQueryWrapper<BidSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(bidSalaryInfoDTO.getItemUid()), BidSalary:: getItemUid, bidSalaryInfoDTO.getItemUid())
-                .eq(bidSalaryInfoDTO.getDeclareTime() !=null, BidSalary:: getDeclareTime, bidSalaryInfoDTO.getDeclareTime())
+                .likeRight(bidSalaryInfoDTO.getDeclareTime() !=null, BidSalary:: getDeclareTime, bidSalaryInfoDTO.getDeclareTime())
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(BidSalary :: getCreatedTime);
 
@@ -61,14 +65,13 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-        List<String> itemIdList = list.stream().map(BidSalary::getItemUid).collect(Collectors.toList());
-        List<Item> items = itemMapper.selectBatchIds(itemIdList);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
 
-        List<String> itemMemIdList = list.stream().map(BidSalary::getItemMemberUid).collect(Collectors.toList());
-        List<ItemMember> itemMembers = itemMemberMapper.selectBatchIds(itemMemIdList);
-        Map<Integer, String> itemMemberNames = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getName));
-        Map<Integer, String> itemMemberNumbers = itemMembers.stream().collect(Collectors.toMap(ItemMember::getId, ItemMember::getNumber));
+        List<String> itemUIdList = list.stream().map(BidSalary::getItemUid).collect(Collectors.toList());
+        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+
+        List<String> memUIdList = list.stream().map(BidSalary::getItemMemberUid).collect(Collectors.toList());
+        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<BidSalaryInfoVO> result = list.stream().map(bidSalary -> {
             if(!Optional.ofNullable(bidSalary).isPresent()){
@@ -84,8 +87,9 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         return result;
     }
 
+
     @Override
-    public void save(BidSalaryDTO bidSalaryDTO) {
+    public void save(BidSalaryAddDTO bidSalaryDTO) {
         LambdaQueryWrapper<BidSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(bidSalaryDTO.getItemUid()), BidSalary:: getItemUid, bidSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(bidSalaryDTO.getItemMemberUid()), BidSalary:: getItemMemberUid, bidSalaryDTO.getItemMemberUid())

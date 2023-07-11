@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dfd.mapper.SubsidyMapper" >
   <resultMap id="BaseResultMap" type="com.dfd.entity.Subsidy" >
-    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
     <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
     <result column="out_subsidy_standard" property="outSubsidyStandard" jdbcType="DECIMAL" />
@@ -25,7 +26,7 @@
     <result column="overtime_remarks" property="overtimeRemarks" jdbcType="TIMESTAMP" />
     <result column="overtime_declare_time" property="overtimeDeclareTime" jdbcType="TIMESTAMP" />
     <result column="is_heating_grant" property="isHeatingGrant" jdbcType="INTEGER" />
-    <result column="heating_subsidy_standart" property="heatingSubsidyStandart" jdbcType="DECIMAL" />
+    <result column="heating_subsidy_standart" property="heatingSubsidyStandard" jdbcType="DECIMAL" />
     <result column="heating_days" property="heatingDays" jdbcType="INTEGER" />
     <result column="heating_subsidy" property="heatingSubsidy" jdbcType="DECIMAL" />
     <result column="heating_remarks" property="heatingRemarks" jdbcType="VARCHAR" />

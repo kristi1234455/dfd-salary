@@ -48,11 +48,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<User>();
         userLambdaQueryWrapper.eq(StringUtils.isNotBlank(number),User::getNumber, number);
         User result = userMapper.selectOne(userLambdaQueryWrapper);
-        if (ObjectUtil.isNotEmpty(result)) {
-            throw new BusinessException("该用户已经存在");
-        }
         return result != null ? true : false;
     }
+
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
@@ -79,9 +77,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUpdatedBy(userRegistDTO.getNumber());
         user.setCreatedTime(new Date());
         user.setUpdatedTime(new Date());
+        user.setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
         CookieUtils.setCookie(request, response, LoginConstant.CURRENT_USER, JSON.toJSONString(user), true);
         return userMapper.insert(user);
     }
+
 
     @Override
     public UserVO loginInUser(UserLoginInDTO userLoginDTO, HttpServletRequest request, HttpServletResponse response) {
@@ -138,7 +138,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User selectByNumber(String number) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotBlank(number), User:: getPhone, number)
+        queryWrapper.eq(StringUtils.isNotBlank(number), User:: getNumber, number)
                 .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         return baseMapper.selectOne(queryWrapper);
     }

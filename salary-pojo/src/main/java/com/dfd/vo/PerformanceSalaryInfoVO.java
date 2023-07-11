@@ -23,6 +23,11 @@ import java.math.BigDecimal;
 @ApiModel
 @Accessors(chain = true)
 public class PerformanceSalaryInfoVO implements Serializable {
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
 
     /**
      * itemUid

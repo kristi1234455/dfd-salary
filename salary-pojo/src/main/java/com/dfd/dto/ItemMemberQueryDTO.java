@@ -29,11 +29,4 @@ public class ItemMemberQueryDTO extends Query implements Serializable {
     @NotBlank(message = "项目uid不能为空")
     private String itemUid;
 
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName")
-    private String itemName;
-
-
 }

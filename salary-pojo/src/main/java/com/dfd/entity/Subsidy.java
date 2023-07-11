@@ -70,7 +70,7 @@ public class Subsidy {
      * 驻外申报时间
      */
     @ApiModelProperty(value = "驻外申报时间", name = "outDeclareTime")
-    private Date outDeclareTime;
+    private String outDeclareTime;
 
     /**
      * 夜班时间
@@ -112,7 +112,7 @@ public class Subsidy {
      * 夜班申报时间
      */
     @ApiModelProperty(value = "夜班申报时间", name = "nightDeclareTime")
-    private Date nightDeclareTime;
+    private String nightDeclareTime;
 
     /**
      * 加班时间
@@ -154,7 +154,7 @@ public class Subsidy {
      * 加班申报时间
      */
     @ApiModelProperty(value = "加班申报时间", name = "overtimeDeclareTime")
-    private Date overtimeDeclareTime;
+    private String overtimeDeclareTime;
 
     /**
      * 是否发放高温补贴
@@ -190,7 +190,7 @@ public class Subsidy {
      * 高温申报时间
      */
     @ApiModelProperty(value = "高温申报时间", name = "heatingDeclareTime")
-    private Date heatingDeclareTime;
+    private String heatingDeclareTime;
 
     /**
      * 创建人

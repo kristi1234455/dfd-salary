@@ -25,16 +25,16 @@ public class SpecialDTO implements Serializable {
     /**
      * uid
      */
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
+    @NotBlank(message = "uid不能为空")
+    private String uid;
+
+    /**
+     * itemUid
+     */
     @ApiModelProperty(value = "项目uid", name = "itemUid", required = true)
     @NotBlank(message = "项目uid不能为空")
     private String itemUid;
-
-    /**
-     * 项目名称
-     */
-    @ApiModelProperty(value = "项目名称", name = "itemName", required = true)
-    @NotBlank(message = "项目名称不能为空")
-    private String itemName;
 
     /**
      * 项目人员uid
@@ -42,19 +42,6 @@ public class SpecialDTO implements Serializable {
     @ApiModelProperty(value = "项目人员uid",name = "itemMemberUid",required = true)
     @NotBlank(message = "项目人员uid不能为空")
     private String itemMemberUid;
-
-    /**
-     * 工号
-     */
-    @ApiModelProperty(value = "工号", name = "number", required = true)
-    @NotBlank(message = "工号不能为空")
-    private String number;
-
-    /**
-     * 名字
-     */
-    @ApiModelProperty(value = "名字", name = "name")
-    private String name;
 
     /**
      * 所室

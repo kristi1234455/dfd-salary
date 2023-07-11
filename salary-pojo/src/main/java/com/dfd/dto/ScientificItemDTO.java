@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -64,8 +65,34 @@ public class ScientificItemDTO implements Serializable {
     private String scientificManager;
 
     /**
-     * 职能对象
+     * 项目管理所
      */
-    @ApiModelProperty(value = "职能对象", name = "managerDTO")
-    private List<ManagerDTO> managerDTO;
+    @ApiModelProperty(value = "项目管理所", name = "itemLeader")
+    private String itemLeader;
+
+    /**
+     * 部门分管领导
+     */
+    @ApiModelProperty(value = "部门分管领导", name = "subLeader")
+    private String subLeader;
+
+    /**
+     * 部门职能领导
+     */
+    @ApiModelProperty(value = "部门职能领导", name = "functionalLeader")
+    private String functionalLeader;
+
+    /**
+     * 部门负责人
+     */
+    @ApiModelProperty(value = "部门负责人", name = "departmenLeader")
+    private String departmenLeader;
+
+    /**
+     * 项目成员
+     */
+    @ApiModelProperty(value = "项目成员对象", name = "itemMemberDTOS")
+    @NotNull(message = "项目成员对象不能为空")
+    @Size(min=1,message = "项目成员对象长度最小为1")
+    private List<ItemMemberDTO> itemMemberDTOS;
 }

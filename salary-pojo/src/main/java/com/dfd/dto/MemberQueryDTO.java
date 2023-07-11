@@ -10,17 +10,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * @author yy
- * @date 2023/6/8 16:36
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ApiModel
 public class MemberQueryDTO extends Query implements Serializable {
-
     /**
      * 工号
      */

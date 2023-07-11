@@ -1,0 +1,16 @@
+com\dfd\service\impl\BidSalaryServiceImpl.class
+com\dfd\service\ItemPlanService.class
+com\dfd\service\impl\TotalSalaryServiceImpl.class
+com\dfd\service\impl\ItemSalaryServiceImpl.class
+com\dfd\service\impl\ScientificSalaryServiceImpl.class
+com\dfd\service\impl\AttendanceServiceImpl.class
+com\dfd\service\AttendanceService.class
+com\dfd\service\impl\UserServiceImpl.class
+com\dfd\service\impl\SubsidyServiceImpl.class
+com\dfd\service\impl\ItemPlanServiceImpl.class
+com\dfd\service\ItemService.class
+com\dfd\service\impl\ItemServiceImpl.class
+com\dfd\service\impl\DesignSalaryServiceImpl.class
+com\dfd\service\util\UserRequest.class
+com\dfd\service\UserService.class
+com\dfd\service\impl\PerformanceSalaryServiceImpl.class

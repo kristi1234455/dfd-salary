@@ -17,7 +17,7 @@ public interface SubsidyService extends IService <Subsidy>{
 
     PageResult<SubsidyOvertimeInfoVO> info(SubsidyOvertimeInfoDTO subsidyOvertimeInfoDTO);
 
-    void add(SubsidyOvertimeDTO subsidyOvertimeDTO);
+    void add(SubsidyOvertimeAddDTO subsidyOvertimeDTO);
 
     void update(SubsidyOvertimeDTO subsidyOvertimeDTO);
 
@@ -25,7 +25,7 @@ public interface SubsidyService extends IService <Subsidy>{
 
     PageResult<SubsidyNightInfoVO> info(SubsidyNightInfoDTO subsidyNightInfoDTO);
 
-    void add(SubsidyNightDTO subsidyNightDTO);
+    void add(SubsidyNightAddDTO subsidyNightDTO);
 
     void update(SubsidyNightDTO subsidyNightDTO);
 
@@ -33,7 +33,7 @@ public interface SubsidyService extends IService <Subsidy>{
 
     PageResult<SubsidyOutInfoVO> info(SubsidyOutInfoDTO subsidyOutInfoDTO);
 
-    void add(SubsidyOutDTO subsidyOutDTO);
+    void add(SubsidyOutAddDTO subsidyOutDTO);
 
     void update(SubsidyOutDTO subsidyOutDTO);
 
@@ -41,7 +41,7 @@ public interface SubsidyService extends IService <Subsidy>{
 
     PageResult<SubsidyHeatingInfoVO> info(SubsidyHeatingInfoDTO subsidyHeatingInfoDTO);
 
-    void add(SubsidyHeatingDTO subsidyHeatingDTO);
+    void add(SubsidyHeatingAddDTO subsidyHeatingDTO);
 
     void update(SubsidyHeatingDTO subsidyHeatingDTO);
 

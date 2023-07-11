@@ -34,7 +34,7 @@ public class SubsidyOutController {
 
     @ApiOperation(value = "新增驻外工资信息",httpMethod = "POST")
     @PostMapping("add")
-    public DFDResult add(@RequestBody @Valid SubsidyOutDTO subsidyOutDTO){
+    public DFDResult add(@RequestBody @Valid SubsidyOvertimeAddDTO subsidyOutDTO){
         subsidyService.add(subsidyOutDTO);
         return DFDResult.sucess();
     }

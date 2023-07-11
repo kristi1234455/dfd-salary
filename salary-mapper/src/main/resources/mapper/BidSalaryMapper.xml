@@ -19,7 +19,7 @@
     <result column="ratio" property="ratio" jdbcType="VARCHAR" />
     <result column="bid_fee" property="bidFee" jdbcType="DECIMAL" />
     <result column="distribute_total_fee" property="distributeTotalFee" jdbcType="DECIMAL" />
-    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="declare_time" property="declareTime" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
     <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
