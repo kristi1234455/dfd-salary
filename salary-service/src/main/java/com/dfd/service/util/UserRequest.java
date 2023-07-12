@@ -28,9 +28,6 @@ public class UserRequest {
         if (!Optional.ofNullable(currentUserInfo).isPresent()) {
             throw new BusinessException("用户信息为空");
         }
-        if (StringUtils.isEmpty(currentUserInfo.getPhone())) {
-            throw new BusinessException("用户手机号为空！");
-        }
         return currentUserInfo;
     }
 

@@ -3,6 +3,7 @@ package com.dfd.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -116,23 +117,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Integer resetUser(UserResetDTO userResetDTO, HttpServletRequest request, HttpServletResponse response) {
+    public void resetUser(UserResetDTO userResetDTO, HttpServletRequest request, HttpServletResponse response) {
         boolean isExist = queryNumberIsExist(userResetDTO.getNumber());
-        if (isExist) {
+        if (!isExist) {
             throw new BusinessException("用户名不存在，请注册！");
         }
-        User user = new User();
-        BeanUtils.copyProperties(userResetDTO,user);
         try {
-            user.setPassword(MD5Utils.getMD5Str(userResetDTO.getPassword()));
+            LambdaUpdateWrapper<User> queryWrapper = new LambdaUpdateWrapper();
+            queryWrapper.eq(StringUtils.isNotBlank(userResetDTO.getNumber()), User:: getNumber, userResetDTO.getNumber())
+                    .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                    .set(StringUtils.isNotBlank(userResetDTO.getPassword()), User:: getPassword, MD5Utils.getMD5Str(userResetDTO.getPassword()))
+                    .set(User:: getUpdatedBy, userResetDTO.getNumber())
+                    .set(User:: getUpdatedTime, new Date())
+                    .set(User:: getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+            this.update(queryWrapper);
         } catch (Exception e) {
             throw new BusinessException(e.toString());
         }
-        // 默认用户昵称同用户名
-        // 默认头像
-        user.setUpdatedBy(userResetDTO.getNumber());
-        user.setUpdatedTime(new Date());
-        return userMapper.insert(user);
     }
 
     @Override

@@ -110,7 +110,7 @@ public class TokenUtil {
         boolean b = verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4NzY4NTcyOSwidXNlcm5hbWUiOiIxMzQxOTg3NjQ0NSJ9.Q4JGrkAPlxqp7SQz9ZvTr3z4xuQNpm-ml1zy0No3B5Y");
         System.out.println("校验结果： "+b);
 
-        Claim username1 = JWT.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4NzY4NTcyOSwidXNlcm5hbWUiOiIxMzQxOTg3NjQ0NSJ9.Q4JGrkAPlxqp7SQz9ZvTr3z4xuQNpm-ml1zy0No3B5Y")
+        Claim username1 = JWT.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMyIsImV4cCI6MTY4OTE0ODM0NywidXNlcm5hbWUiOiIxMzQxOTg3NjQ0NSJ9.juIiB0Y02bWLT2SXFcKnZ0UkqmhQ4SZv2BLpk59-o6o")
                 .getClaim("username");
         System.out.println("我是从token中获取的信息： "+username1.asString());
 

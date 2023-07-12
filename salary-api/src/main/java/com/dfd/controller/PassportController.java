@@ -62,10 +62,11 @@ public class PassportController {
 
     @ApiOperation(value = "密码重置", notes = "密码重置", httpMethod = "POST")
     @PostMapping("/reset")
-    public DFDResult<Integer> reset(@RequestBody @Valid UserResetDTO userResetDTO,
+    public DFDResult reset(@RequestBody @Valid UserResetDTO userResetDTO,
                                     HttpServletRequest request,
                                     HttpServletResponse response) {
-        return DFDResult.sucess(userService.resetUser(userResetDTO,request,response));
+        userService.resetUser(userResetDTO,request,response);
+        return DFDResult.sucess();
     }
 
 }

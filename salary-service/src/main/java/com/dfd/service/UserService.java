@@ -45,7 +45,7 @@ public interface UserService extends IService<User> {
      * @param response
      * @return
      */
-    Integer resetUser(UserResetDTO userResetDTO, HttpServletRequest request, HttpServletResponse response);
+    void resetUser(UserResetDTO userResetDTO, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 通过唯一手机号查询用户信息
