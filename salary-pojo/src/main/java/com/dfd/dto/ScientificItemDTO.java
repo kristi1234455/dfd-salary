@@ -73,19 +73,22 @@ public class ScientificItemDTO implements Serializable {
     /**
      * 部门分管领导
      */
-    @ApiModelProperty(value = "部门分管领导", name = "subLeader")
+    @ApiModelProperty(value = "部门分管领导", name = "subLeader", required = true)
+    @NotBlank(message = "部门分管领导不能为空")
     private String subLeader;
 
     /**
      * 部门职能领导
      */
-    @ApiModelProperty(value = "部门职能领导", name = "functionalLeader")
+    @ApiModelProperty(value = "部门职能领导", name = "functionalLeader", required = true)
+    @NotBlank(message = "部门职能领导不能为空")
     private String functionalLeader;
 
     /**
      * 部门负责人
      */
-    @ApiModelProperty(value = "部门负责人", name = "departmenLeader")
+    @ApiModelProperty(value = "部门负责人", name = "departmenLeader", required = true)
+    @NotBlank(message = "部门负责人不能为空")
     private String departmenLeader;
 
     /**

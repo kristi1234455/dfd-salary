@@ -58,7 +58,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     public PageResult<ItemInfoVO> queryItemList(ItemInfoQueryDTO itemInfoQueryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        userLambdaQueryWrapper.eq(StringUtils.isNotBlank(currentUser.getPhone()),User::getPhone, currentUser.getPhone());
+        userLambdaQueryWrapper.eq(StringUtils.isNotBlank(currentUser.getNumber()),User::getNumber, currentUser.getNumber());
         User user = userMapper.selectOne(userLambdaQueryWrapper);
         IPage<Item> page = null;
         String role = user.getRole();

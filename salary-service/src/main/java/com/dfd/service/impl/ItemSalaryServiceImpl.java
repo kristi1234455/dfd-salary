@@ -46,7 +46,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
     public PageResult<ItemSalaryInfoVO> info(ItemSalaryInfoDTO itemSalaryInfoDTO) {
         LambdaQueryWrapper<ItemSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(itemSalaryInfoDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryInfoDTO.getItemUid())
-                .eq(itemSalaryInfoDTO.getDeclareTime() !=null, ItemSalary:: getDeclareTime, itemSalaryInfoDTO.getDeclareTime())
+                .likeRight(itemSalaryInfoDTO.getDeclareTime() !=null, ItemSalary:: getDeclareTime, itemSalaryInfoDTO.getDeclareTime())
                 .eq(StringUtils.isNotEmpty(itemSalaryInfoDTO.getItemStage()), ItemSalary:: getItemStage, itemSalaryInfoDTO.getItemStage())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ItemSalary :: getCreatedTime);
