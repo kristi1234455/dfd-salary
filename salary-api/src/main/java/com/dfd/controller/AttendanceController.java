@@ -2,6 +2,7 @@ package com.dfd.controller;
 
 import com.dfd.dto.*;
 import com.dfd.service.AttendanceService;
+import com.dfd.service.CheckListService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
@@ -72,6 +73,23 @@ public class AttendanceController {
     @PostMapping("/delete")
     public DFDResult delete(@RequestBody @Valid AttendanceDelDTO attendanceDelDTO){
         attendanceService.delete(attendanceDelDTO);
+        return DFDResult.sucess();
+    }
+
+    @Autowired
+    private CheckListService checkListService;
+
+    @ApiOperation(value = "审核：提交审核流程", httpMethod = "POST")
+    @PostMapping("/audit/part/submit")
+    public DFDResult partSubmit(@RequestBody @Valid CheckListPartSubmitDTO partSubmitDTO){
+        checkListService.partSubmit(partSubmitDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "审核：处理审核流程", httpMethod = "POST")
+    @PostMapping("/audit/part/handle")
+    public DFDResult partHandle(@RequestBody @Valid CheckListPartHandleDTO partHandleDTO){
+        checkListService.partHandle(partHandleDTO);
         return DFDResult.sucess();
     }
 

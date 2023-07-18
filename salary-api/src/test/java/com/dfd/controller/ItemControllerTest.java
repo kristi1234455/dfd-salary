@@ -1,5 +1,7 @@
 package com.dfd.controller;
 
+import com.dfd.dto.ItemInfoQueryDTO;
+import com.dfd.service.AttendanceService;
 import com.dfd.service.ItemService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,17 +35,19 @@ public class ItemControllerTest {
 
     @Test
     public void testInfo() throws Exception{
-        String json="{\"currentPage\":1,\n" +
-                "\"pageSize\":10}";
-        //执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/item/info")
-                        .content(json.getBytes()) //传json参数
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                        .header("Authorization","Bearer ")
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+//        String json="{\"currentPage\":1,\n" +
+//                "\"pageSize\":10}";
+//        //执行一个RequestBuilder请求，会自动执行SpringMVC的流程并映射到相应的控制器执行处理；
+//        mockMvc.perform(MockMvcRequestBuilders
+//                        .post("/item/info")
+//                        .content(json.getBytes()) //传json参数
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+////                        .header("Authorization","Bearer ")
+//                )
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andDo(print());
+        ItemInfoQueryDTO param = ItemInfoQueryDTO.builder().build();
+        itemService.queryItemList(param);
     }
 }

@@ -18,9 +18,11 @@ import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,10 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
 
     @Autowired
     private MemberService memberService;
+
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
     public PageResult<CheckListVO> info(CheckLisQueryDTO checkLisQueryDTO) {
@@ -114,6 +120,44 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
     }
 
     @Override
+    public CheckListNormalVO infoNormal(CheckListNormalDTO normalDTO) {
+        CheckListNormalVO result = new CheckListNormalVO();
+        String submitter = null;
+        String leader = null;
+        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(normalDTO.getItemUid()), Item:: getUid, normalDTO.getItemUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemService.getOne(queryWrapper);
+        if(StringUtils.isNotEmpty(item.getBidDirector())){
+            submitter =item.getBidDirector();
+        }else if(StringUtils.isNotEmpty(item.getItemManager())) {
+            submitter = item.getItemManager();
+        }else if(StringUtils.isNotEmpty(item.getDesignManager())) {
+            submitter = item.getDesignManager();
+        }else if(StringUtils.isNotEmpty(item.getScientificManager())) {
+            submitter = item.getScientificManager();
+        }else {
+            throw new BusinessException("该项目没有指定项目经理，请指定");
+        }
+
+        if(StringUtils.isNotEmpty(item.getBidDirector())){
+            submitter =item.getBidDirector();
+        }else if(StringUtils.isNotEmpty(item.getItemManager())) {
+            submitter = item.getItemManager();
+        }else if(StringUtils.isNotEmpty(item.getDesignManager())) {
+            submitter = item.getDesignManager();
+        }else if(StringUtils.isNotEmpty(item.getScientificManager())) {
+            submitter = item.getScientificManager();
+        }else {
+            throw new BusinessException("该项目没有指定项目经理，请指定");
+        }
+
+        return null;
+    }
+
+
+
+    @Override
     public void handle(CheckListHandleDTO checkListHandleDTO) {
         LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(checkListHandleDTO.getUid()), CheckList:: getUid, checkListHandleDTO.getUid())
@@ -135,5 +179,41 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         if (!update) {
             throw new BusinessException("审核数据更新失败!");
         }
+    }
+
+    @Override
+    public void partSubmit(CheckListPartSubmitDTO partSubmitDTO) {
+        String currentUri = request.getRequestURI();
+        LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(partSubmitDTO.getItemUid()), CheckList:: getItemUid, partSubmitDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(currentUri), CheckList:: getUrl, currentUri)
+                .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        if(baseMapper.exists(queryWrapper)){
+            throw new BusinessException("该项目下的页面审核数据已经存在，无法重复提交！");
+        }
+        User currentUser = UserRequest.getCurrentUser();
+        CheckList var = new CheckList();
+        BeanUtil.copyProperties(partSubmitDTO,var);
+        var.setUid(UUIDUtil.getUUID32Bits())
+                .setUrl(currentUri)
+                .setSubmitTime(new Date())
+                .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
+                .setCreatedBy(currentUser.getPhone())
+                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedTime(new Date())
+                .setUpdatedTime(new Date())
+                .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+        boolean b = this.saveOrUpdate(var);
+        if (!b) {
+            throw new BusinessException("投标状态保存失败");
+        }
+    }
+
+    @Override
+    public void partHandle(CheckListPartHandleDTO partHandleDTO) {
+        CheckList checkList = new CheckList();
+        BeanUtils.copyProperties(partHandleDTO, checkList);
+        checkList.setUrl(request.getRequestURL().toString());
+
     }
 }
