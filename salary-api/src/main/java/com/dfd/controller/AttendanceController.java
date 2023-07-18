@@ -47,9 +47,23 @@ public class AttendanceController {
         return DFDResult.sucess();
     }
 
+//    @ApiOperation(value = "批量新增项目的人员考勤状态", httpMethod = "POST")
+    @PostMapping("/add/list")
+    public DFDResult add(@RequestBody @Valid AttendanceDayListDTO attendanceDTO){
+        attendanceService.addList(attendanceDTO);
+        return DFDResult.sucess();
+    }
+
     @ApiOperation(value = "更新项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/update")
     public DFDResult update(@RequestBody @Valid AttendanceDTO attendanceDTO){
+        attendanceService.update(attendanceDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "批量更新项目的人员考勤状态", httpMethod = "POST")
+    @PostMapping("/update/list")
+    public DFDResult updateList(@RequestBody @Valid AttendanceDTO attendanceDTO){
         attendanceService.update(attendanceDTO);
         return DFDResult.sucess();
     }

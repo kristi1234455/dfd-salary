@@ -1,6 +1,7 @@
 package com.dfd.controller;
 
 import com.dfd.dto.*;
+import com.dfd.entity.Member;
 import com.dfd.service.MemberService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(value = "基本信息人员管理", tags = {"用于基本信息人员管理的相关接口"})
 @RestController

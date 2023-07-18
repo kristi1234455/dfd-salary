@@ -59,10 +59,30 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .eq(Attendance::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Attendance :: getCreatedTime);
 
-        Page<Attendance> pageReq = new Page(attendanceInfoDTO.getCurrentPage(), attendanceInfoDTO.getPageSize());
-        IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<AttendanceInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToAttendanceInfoVO(page.getRecords()));
+        Integer pageNum = attendanceInfoDTO.getCurrentPage();
+        Integer pageSize = attendanceInfoDTO.getPageSize();
+        List<Attendance> olist = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+        List<AttendanceInfoVO> list = convertToAttendanceInfoVO(olist);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<AttendanceInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -75,13 +95,40 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .eq(Attendance::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Attendance :: getCreatedTime);
 
-        Page<Attendance> pageReq = new Page(attendanceMonInfoDTO.getCurrentPage(), attendanceMonInfoDTO.getPageSize());
-        IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
-        return convertToAttendanceMonInfoVO(page);
+//        Page<Attendance> pageReq = new Page(attendanceMonInfoDTO.getCurrentPage(), attendanceMonInfoDTO.getPageSize());
+//        IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
+//        return convertToAttendanceMonInfoVO(page);
+
+        Integer pageNum = attendanceMonInfoDTO.getCurrentPage();
+        Integer pageSize = attendanceMonInfoDTO.getPageSize();
+        List<Attendance> olist = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+//        List<AttendanceMonInfoVO> list = convertToAttendanceMonInfoVO(olist);
+        int size = olist.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            olist = olist.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<Attendance> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(olist)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
+//        return pageResult;
+        return convertToAttendanceMonInfoVO(pageResult);
     }
 
-    private PageResult<AttendanceMonInfoVO> convertToAttendanceMonInfoVO(IPage<Attendance> page) {
-        PageResult<AttendanceMonInfoVO> pageResult = new PageResult(page);
+    private PageResult<AttendanceMonInfoVO> convertToAttendanceMonInfoVO(PageResult<Attendance> page) {
+        PageResult<AttendanceMonInfoVO> pageResult = new PageResult();
         List<Attendance> list = page.getRecords();
         if (CollectionUtils.isEmpty(list)) {
             return pageResult
@@ -91,19 +138,11 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         }
 
         List<String> itemUIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
-        LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
-        wrapper.in(CollectionUtil.isNotEmpty(itemUIdList), Item::getUid,itemUIdList);
-        List<Item> items = itemService.getBaseMapper().selectList(wrapper);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
-
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
-        LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.in(Member::getUid,memUIdList);
-        List<Member> members = memberService.getBaseMapper().selectList(queryWrapper);
-        Map<Integer, String> itemMemberNames = members.stream().collect(Collectors.toMap(Member::getId, Member::getName));
-        Map<Integer, String> itemMemberNumbers = members.stream().collect(Collectors.toMap(Member::getId, Member::getNumber));
-
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<AttendanceMonInfoVO> result = new ArrayList<>();
         Map<String, List<Attendance>> attCollect = list.stream().collect(Collectors.groupingBy(o ->
@@ -136,7 +175,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         }
         return pageResult
                 .setTotalRecords(result.size())
-                .setTotalPages(PageResult.countTotalPage(result.size(),page.getSize()))
+                .setTotalPages(PageResult.countTotalPage(result.size(),page.getTotalPages()))
                 .setRecords(result);
     }
 
@@ -145,11 +184,11 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             return Collections.emptyList();
         }
         List<String> itemUIdList = list.stream().map(Attendance::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Attendance::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<AttendanceInfoVO> result = list.stream().map(attendance -> {
             if(!Optional.ofNullable(attendance).isPresent()){
@@ -190,6 +229,34 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         boolean b = this.saveOrUpdate(attendance);
         if (!b) {
             throw new BusinessException("考勤状态保存失败");
+        }
+    }
+
+    @Override
+    public void addList(AttendanceDayListDTO attendanceDTO) {
+        List<Attendance> params = new ArrayList<>();
+        List<AttendanceDataDTO> dataList = attendanceDTO.getAttendanceDataDTOList();
+        if(CollectionUtils.isEmpty(dataList)){
+            throw new BusinessException("保存失败，入参中考勤日期和状态缺失！");
+        }
+        User currentUser = UserRequest.getCurrentUser();
+        dataList.stream().forEach(e ->{
+            if(e.getUid() == null || e.getDay()==null || e.getStatus()==null){
+                throw new BusinessException("入参中考勤数据不能为空！");
+            }
+            Attendance attendance = new Attendance();
+            BeanUtil.copyProperties(attendanceDTO,attendance);
+            attendance.setDay(e.getDay())
+                    .setStatus(e.getStatus())
+                    .setUid(e.getUid())
+                    .setUpdatedBy(currentUser.getPhone())
+                    .setUpdatedTime(new Date())
+                    .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+            params.add(attendance);
+        });
+        boolean var = this.saveBatch(params);
+        if(!var){
+            throw new BusinessException("保存考勤数据失败");
         }
     }
 

@@ -21,6 +21,9 @@ public interface ItemMemberService extends IService<ItemMember> {
      */
     PageResult<MemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO);
 
+
+    void addItemMemberList(ItemMemberAddListDTO itemMemberAddListDTO);
+
     /**
      * 根据itemUid更新项目下的项目成员
      * @param itemUid

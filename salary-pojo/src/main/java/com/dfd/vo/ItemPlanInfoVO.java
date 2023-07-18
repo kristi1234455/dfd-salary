@@ -1,28 +1,39 @@
-package com.dfd.dto;
+package com.dfd.vo;
 
-import io.swagger.annotations.ApiModel;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import java.util.Date;
 
-/**
- * @author yy
- * @date 2023/6/7 14:19
- */
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@ApiModel
-public class ItemPlanDTO implements Serializable {
+@Builder
+@Accessors(chain = true)
+public class ItemPlanInfoVO {
 
-    private static final long serialVersionUID = 2517652235173564026L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
 
+    /**
+     * 项目表uid
+     */
+    @ApiModelProperty(value = "项目表uid", name = "itemUid")
+    private String itemUid;
+
+    /**
+     * 项目名称
+     */
+    @ApiModelProperty(value = "项目名称", name = "itemName")
+    private String itemName;
 
     /**
      * 项目人员表uid
@@ -30,6 +41,17 @@ public class ItemPlanDTO implements Serializable {
     @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
     private String itemMemberUid;
 
+    /**
+     * 工号
+     */
+    @ApiModelProperty(value = "工号", name = "number")
+    private String number;
+
+    /**
+     * 名字
+     */
+    @ApiModelProperty(value = "名字", name = "name")
+    private String name;
 
     /**
      * 设计阶段系数
@@ -67,9 +89,15 @@ public class ItemPlanDTO implements Serializable {
     @ApiModelProperty(value = "终验收阶段系数", name = "finalCoefficient")
     private Integer finalCoefficient;
 
-    /**
+    /**+
      * 质保阶段系数
      */
     @ApiModelProperty(value = "质保阶段系数", name = "guaranteeCoefficient")
     private Integer guaranteeCoefficient;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注", name = "remarks")
+    private String remarks;
 }

@@ -16,6 +16,7 @@ import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
+import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.MemberInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,29 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
         List<Member> members = memberService.getBaseMapper().selectList(wrapper);
         PageResult<MemberInfoVO> pageResult = new PageResult(itemMemberQueryDTO.getCurrentPage(),itemMemberQueryDTO.getPageSize(),convertToSalaryInfoVO(itemUid,members));
         return pageResult;
+    }
+
+    @Override
+    public void addItemMemberList(ItemMemberAddListDTO itemMemberAddListDTO) {
+        List<ItemMember> result = new ArrayList<>();
+        User currentUser = UserRequest.getCurrentUser();
+        itemMemberAddListDTO.getUids().stream().forEach(uid ->{
+            ItemMember itemMember = new ItemMember();
+            itemMember.setUid(UUIDUtil.getUUID32Bits())
+                    .setItemUid(itemMemberAddListDTO.getItemUid())
+                    .setMemberUid(uid)
+                    .setDeclareTime(new Date())
+                    .setCreatedBy(currentUser.getPhone())
+                    .setUpdatedBy(currentUser.getPhone())
+                    .setCreatedTime(new Date())
+                    .setUpdatedTime(new Date())
+                    .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+            result.add(itemMember);
+        });
+        boolean b = this.saveBatch(result);
+        if (!b) {
+            throw new BusinessException("设计状态保存失败");
+        }
     }
 
     private List<MemberInfoVO> convertToSalaryInfoVO(String itemUid,List<Member> list) {

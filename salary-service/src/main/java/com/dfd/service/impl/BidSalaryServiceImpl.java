@@ -24,6 +24,7 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
+import com.dfd.vo.AttendanceInfoVO;
 import com.dfd.vo.BidSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,30 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(BidSalary :: getCreatedTime);
 
-        Page<BidSalary> pageReq = new Page(bidSalaryInfoDTO.getCurrentPage(), bidSalaryInfoDTO.getPageSize());
-        IPage<BidSalary> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<BidSalaryInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToSalaryInfoVO(page.getRecords()));
+        Integer pageNum = bidSalaryInfoDTO.getCurrentPage();
+        Integer pageSize = bidSalaryInfoDTO.getPageSize();
+        List<BidSalary> olist = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+        List<BidSalaryInfoVO> list = convertToSalaryInfoVO(olist);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<BidSalaryInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -67,11 +88,11 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         }
 
         List<String> itemUIdList = list.stream().map(BidSalary::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(BidSalary::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<BidSalaryInfoVO> result = list.stream().map(bidSalary -> {
             if(!Optional.ofNullable(bidSalary).isPresent()){

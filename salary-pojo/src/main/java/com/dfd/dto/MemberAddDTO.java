@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,13 +23,15 @@ public class MemberAddDTO implements Serializable {
     /**
      * 工号
      */
-    @ApiModelProperty(value = "工号", name = "number")
+    @ApiModelProperty(value = "工号", name = "number",required = true)
+    @NotBlank(message = "工号不能为空")
     private String number;
 
     /**
      * 名字
      */
-    @ApiModelProperty(value = "名字", name = "name")
+    @ApiModelProperty(value = "名字", name = "name",required = true)
+    @NotBlank(message = "名字不能为空")
     private String name;
 
     /**

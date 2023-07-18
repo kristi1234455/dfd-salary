@@ -21,6 +21,8 @@ import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
+    @Autowired
+    private MemberMapper memberMapper;
 
     @Override
     public PageResult<MemberInfoVO> queryMemberList(MemberQueryDTO memberQueryDTO) {
@@ -38,10 +42,30 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Member :: getCreatedTime);
 
-        Page<Member> pageReq = new Page(memberQueryDTO.getCurrentPage(), memberQueryDTO.getPageSize());
-        IPage<Member> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<MemberInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToSalaryInfoVO(page.getRecords()));
+        Integer pageNum = memberQueryDTO.getCurrentPage();
+        Integer pageSize = memberQueryDTO.getPageSize();
+        List<Member> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<MemberInfoVO> list = convertToSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<MemberInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -49,7 +73,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
-
         List<MemberInfoVO> result = list.stream().map(element -> {
             if(!Optional.ofNullable(element).isPresent()){
                 throw new BusinessException("用户基本数据为空");
@@ -60,6 +83,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         }).collect(Collectors.toList());
         return result;
     }
+
+
 
     @Override
     public void add(MemberAddDTO memberAddDTO) {
@@ -111,6 +136,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Member> updateWrapper = new UpdateWrapper<Member>()
                 .lambda()
+                .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .in(!CollectionUtils.isEmpty(memberDelDTO.getUids()), Member:: getUid, memberDelDTO.getUids())
                 .set(Member:: getIsDeleted, System.currentTimeMillis())
                 .set(Member:: getUpdatedBy, currentUser.getPhone())
@@ -125,27 +151,38 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public List<Member> queryMemberByUids(List<String> uids) {
         LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids);
+        queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids)
+                .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<Member> members = baseMapper.selectList(queryWrapper);
         return members;
     }
 
     @Override
-    public Map<Integer, String> queryNameByUids(List<String> uids) {
+    public Map<String, String> queryNameByUids(List<String> uids) {
         LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids);
+        queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids)
+                .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<Member> members = baseMapper.selectList(queryWrapper);
-        Map<Integer, String> itemMemberNames = members.stream().collect(Collectors.toMap(Member::getId, Member::getName));
+        Map<String, String> itemMemberNames = members.stream().collect(Collectors.toMap(Member::getUid, Member::getName));
         return itemMemberNames;
     }
 
     @Override
-    public Map<Integer, String> queryNumberByUids(List<String> uids) {
+    public Map<String, String> queryNumberByUids(List<String> uids) {
         LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids);
         List<Member> members = baseMapper.selectList(queryWrapper);
-        Map<Integer, String> itemMemberNumbers = members.stream().collect(Collectors.toMap(Member::getId, Member::getNumber));
+        Map<String, String> itemMemberNumbers = members.stream().collect(Collectors.toMap(Member::getUid, Member::getNumber));
         return itemMemberNumbers;
+    }
+
+    @Override
+    public Member queryMemberByNumber(String number) {
+        LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotEmpty(number), Member::getName,number)
+                .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Member member = baseMapper.selectOne(queryWrapper);
+        return member;
     }
 
 }

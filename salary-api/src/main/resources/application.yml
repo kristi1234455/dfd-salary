@@ -38,6 +38,15 @@ mybatis:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    interceptors: com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor
+#    interceptors: com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor
+#    db-type: mysql
+#      pagination:
+#        limit: 500
+  interceptor:
+    pagination:
+      limit: 500
+
 
 logging:
   level:

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
+import com.dfd.dto.MemberInfoVO;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.SubsidyMapper;
@@ -49,10 +50,30 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Subsidy :: getCreatedTime);
 
-        Page<Subsidy> pageReq = new Page(subsidyOvertimeInfoDTO.getCurrentPage(), subsidyOvertimeInfoDTO.getPageSize());
-        IPage<Subsidy> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<SubsidyOvertimeInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToOverTimeSalaryInfoVO(page.getRecords()));
+        Integer pageNum = subsidyOvertimeInfoDTO.getCurrentPage();
+        Integer pageSize = subsidyOvertimeInfoDTO.getPageSize();
+        List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<SubsidyOvertimeInfoVO> list = convertToOverTimeSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<SubsidyOvertimeInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -62,11 +83,11 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         }
 
         List<String> itemUIdList = list.stream().map(Subsidy::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Subsidy::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<SubsidyOvertimeInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){
@@ -151,10 +172,31 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Subsidy :: getCreatedTime);
 
-        Page<Subsidy> pageReq = new Page(subsidyNightInfoDTO.getCurrentPage(), subsidyNightInfoDTO.getPageSize());
-        IPage<Subsidy> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<SubsidyNightInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToNightSalaryInfoVO(page.getRecords()));
+
+        Integer pageNum = subsidyNightInfoDTO.getCurrentPage();
+        Integer pageSize = subsidyNightInfoDTO.getPageSize();
+        List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<SubsidyNightInfoVO> list = convertToNightSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<SubsidyNightInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -164,11 +206,11 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         }
 
         List<String> itemUIdList = list.stream().map(Subsidy::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Subsidy::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<SubsidyNightInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){
@@ -253,10 +295,30 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Subsidy :: getCreatedTime);
 
-        Page<Subsidy> pageReq = new Page(subsidyOutInfoDTO.getCurrentPage(), subsidyOutInfoDTO.getPageSize());
-        IPage<Subsidy> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<SubsidyOutInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToOutSalaryInfoVO(page.getRecords()));
+        Integer pageNum = subsidyOutInfoDTO.getCurrentPage();
+        Integer pageSize = subsidyOutInfoDTO.getPageSize();
+        List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<SubsidyOutInfoVO> list = convertToOutSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<SubsidyOutInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -266,11 +328,11 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         }
 
         List<String> itemUIdList = list.stream().map(Subsidy::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Subsidy::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<SubsidyOutInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){
@@ -353,10 +415,30 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Subsidy :: getCreatedTime);
 
-        Page<Subsidy> pageReq = new Page(subsidyHeatingInfoDTO.getCurrentPage(), subsidyHeatingInfoDTO.getPageSize());
-        IPage<Subsidy> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<SubsidyHeatingInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToHeatingSalaryInfoVO(page.getRecords()));
+        Integer pageNum = subsidyHeatingInfoDTO.getCurrentPage();
+        Integer pageSize = subsidyHeatingInfoDTO.getPageSize();
+        List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<SubsidyHeatingInfoVO> list = convertToHeatingSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<SubsidyHeatingInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -366,11 +448,11 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         }
 
         List<String> itemUIdList = list.stream().map(Subsidy::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(Subsidy::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<SubsidyHeatingInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){

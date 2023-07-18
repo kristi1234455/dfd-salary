@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ApiModel
+@Accessors(chain = true)
 public class ItemMemberDTO implements Serializable {
 
     /**
@@ -32,5 +34,15 @@ public class ItemMemberDTO implements Serializable {
     @NotNull(message = "项目人员主键不能为空")
     private String memberUid;
 
+    /**
+     * 工号
+     */
+    @ApiModelProperty(value = "工号", name = "number")
+    private String number;
 
+    /**
+     * 名字
+     */
+    @ApiModelProperty(value = "名字", name = "name")
+    private String name;
 }

@@ -24,8 +24,10 @@ public interface MemberService extends IService<Member> {
 
     List<Member> queryMemberByUids(List<String> uids);
 
-    Map<Integer, String> queryNameByUids(List<String> uids);
+    Map<String, String> queryNameByUids(List<String> uids);
 
-    Map<Integer, String> queryNumberByUids(List<String> uids);
+    Map<String, String> queryNumberByUids(List<String> uids);
+
+    Member queryMemberByNumber(String number);
 
 }

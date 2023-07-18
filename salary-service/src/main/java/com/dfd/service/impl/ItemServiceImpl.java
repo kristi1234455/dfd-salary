@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
+import com.dfd.dto.MemberInfoVO;
 import com.dfd.enums.ItemPropertiesEnum;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
@@ -18,11 +19,12 @@ import com.dfd.mapper.UserMapper;
 import com.dfd.service.ItemMemberService;
 import com.dfd.service.ItemPlanService;
 import com.dfd.service.ItemService;
+import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
-import com.dfd.vo.ItemInfoVO;
+import com.dfd.vo.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -53,6 +55,12 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Autowired
     private ItemMemberService itemMemberService;
 
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private MemberService memberService;
+
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public PageResult<ItemInfoVO> queryItemList(ItemInfoQueryDTO itemInfoQueryDTO) {
@@ -62,29 +70,48 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User user = userMapper.selectOne(userLambdaQueryWrapper);
         IPage<Item> page = null;
         String role = user.getRole();
-        LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
-        itemLambdaQueryWrapper.eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper
+                .like(StringUtils.isNotEmpty(itemInfoQueryDTO.getItemName()),Item::getItemName,itemInfoQueryDTO.getItemName())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(Optional.ofNullable(user).isPresent() && StringUtils.isNotBlank(role)) {
             if (role.equals(RoleEnum.ROLE_ITEM)) {
-                itemLambdaQueryWrapper.eq(Item::getItemManager, currentUser.getUid());
+                queryWrapper.eq(Item::getItemManager, currentUser.getUid());
             }else if (role.equals(RoleEnum.ROLE_SUB_LEADER)){
-                itemLambdaQueryWrapper.eq(Item::getSubLeader, currentUser.getUid());
+                queryWrapper.eq(Item::getSubLeader, currentUser.getUid());
             }else if(role.equals(RoleEnum.ROLE_FUNC_LEDAER)) {
-                itemLambdaQueryWrapper.eq(Item::getFunctionalLeader, currentUser.getUid());
+                queryWrapper.eq(Item::getFunctionalLeader, currentUser.getUid());
             }else if(role.equals(RoleEnum.ROLE_DEPARTMENT)){
-                itemLambdaQueryWrapper.eq(Item::getDepartmenLeader, currentUser.getUid());
+                queryWrapper.eq(Item::getDepartmenLeader, currentUser.getUid());
             }else{
 
             }
         }
-        IPage<Item> pageReq = new Page(itemInfoQueryDTO.getCurrentPage(), itemInfoQueryDTO.getPageSize());
-        page = itemMapper.selectPage(pageReq, itemLambdaQueryWrapper);
 
+        Integer pageNum = itemInfoQueryDTO.getCurrentPage();
+        Integer pageSize = itemInfoQueryDTO.getPageSize();
+        List<Item> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<ItemInfoVO> list = convertToItemVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
         PageResult<ItemInfoVO> pageResult = new PageResult<>();
-        pageResult.setRecords(convertToItemVO(page.getRecords()));
-        pageResult.setPageSize(page.getSize());
-        pageResult.setTotalRecords(page.getTotal());
-        pageResult.setCurrentPage(page.getCurrent());
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -94,6 +121,49 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             BeanUtils.copyProperties(item, itemInfoVO);
             return itemInfoVO;
         });
+        return result;
+    }
+
+    @Override
+    public ItemEpcInfoVO infoEpc(ItemEpcInfoDTO itemEpcInfoDTO) {
+        LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
+        itemLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemEpcInfoDTO.getUid()), Item::getUid,itemEpcInfoDTO.getUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemMapper.selectOne(itemLambdaQueryWrapper);
+        ItemEpcInfoVO result = new ItemEpcInfoVO();
+        BeanUtil.copyProperties(item,result);
+
+        LambdaQueryWrapper<ItemPlan> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(StringUtils.isNotBlank(itemEpcInfoDTO.getUid()), ItemPlan::getItemUid,itemEpcInfoDTO.getUid())
+                .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemPlan> list = itemPlanService.list(wrapper);
+
+        List<String> memUIdList = list.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+
+        List<ItemPlanInfoVO> itemPlans = list.stream().map(itemPlan -> {
+            if(!Optional.ofNullable(itemPlan).isPresent()){
+                throw new BusinessException("策划系数数据为空");
+            }
+            ItemPlanInfoVO itemPlanInfoVO = new ItemPlanInfoVO();
+            itemPlanInfoVO.setItemName(item.getItemName())
+                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemPlan.getItemMemberUid()) : null)
+                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemPlan.getItemMemberUid()) : null);
+            return itemPlanInfoVO;
+        }).collect(Collectors.toList());
+        result.setItemPlanDTOList(itemPlans);
+
+        //根据uid获取member中的名字
+        result.setDesignManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getDesignManager()) : null)
+                .setItemManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getItemManager()) : null)
+                .setItemLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getItemLeader()) : null)
+                .setAgencyLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getAgencyLeader()) : null)
+                .setDesignLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getDesignLeader()) : null)
+                .setEngineeringLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getEngineeringLeader()) : null)
+                .setSubLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getSubLeader()) : null)
+                .setFunctionalLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getFunctionalLeader()) : null)
+                .setDepartmenLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getDepartmenLeader()) : null);
         return result;
     }
 
@@ -240,6 +310,46 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
+    public ItemBidInfoVO infoBid(ItemBidInfoDTO itemBidInfoDTO) {
+        LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
+        itemLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemBidInfoDTO.getUid()), Item::getUid,itemBidInfoDTO.getUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemMapper.selectOne(itemLambdaQueryWrapper);
+
+        ItemBidInfoVO result = new ItemBidInfoVO();
+        BeanUtil.copyProperties(item,result);
+
+        LambdaQueryWrapper<ItemMember> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(StringUtils.isNotBlank(itemBidInfoDTO.getUid()), ItemMember::getItemUid,itemBidInfoDTO.getUid())
+                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemMember> list = itemMemberService.list(wrapper);
+
+        List<String> memUIdList = list.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+
+        List<ItemMemberDTO> itemPlans = list.stream().map(itemMember -> {
+            if(!Optional.ofNullable(itemMember).isPresent()){
+                throw new BusinessException("策划系数数据为空");
+            }
+            ItemMemberDTO itemMemberDTO = new ItemMemberDTO();
+            itemMemberDTO.setMemberUid(itemMember.getUid())
+                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemMember.getMemberUid()) : null)
+                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemMember.getMemberUid()) : null);
+            return itemMemberDTO;
+        }).collect(Collectors.toList());
+        result.setItemPlanDTOList(itemPlans);
+
+        //根据uid获取member中的名字
+        result.setBidDirector(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getBidDirector()) : null)
+                .setItemLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getItemLeader()) : null)
+                .setSubLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getSubLeader()) : null)
+                .setFunctionalLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getFunctionalLeader()) : null)
+                .setDepartmenLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getDepartmenLeader()) : null);
+        return result;
+    }
+
+    @Override
     public void saveBid(BidItemDTO bidVO) {
         LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(bidVO.getItemName()), Item:: getItemName, bidVO.getItemName())
@@ -331,6 +441,46 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (!update) {
             throw new BusinessException("投标项目删除失败!");
         }
+    }
+
+    @Override
+    public ItemScientificInfoVO infoScientific(ItemScientificInfoDTO itemScientificInfoDTO) {
+        LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
+        itemLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemScientificInfoDTO.getUid()), Item::getUid,itemScientificInfoDTO.getUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemMapper.selectOne(itemLambdaQueryWrapper);
+
+        ItemScientificInfoVO result = new ItemScientificInfoVO();
+        BeanUtil.copyProperties(item,result);
+
+        LambdaQueryWrapper<ItemMember> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(StringUtils.isNotBlank(itemScientificInfoDTO.getUid()), ItemMember::getItemUid,itemScientificInfoDTO.getUid())
+                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemMember> list = itemMemberService.list(wrapper);
+
+        List<String> memUIdList = list.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+
+        List<ItemMemberDTO> itemPlans = list.stream().map(itemMember -> {
+            if(!Optional.ofNullable(itemMember).isPresent()){
+                throw new BusinessException("策划系数数据为空");
+            }
+            ItemMemberDTO itemMemberDTO = new ItemMemberDTO();
+            itemMemberDTO.setMemberUid(itemMember.getUid())
+                    .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemMember.getMemberUid()) : null)
+                    .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemMember.getMemberUid()) : null);
+            return itemMemberDTO;
+        }).collect(Collectors.toList());
+        result.setItemMemberDTOS(itemPlans);
+
+        //根据uid获取member中的名字
+        result.setScientificManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getScientificManager()) : null)
+                .setItemLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getItemLeader()) : null)
+                .setSubLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getSubLeader()) : null)
+                .setFunctionalLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getFunctionalLeader()) : null)
+                .setDepartmenLeader(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getDepartmenLeader()) : null);
+        return result;
     }
 
 
@@ -425,11 +575,11 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
-    public Map<Integer, String> queryNameByUids(List<String> uids) {
+    public Map<String, String> queryNameByUids(List<String> uids) {
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
         wrapper.in(CollectionUtil.isNotEmpty(uids), Item::getUid, uids);
         List<Item> items = baseMapper.selectList(wrapper);
-        Map<Integer, String> itemNames = items.stream().collect(Collectors.toMap(Item::getId, Item::getItemName));
+        Map<String, String> itemNames = items.stream().collect(Collectors.toMap(Item::getUid, Item::getItemName));
         return itemNames;
     }
 

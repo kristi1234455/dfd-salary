@@ -19,9 +19,10 @@ public interface AttendanceService extends IService<Attendance> {
 
     void add(AttendanceDayDTO attendanceInfoDTO);
 
+    void addList(AttendanceDayListDTO attendanceDTO);
+
     void update(AttendanceDTO attendanceInfoDTO);
 
     void delete(AttendanceDelDTO attendanceDelDTO);
-
 
 }

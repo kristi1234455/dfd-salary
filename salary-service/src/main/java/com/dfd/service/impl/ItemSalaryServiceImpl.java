@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.ItemSalaryAddDTO;
-import com.dfd.dto.ItemSalaryDTO;
-import com.dfd.dto.ItemSalaryDelDTO;
-import com.dfd.dto.ItemSalaryInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemSalaryMapper;
@@ -51,10 +48,30 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ItemSalary :: getCreatedTime);
 
-        Page<ItemSalary> pageReq = new Page(itemSalaryInfoDTO.getCurrentPage(), itemSalaryInfoDTO.getPageSize());
-        IPage<ItemSalary> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<ItemSalaryInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToSalaryInfoVO(page.getRecords()));
+        Integer pageNum = itemSalaryInfoDTO.getCurrentPage();
+        Integer pageSize = itemSalaryInfoDTO.getPageSize();
+        List<ItemSalary> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<ItemSalaryInfoVO> list = convertToSalaryInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<ItemSalaryInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -64,11 +81,11 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         }
 
         List<String> itemUIdList = list.stream().map(ItemSalary::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(ItemSalary::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<ItemSalaryInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){

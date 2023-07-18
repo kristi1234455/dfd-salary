@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.ScientificSalaryAddDTO;
-import com.dfd.dto.ScientificSalaryDTO;
-import com.dfd.dto.ScientificSalaryDelDTO;
-import com.dfd.dto.ScientificSalaryInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ScientificSalaryMapper;
@@ -52,10 +49,30 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ScientificSalary :: getCreatedTime);
 
-        Page<ScientificSalary> pageReq = new Page(scientificSalaryInfoDTO.getCurrentPage(), scientificSalaryInfoDTO.getPageSize());
-        IPage<ScientificSalary> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<ScientificSalaryInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToInfoVO(page.getRecords()));
+        Integer pageNum = scientificSalaryInfoDTO.getCurrentPage();
+        Integer pageSize = scientificSalaryInfoDTO.getPageSize();
+        List<ScientificSalary> members = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (members.size() + pageSize - 1) / pageSize;
+        List<ScientificSalaryInfoVO> list = convertToInfoVO(members);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<ScientificSalaryInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -65,11 +82,11 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
         }
 
         List<String> itemUIdList = list.stream().map(ScientificSalary::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(ScientificSalary::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<ScientificSalaryInfoVO> result = list.stream().map(salary -> {
             if(!Optional.ofNullable(salary).isPresent()){

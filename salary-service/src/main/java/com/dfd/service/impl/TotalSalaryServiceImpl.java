@@ -69,11 +69,11 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         }
 
         List<String> itemUIdList = list.stream().map(TotalSalary::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(TotalSalary::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<SpecialInfoVO> result = list.stream().map(element -> {
             if(!Optional.ofNullable(element).isPresent()){

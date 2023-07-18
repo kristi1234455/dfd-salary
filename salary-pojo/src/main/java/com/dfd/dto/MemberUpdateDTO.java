@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,8 @@ public class MemberUpdateDTO {
     /**
      * uid
      */
-    @ApiModelProperty(value = "uid", name = "uid")
+    @ApiModelProperty(value = "uid", name = "uid",required = true)
+    @NotBlank(message = "uid不能为空")
     private String uid;
 
     /**

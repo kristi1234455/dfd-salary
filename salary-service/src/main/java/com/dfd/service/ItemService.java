@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.Item;
 import com.dfd.utils.PageResult;
+import com.dfd.vo.ItemBidInfoVO;
+import com.dfd.vo.ItemEpcInfoVO;
 import com.dfd.vo.ItemInfoVO;
+import com.dfd.vo.ItemScientificInfoVO;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,8 @@ public interface ItemService extends IService<Item> {
      * @return
      */
     PageResult<ItemInfoVO> queryItemList(ItemInfoQueryDTO itemInfoQueryDTO);
+
+    ItemEpcInfoVO infoEpc(ItemEpcInfoDTO itemEpcInfoDTO);
 
     /**
      * 保存EPC项目信息
@@ -51,6 +56,8 @@ public interface ItemService extends IService<Item> {
      */
     void deleteEpcItemPlan(ItemPlanDelDTO itemPlanDelDTO);
 
+    ItemBidInfoVO infoBid(ItemBidInfoDTO itemBidInfoDTO);
+
     /**
      * 保存投标项目信息
      * @param bidItemDTO
@@ -69,6 +76,9 @@ public interface ItemService extends IService<Item> {
      * @param bidItemDTO
      */
     void deleteBid(BidItemDelDTO bidItemDTO);
+
+    ItemScientificInfoVO infoScientific(ItemScientificInfoDTO itemScientificInfoDTO);
+
     /**
      * 保存科研项目信息
      * @param scientificVO
@@ -94,5 +104,6 @@ public interface ItemService extends IService<Item> {
      * @param uids
      * @return
      */
-    Map<Integer, String> queryNameByUids(List<String> uids);
+    Map<String, String> queryNameByUids(List<String> uids);
+
 }

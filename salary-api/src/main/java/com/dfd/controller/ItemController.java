@@ -4,7 +4,10 @@ import com.dfd.dto.*;
 import com.dfd.service.ItemService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
+import com.dfd.vo.ItemBidInfoVO;
+import com.dfd.vo.ItemEpcInfoVO;
 import com.dfd.vo.ItemInfoVO;
+import com.dfd.vo.ItemScientificInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,12 @@ public class ItemController {
     @PostMapping("/info")
     public DFDResult<PageResult<ItemInfoVO>> info(@RequestBody @Valid ItemInfoQueryDTO itemInfoQueryDTO) {
         return DFDResult.sucess(itemService.queryItemList(itemInfoQueryDTO));
+    }
+
+    @ApiOperation(value = "查询EPC项目信息", httpMethod = "POST")
+    @PostMapping("/info/epc")
+    public DFDResult<ItemEpcInfoVO> infoEpc(@RequestBody @Valid ItemEpcInfoDTO itemEpcInfoDTO) {
+        return DFDResult.sucess(itemService.infoEpc(itemEpcInfoDTO));
     }
 
     @ApiOperation(value = "保存EPC项目信息", httpMethod = "POST")
@@ -66,6 +75,12 @@ public class ItemController {
         return DFDResult.sucess();
     }
 
+    @ApiOperation(value = "查询投标项目信息", httpMethod = "POST")
+    @PostMapping("/info/bid")
+    public DFDResult<ItemBidInfoVO> infoBid(@RequestBody @Valid ItemBidInfoDTO itemBidInfoDTO) {
+        return DFDResult.sucess(itemService.infoBid(itemBidInfoDTO));
+    }
+
     @ApiOperation(value = "保存投标项目信息", httpMethod = "POST")
     @PostMapping("/save/bid")
     public DFDResult saveBid(@RequestBody @Valid BidItemDTO bidItemDTO) {
@@ -81,10 +96,16 @@ public class ItemController {
     }
 
     @ApiOperation(value = "删除投标项目信息", httpMethod = "POST")
-    @DeleteMapping("/delete/bid")
+    @PostMapping("/delete/bid")
     public DFDResult deleteBid(@RequestBody @Valid BidItemDelDTO bidItemDTO) {
         itemService.deleteBid(bidItemDTO);
         return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "查询科研项目信息", httpMethod = "POST")
+    @PostMapping("/info/scientific")
+    public DFDResult<ItemScientificInfoVO> infoScientific(@RequestBody @Valid ItemScientificInfoDTO itemScientificInfoDTO) {
+        return DFDResult.sucess(itemService.infoScientific(itemScientificInfoDTO));
     }
 
     @ApiOperation(value = "保存科研项目信息", httpMethod = "POST")
@@ -102,7 +123,7 @@ public class ItemController {
     }
 
     @ApiOperation(value = "删除科研项目信息", httpMethod = "POST")
-    @DeleteMapping("/delete/scientific")
+    @PostMapping("/delete/scientific")
     public DFDResult deleteScientific(@RequestBody @Valid ScientificItemDelDTO scientificItemDelDTO) {
         itemService.deleteScientific(scientificItemDelDTO);
         return DFDResult.sucess();

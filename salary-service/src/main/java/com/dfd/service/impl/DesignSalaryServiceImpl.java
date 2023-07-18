@@ -22,6 +22,7 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
+import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +51,30 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(DesignSalary :: getCreatedTime);
 
-        Page<DesignSalary> pageReq = new Page(designSalaryInfoDTO.getCurrentPage(), designSalaryInfoDTO.getPageSize());
-        IPage<DesignSalary> page = baseMapper.selectPage(pageReq, queryWrapper);
-        PageResult<DesignSalaryInfoVO> pageResult = new PageResult(page)
-                .setRecords(convertToSalaryInfoVO(page.getRecords()));
+        Integer pageNum = designSalaryInfoDTO.getCurrentPage();
+        Integer pageSize = designSalaryInfoDTO.getPageSize();
+        List<DesignSalary> olist = baseMapper.selectList(queryWrapper);
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+        List<DesignSalaryInfoVO> list = convertToSalaryInfoVO(olist);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<DesignSalaryInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
         return pageResult;
     }
 
@@ -63,11 +84,11 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         }
 
         List<String> itemUIdList = list.stream().map(DesignSalary::getItemUid).collect(Collectors.toList());
-        Map<Integer, String> itemNames = itemService.queryNameByUids(itemUIdList);
+        Map<String, String> itemNames = itemService.queryNameByUids(itemUIdList);
 
         List<String> memUIdList = list.stream().map(DesignSalary::getItemMemberUid).collect(Collectors.toList());
-        Map<Integer, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
-        Map<Integer, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         List<DesignSalaryInfoVO> result = list.stream().map(designSalary -> {
             if(!Optional.ofNullable(designSalary).isPresent()){
