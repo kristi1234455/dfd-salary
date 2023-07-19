@@ -6,9 +6,6 @@
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="submitter" property="submitter" jdbcType="VARCHAR" />
-    <result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
-    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
     <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
     <result column="task_name" property="taskName" jdbcType="VARCHAR" />
     <result column="task_status" property="taskStatus" jdbcType="INTEGER" />

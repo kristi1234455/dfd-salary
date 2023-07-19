@@ -33,12 +33,6 @@ public class CheckListVO implements Serializable {
     private String itemUid;
 
     /**
-     * 审核人
-     */
-    @ApiModelProperty(value = "审核人", name = "auditor")
-    private String auditor;
-
-    /**
      * 审核时间
      */
     @ApiModelProperty(value = "审核时间", name = "auditTime")

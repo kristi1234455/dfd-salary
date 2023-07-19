@@ -5,7 +5,10 @@ import com.dfd.dto.*;
 import com.dfd.entity.CheckList;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.CheckListNormalVO;
+import com.dfd.vo.CheckListPartInfoVO;
 import com.dfd.vo.CheckListVO;
+
+import java.util.List;
 
 /**
  * @author yy
@@ -15,12 +18,9 @@ public interface CheckListService extends IService<CheckList> {
 
     PageResult<CheckListVO> info(CheckLisQueryDTO checkLisQueryDTO);
 
-    CheckListNormalVO infoNormal(CheckListNormalDTO normalDTO);
-
     void handle(CheckListHandleDTO checkListHandleDTO);
 
     void partSubmit(CheckListPartSubmitDTO partSubmitDTO);
 
-    void partHandle(CheckListPartHandleDTO partHandleDTO);
-
+    List<CheckListPartInfoVO> partInfo(CheckListPartInfoDTO partInfoDTO);
 }

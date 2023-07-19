@@ -1,4 +1,4 @@
-package com.dfd.dto;
+package com.dfd.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,29 +17,19 @@ import java.util.Date;
 @Builder
 @ApiModel
 @Accessors(chain = true)
-public class CheckListHandleDTO implements Serializable {
-
+public class CheckListPartInfoVO implements Serializable {
     private static final long serialVersionUID = -7079940868863860032L;
-
-    /**
-     * 审核数据uid
-     */
-    @ApiModelProperty(value = "uid", name = "uid")
-    @NotBlank(message = "uid不能为空")
-    private String uid;
 
     /**
      * 审核人uid
      */
-    @ApiModelProperty(value = "审核人uid", name = "auditor")
-    @NotBlank(message = "审核人uid不能为空")
+    @ApiModelProperty(value = "审核人uid", name = "auditorUid")
     private String auditorUid;
 
     /**
      * 审核人名字
      */
     @ApiModelProperty(value = "审核人名字", name = "auditorName")
-    @NotBlank(message = "审核人名字不能为空")
     private String auditorName;
 
     /**
@@ -50,16 +39,26 @@ public class CheckListHandleDTO implements Serializable {
     private Date auditTime;
 
     /**
+     * 审核任务名字
+     */
+    @ApiModelProperty(value = "审核任务名字", name = "taskName")
+    private String taskName;
+
+    /**
      * 审核任务状态：0，未审核，1，审核通过，2，不通过
      */
     @ApiModelProperty(value = "审核任务状态：0，未审核，1，审核通过，2，不通过", name = "taskStatus")
-    @NotBlank(message = "审核任务状态不能为空")
     private Integer taskStatus;
 
     /**
      * 审核意见
      */
     @ApiModelProperty(value = "审核意见", name = "taskOpinion")
-    @NotBlank(message = "审核意见不能为空")
     private String taskOpinion;
+
+    /**
+     * 流程序号
+     */
+    @ApiModelProperty(value = "流程序号", name = "taskSequenceNumber")
+    private Integer taskSequenceNumber;
 }

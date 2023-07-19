@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.Item;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.ItemBidInfoVO;
-import com.dfd.vo.ItemEpcInfoVO;
-import com.dfd.vo.ItemInfoVO;
-import com.dfd.vo.ItemScientificInfoVO;
+import com.dfd.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -106,4 +103,10 @@ public interface ItemService extends IService<Item> {
      */
     Map<String, String> queryNameByUids(List<String> uids);
 
+    /**
+     * 根据itemuid获取当前项目下的审核人员流程
+     * @param itemUid
+     * @return
+     */
+    List<CheckListNormalVO> queryCheckListByUid(String itemUid);
 }

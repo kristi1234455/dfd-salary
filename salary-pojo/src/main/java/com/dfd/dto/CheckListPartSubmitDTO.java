@@ -30,10 +30,28 @@ public class CheckListPartSubmitDTO implements Serializable {
     private String itemUid;
 
     /**
-     * 提交人
+     * 审核人uid
      */
-    @ApiModelProperty(value = "提交人", name = "submitter")
-    @NotBlank(message = "提交人uid不能为空")
-    private String submitter;
+    @ApiModelProperty(value = "审核人uid", name = "auditorUid")
+    private String auditorUid;
+
+    /**
+     * 审核人名字
+     */
+    @ApiModelProperty(value = "审核人名字", name = "auditorName")
+    private String auditorName;
+
+    /**
+     * 审核任务状态：0，未审核，1，审核通过，2，不通过
+     */
+    @ApiModelProperty(value = "审核任务状态：0，未审核，1，审核通过，2，不通过", name = "taskStatus")
+    private Integer taskStatus;
+
+    /**
+     * 审核意见
+     */
+    @ApiModelProperty(value = "审核意见", name = "taskOpinion")
+    private String taskOpinion;
+
 
 }

@@ -7,6 +7,7 @@ import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.AttendanceInfoVO;
 import com.dfd.vo.AttendanceMonInfoVO;
+import com.dfd.vo.CheckListPartInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author yy
@@ -86,11 +88,10 @@ public class AttendanceController {
         return DFDResult.sucess();
     }
 
-    @ApiOperation(value = "审核：处理审核流程", httpMethod = "POST")
-    @PostMapping("/audit/part/handle")
-    public DFDResult partHandle(@RequestBody @Valid CheckListPartHandleDTO partHandleDTO){
-        checkListService.partHandle(partHandleDTO);
-        return DFDResult.sucess();
+    @ApiOperation(value = "审核：获取当前项目的审核流程", httpMethod = "POST")
+    @PostMapping("/audit/part/info")
+    public DFDResult<List<CheckListPartInfoVO>> partInfo(@RequestBody @Valid CheckListPartInfoDTO partInfoDTO){
+        return DFDResult.sucess(checkListService.partInfo(partInfoDTO));
     }
 
 }

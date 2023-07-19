@@ -1,6 +1,7 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.stream.CollectorUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
+import com.dfd.enums.TaskEnum;
 import com.dfd.mapper.CheckListMapper;
 import com.dfd.service.CheckListService;
 import com.dfd.service.ItemService;
@@ -68,7 +70,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     || currentUid.equals(item.getDepartmenLeader())) {
 
                 LambdaQueryWrapper<CheckList> wrapper = new LambdaQueryWrapper();
-                wrapper.eq(StringUtils.isNotBlank(currentUid), CheckList:: getAuditor, currentUid)
+                wrapper.eq(StringUtils.isNotBlank(currentUid), CheckList:: getAuditorUid, currentUid)
                         .like(StringUtils.isNotBlank(checkLisQueryDTO.getTaskName()), CheckList:: getTaskName, checkLisQueryDTO.getTaskName())
                         .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
                 wrapper.orderByDesc(CheckList :: getCreatedTime);
@@ -120,44 +122,6 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
     }
 
     @Override
-    public CheckListNormalVO infoNormal(CheckListNormalDTO normalDTO) {
-        CheckListNormalVO result = new CheckListNormalVO();
-        String submitter = null;
-        String leader = null;
-        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotBlank(normalDTO.getItemUid()), Item:: getUid, normalDTO.getItemUid())
-                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        Item item = itemService.getOne(queryWrapper);
-        if(StringUtils.isNotEmpty(item.getBidDirector())){
-            submitter =item.getBidDirector();
-        }else if(StringUtils.isNotEmpty(item.getItemManager())) {
-            submitter = item.getItemManager();
-        }else if(StringUtils.isNotEmpty(item.getDesignManager())) {
-            submitter = item.getDesignManager();
-        }else if(StringUtils.isNotEmpty(item.getScientificManager())) {
-            submitter = item.getScientificManager();
-        }else {
-            throw new BusinessException("该项目没有指定项目经理，请指定");
-        }
-
-        if(StringUtils.isNotEmpty(item.getBidDirector())){
-            submitter =item.getBidDirector();
-        }else if(StringUtils.isNotEmpty(item.getItemManager())) {
-            submitter = item.getItemManager();
-        }else if(StringUtils.isNotEmpty(item.getDesignManager())) {
-            submitter = item.getDesignManager();
-        }else if(StringUtils.isNotEmpty(item.getScientificManager())) {
-            submitter = item.getScientificManager();
-        }else {
-            throw new BusinessException("该项目没有指定项目经理，请指定");
-        }
-
-        return null;
-    }
-
-
-
-    @Override
     public void handle(CheckListHandleDTO checkListHandleDTO) {
         LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(checkListHandleDTO.getUid()), CheckList:: getUid, checkListHandleDTO.getUid())
@@ -169,7 +133,8 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         LambdaUpdateWrapper<CheckList> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(checkListHandleDTO.getUid()), CheckList:: getUid, checkListHandleDTO.getUid())
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
-                .set(StringUtils.isNotBlank(checkListHandleDTO.getAuditor()), CheckList:: getAuditor, checkListHandleDTO.getAuditor())
+                .set(StringUtils.isNotBlank(checkListHandleDTO.getAuditorUid()), CheckList:: getAuditorUid, checkListHandleDTO.getAuditorUid())
+                .set(StringUtils.isNotBlank(checkListHandleDTO.getAuditorName()), CheckList:: getAuditorName, checkListHandleDTO.getAuditorName())
                 .set(CheckList:: getAuditTime, new Date())
                 .set(checkListHandleDTO.getTaskStatus()!=null, CheckList::getTaskStatus, checkListHandleDTO.getTaskStatus())
                 .set(StringUtils.isNotBlank(checkListHandleDTO.getTaskOpinion()), CheckList:: getTaskOpinion, checkListHandleDTO.getTaskOpinion())
@@ -184,36 +149,151 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
     @Override
     public void partSubmit(CheckListPartSubmitDTO partSubmitDTO) {
         String currentUri = request.getRequestURI();
+        User currentUser = UserRequest.getCurrentUser();LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(StringUtils.isNotBlank(partSubmitDTO.getItemUid()), Item:: getUid, partSubmitDTO.getItemUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemService.getOne(wrapper);
+
         LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(partSubmitDTO.getItemUid()), CheckList:: getItemUid, partSubmitDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(currentUri), CheckList:: getUrl, currentUri)
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        if(baseMapper.exists(queryWrapper)){
-            throw new BusinessException("该项目下的页面审核数据已经存在，无法重复提交！");
+        List<CheckList> checkLists = baseMapper.selectList(queryWrapper);
+
+        if(checkLists.isEmpty()) {
+            CheckList var = new CheckList();
+            BeanUtil.copyProperties(partSubmitDTO,var);
+            var.setUid(UUIDUtil.getUUID32Bits())
+                    .setUrl(currentUri)
+                    .setAuditTime(new Date())
+                    .setTaskName("这是一个需要处理的"+item.getItemName())
+                    .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
+                    .setCreatedBy(currentUser.getPhone())
+                    .setUpdatedBy(currentUser.getPhone())
+                    .setCreatedTime(new Date())
+                    .setUpdatedTime(new Date())
+                    .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+            boolean b = this.save(var);
+            if (!b) {
+                throw new BusinessException("审核数据保存失败");
+            }
+            return;
         }
-        User currentUser = UserRequest.getCurrentUser();
-        CheckList var = new CheckList();
-        BeanUtil.copyProperties(partSubmitDTO,var);
-        var.setUid(UUIDUtil.getUUID32Bits())
-                .setUrl(currentUri)
-                .setSubmitTime(new Date())
-                .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
-                .setCreatedTime(new Date())
-                .setUpdatedTime(new Date())
-                .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-        boolean b = this.saveOrUpdate(var);
-        if (!b) {
-            throw new BusinessException("投标状态保存失败");
+
+        CheckList dataMaxCheckList = getMaxObj(checkLists);
+        CheckList dataMinCheckList = getMinObj(checkLists);
+        if(ObjectUtil.isNotEmpty(dataMaxCheckList)){
+            if(dataMaxCheckList.getTaskStatus().equals(TaskEnum.TASK_UNPASS.getCode())) {
+                if(!partSubmitDTO.getAuditorUid().equals(dataMinCheckList.getAuditorUid())) {
+                    throw new BusinessException("上级审核不通过，重新填报");
+                }
+            }else{
+                CheckList var = new CheckList();
+                BeanUtil.copyProperties(partSubmitDTO,var);
+                var.setUid(UUIDUtil.getUUID32Bits())
+                        .setUrl(currentUri)
+                        .setAuditTime(new Date())
+                        .setTaskName("这是一个需要处理的"+item.getItemName())
+                        .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() + 1)
+                        .setCreatedBy(currentUser.getPhone())
+                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                boolean b = this.save(var);
+                if (!b) {
+                    throw new BusinessException("审核数据保存失败");
+                }
+            }
         }
+
     }
 
     @Override
-    public void partHandle(CheckListPartHandleDTO partHandleDTO) {
-        CheckList checkList = new CheckList();
-        BeanUtils.copyProperties(partHandleDTO, checkList);
-        checkList.setUrl(request.getRequestURL().toString());
+    public List<CheckListPartInfoVO> partInfo(CheckListPartInfoDTO partInfoDTO) {
+        String currentUri = request.getRequestURI();
+        LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(partInfoDTO.getItemUid()), CheckList:: getItemUid, partInfoDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(currentUri), CheckList:: getUrl, currentUri)
+                .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<CheckList> dataFinishedFlow = baseMapper.selectList(queryWrapper);
 
+        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partInfoDTO.getItemUid());
+        if(dataFinishedFlow.isEmpty()){
+            List<CheckListPartInfoVO> collect = normalFlow.stream().map(e -> new CheckListPartInfoVO()
+                            .setAuditorUid(e.getAuditorUid())
+                            .setAuditorName(e.getAuditorName())
+                            .setTaskSequenceNumber(e.getTaskSequenceNumber())
+                            .setTaskStatus(TaskEnum.TASK_UNDO.getCode()))
+                    .collect(Collectors.toList());
+            return collect;
+        }
+
+        List<CheckListPartInfoVO> resultFlow = Collections.emptyList();
+        CheckList dataMaxFinishedFlow = getMaxObj(dataFinishedFlow);
+        if(ObjectUtil.isNotEmpty(dataMaxFinishedFlow)){
+            if(dataMaxFinishedFlow.getTaskStatus().equals(TaskEnum.TASK_UNPASS.getCode())) {
+                dataFinishedFlow.stream().forEach(e -> {
+                    CheckListPartInfoVO var = new CheckListPartInfoVO();
+                    BeanUtils.copyProperties(e, var);
+                    resultFlow.add(var);
+                });
+                int sequence = dataMaxFinishedFlow.getTaskSequenceNumber() + 1;
+                for(CheckListNormalVO e : normalFlow) {
+                    CheckListPartInfoVO var = new CheckListPartInfoVO();
+                    BeanUtils.copyProperties(e, var);
+                    var.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                            .setTaskSequenceNumber(sequence);
+                    resultFlow.add(var);
+                    sequence++;
+                }
+                return resultFlow;
+            }else{
+                dataFinishedFlow.stream().forEach(e -> {
+                    CheckListPartInfoVO var = new CheckListPartInfoVO();
+                    BeanUtils.copyProperties(e, var);
+                    resultFlow.add(var);
+                });
+                int sequence = dataMaxFinishedFlow.getTaskSequenceNumber() + 1;
+                List<CheckListNormalVO> unfinishedFlow = normalFlow.stream().filter(normal -> dataFinishedFlow.stream().noneMatch(datafinished -> datafinished.getAuditorUid().equals(normal.getAuditorUid())))
+                        .collect(Collectors.toList());
+                for(CheckListNormalVO unfinish : unfinishedFlow){
+                        CheckListPartInfoVO var = new CheckListPartInfoVO();
+                        BeanUtils.copyProperties(unfinish, var);
+                        var.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                                .setTaskSequenceNumber(sequence);
+                        resultFlow.add(var);
+                        sequence++;
+                }
+                return resultFlow;
+            }
+        }
+        return resultFlow;
     }
+
+    private CheckList getMaxObj(List<CheckList> checkLists){
+        CheckList dataMaxCheckList = null;
+        int maxTaskSequenceNumber = 1;
+        for(CheckList checkList : checkLists){
+            int dataTaskNumber = checkList.getTaskSequenceNumber();
+            if( dataTaskNumber > maxTaskSequenceNumber){
+                maxTaskSequenceNumber = dataTaskNumber;
+                dataMaxCheckList = checkList;
+            }
+        }
+        return dataMaxCheckList;
+    }
+
+    private CheckList getMinObj(List<CheckList> checkLists){
+        CheckList dataMinCheckList = null;
+        int maxTaskSequenceNumber = 1;
+        for(CheckList checkList : checkLists){
+            int dataTaskNumber = checkList.getTaskSequenceNumber();
+            if(dataTaskNumber == maxTaskSequenceNumber){
+                dataMinCheckList = checkList;
+            }
+        }
+        return dataMinCheckList;
+    }
+
 }

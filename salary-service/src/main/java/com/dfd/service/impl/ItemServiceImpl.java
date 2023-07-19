@@ -583,5 +583,92 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         return itemNames;
     }
 
+    @Override
+    public List<CheckListNormalVO> queryCheckListByUid(String itemUid) {
+        List<CheckListNormalVO> result = new ArrayList<>();
+        int taskSequenceNumber = 1;
+
+        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(itemUid), Item:: getUid, itemUid)
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        Item item = itemService.getOne(queryWrapper);
+        BeanUtils.copyProperties(item, result);
+
+        CheckListNormalVO one = new CheckListNormalVO();
+        if(StringUtils.isNotEmpty(item.getItemManager()) && item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())) {
+            one.setAuditorUid(item.getItemManager());
+        }else if(StringUtils.isNotEmpty(item.getBidDirector()) && item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_BID.getCode())){
+            one.setAuditorUid(item.getBidDirector());
+        }else if(StringUtils.isNotEmpty(item.getScientificManager()) && item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())) {
+            one.setAuditorUid(item.getScientificManager());
+        }else if(StringUtils.isNotEmpty(item.getDesignManager())) {
+            one.setAuditorUid(item.getDesignManager());
+        }else {
+            throw new BusinessException("该项目没有指定项目经理，请指定");
+        }
+        one.setTaskSequenceNumber(taskSequenceNumber);
+        result.add(one);
+        taskSequenceNumber++;
+
+
+        if(StringUtils.isNotEmpty(item.getItemLeader())){
+            CheckListNormalVO two = new CheckListNormalVO();
+            two.setAuditorUid(item.getItemLeader());
+            two.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(two);
+        }
+        if(StringUtils.isNotEmpty(item.getAgencyLeader())){
+            CheckListNormalVO two = new CheckListNormalVO();
+            two.setAuditorUid(item.getAgencyLeader());
+            two.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(two);
+        }
+        if(StringUtils.isNotEmpty(item.getDesignLeader())){
+            CheckListNormalVO two = new CheckListNormalVO();
+            two.setAuditorUid(item.getDesignLeader());
+            two.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(two);
+        }
+        if(StringUtils.isNotEmpty(item.getEngineeringLeader())){
+            CheckListNormalVO two = new CheckListNormalVO();
+            two.setAuditorUid(item.getEngineeringLeader());
+            two.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(two);
+        }
+        taskSequenceNumber++;
+
+        if(StringUtils.isNotEmpty(item.getSubLeader())){
+            CheckListNormalVO three = new CheckListNormalVO();
+            three.setAuditorUid(item.getSubLeader());
+            three.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(three);
+            taskSequenceNumber++;
+        }
+
+        if(StringUtils.isNotEmpty(item.getFunctionalLeader())){
+            CheckListNormalVO four = new CheckListNormalVO();
+            four.setAuditorUid(item.getFunctionalLeader());
+            four.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(four);
+            taskSequenceNumber++;
+        }
+
+        if(StringUtils.isNotEmpty(item.getDepartmenLeader())){
+            CheckListNormalVO five = new CheckListNormalVO();
+            five.setAuditorUid(item.getDepartmenLeader());
+            five.setTaskSequenceNumber(taskSequenceNumber);
+            result.add(five);
+            taskSequenceNumber++;
+        }
+
+        List<String> uids = result.stream().map(CheckListNormalVO::getAuditorUid).collect(Collectors.toList());
+        Map<String, String> nameByUids = memberService.queryNameByUids(uids);
+        result.stream().forEach(e -> e.setAuditorName(nameByUids.get(e.getAuditorUid())));
+        result.stream()
+                .sorted(Comparator.comparingInt(CheckListNormalVO::getTaskSequenceNumber))
+                .collect(Collectors.toList());
+        return result;
+    }
+
 
 }

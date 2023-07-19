@@ -28,25 +28,16 @@ public class CheckListController {
     @Autowired
     private CheckListService checkListService;
 
-//    @ApiOperation(value = "获取个人任务待办事项", httpMethod = "POST")
+    @ApiOperation(value = "获取个人任务待办事项", httpMethod = "POST")
     @PostMapping("/info")
     public DFDResult<PageResult<CheckListVO>> info(@RequestBody @Valid CheckLisQueryDTO checkLisQueryDTO){
         return DFDResult.sucess(checkListService.info(checkLisQueryDTO));
     }
 
-
-    @ApiOperation(value = "获取当前项目正常审核流程", httpMethod = "POST")
-    @PostMapping("/info/normal")
-    public DFDResult<CheckListNormalVO> infoNormal(@RequestBody @Valid CheckListNormalDTO normalDTO){
-        return DFDResult.sucess(checkListService.infoNormal(normalDTO));
-    }
-
-//    @ApiOperation(value = "处理任务待办事项", httpMethod = "POST")
+    @ApiOperation(value = "处理任务待办事项", httpMethod = "POST")
     @PostMapping("/handle")
     public DFDResult handle(@RequestBody @Valid CheckListHandleDTO checkListHandleDTO){
         checkListService.handle(checkListHandleDTO);
         return DFDResult.sucess();
     }
-
-
 }

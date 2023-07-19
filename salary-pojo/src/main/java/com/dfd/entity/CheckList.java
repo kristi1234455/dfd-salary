@@ -45,22 +45,16 @@ public class CheckList {
     private String url;
 
     /**
-     * 提交人
+     * 审核人uid
      */
-    @ApiModelProperty(value = "提交人", name = "submitter")
-    private String submitter;
+    @ApiModelProperty(value = "审核人uid", name = "auditorUid")
+    private String auditorUid;
 
     /**
-     * 提交时间
+     * 审核人名字
      */
-    @ApiModelProperty(value = "提交时间", name = "submitTime")
-    private Date submitTime;
-
-    /**
-     * 审核人
-     */
-    @ApiModelProperty(value = "审核人", name = "auditor")
-    private String auditor;
+    @ApiModelProperty(value = "审核人名字", name = "auditorName")
+    private String auditorName;
 
     /**
      * 审核时间

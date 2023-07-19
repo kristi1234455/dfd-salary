@@ -21,79 +21,21 @@ public class CheckListNormalVO implements Serializable {
     private static final long serialVersionUID = -7079940868863860032L;
 
     /**
-     * uid
+     * 审核人uid
      */
-    @ApiModelProperty(value = "uid", name = "uid")
-    private String uid;
+    @ApiModelProperty(value = "审核人uid", name = "auditorUid")
+    private String auditorUid;
 
     /**
-     * 提交人
+     * 审核人名字
      */
-    @ApiModelProperty(value = "提交人", name = "submitter")
-    private String submitter;
-
+    @ApiModelProperty(value = "审核人名字", name = "auditorName")
+    private String auditorName;
 
     /**
-     * 所长
+     * 流程序号
      */
-    @ApiModelProperty(value = "所长", name = "leader")
-    private String leader;
+    @ApiModelProperty(value = "流程序号", name = "taskSequenceNumber")
+    private Integer taskSequenceNumber;
 
-
-
-
-    /**
-     * 项目管理所
-     */
-    @ApiModelProperty(value = "项目管理所", name = "itemLeader")
-    private String itemLeader;
-
-    /**
-     * 经营所
-     */
-    @ApiModelProperty(value = "经营所", name = "agencyLeader")
-    private String agencyLeader;
-
-    /**
-     * 设计所
-     */
-    @ApiModelProperty(value = "设计所", name = "designLeader")
-    private String designLeader;
-
-    /**
-     * 工程所
-     */
-    @ApiModelProperty(value = "工程所", name = "engineeringLeader")
-    private String engineeringLeader;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 部门分管领导
-     */
-    @ApiModelProperty(value = "部门分管领导", name = "subLeader")
-    private String subLeader;
-
-    /**
-     * 部门职能领导
-     */
-    @ApiModelProperty(value = "部门职能领导", name = "functionalLeader")
-    private String functionalLeader;
-
-    /**
-     * 部门负责人
-     */
-    @ApiModelProperty(value = "部门负责人", name = "departmenLeader")
-    private String departmenLeader;
 }
