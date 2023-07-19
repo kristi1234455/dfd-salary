@@ -1,9 +1,11 @@
 package com.dfd.controller;
 
 import com.dfd.dto.*;
+import com.dfd.service.CheckListService;
 import com.dfd.service.DesignSalaryService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
+import com.dfd.vo.CheckListPartInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author yy
@@ -51,5 +54,21 @@ public class DesignSalaryController {
     public DFDResult delete(@RequestBody @Valid DesignSalaryDelDTO designSalaryDelDTO){
         designSalaryService.delete(designSalaryDelDTO);
         return DFDResult.sucess();
+    }
+
+    @Autowired
+    private CheckListService checkListService;
+
+    @ApiOperation(value = "审核：提交审核流程", httpMethod = "POST")
+    @PostMapping("/audit/part/submit")
+    public DFDResult partSubmit(@RequestBody @Valid CheckListPartSubmitDTO partSubmitDTO){
+        checkListService.partSubmit(partSubmitDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "审核：获取当前项目的审核流程", httpMethod = "POST")
+    @PostMapping("/audit/part/info")
+    public DFDResult<List<CheckListPartInfoVO>> partInfo(@RequestBody @Valid CheckListPartInfoDTO partInfoDTO){
+        return DFDResult.sucess(checkListService.partInfo(partInfoDTO));
     }
 }

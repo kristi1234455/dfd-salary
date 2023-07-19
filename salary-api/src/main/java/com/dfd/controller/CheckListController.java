@@ -34,7 +34,7 @@ public class CheckListController {
         return DFDResult.sucess(checkListService.info(checkLisQueryDTO));
     }
 
-    @ApiOperation(value = "处理任务待办事项", httpMethod = "POST")
+    @ApiOperation(value = "处理个人任务待办事项", httpMethod = "POST")
     @PostMapping("/handle")
     public DFDResult handle(@RequestBody @Valid CheckListHandleDTO checkListHandleDTO){
         checkListService.handle(checkListHandleDTO);
