@@ -17,7 +17,7 @@ import java.util.List;
 public interface CheckListService extends IService<CheckList> {
 
     /**
-     * 获取各人任务待办事项
+     * 获取个人任务待办事项
      * @param checkLisQueryDTO
      * @return
      */
@@ -30,13 +30,13 @@ public interface CheckListService extends IService<CheckList> {
     void handle(CheckListHandleDTO checkListHandleDTO);
 
     /**
-     * 各个模块处理各个模块的审核流程
+     * 各个模块 处理 各个模块的审核流程
      * @param partSubmitDTO
      */
     void partSubmit(CheckListPartSubmitDTO partSubmitDTO);
 
     /**
-     * 各个模块获取各个模块的审核流程
+     * 各个模块 获取 各个模块的审核流程
      * @param partInfoDTO
      * @return
      */
