@@ -15,6 +15,7 @@ import com.dfd.dto.*;
 import com.dfd.entity.*;
 import com.dfd.enums.RoleEnum;
 import com.dfd.mapper.ItemMapper;
+import com.dfd.mapper.ItemPlanMapper;
 import com.dfd.mapper.UserMapper;
 import com.dfd.service.ItemMemberService;
 import com.dfd.service.ItemPlanService;
@@ -51,6 +52,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     @Autowired
     private ItemPlanService itemPlanService;
+
+    @Autowired
+    private ItemPlanMapper itemPlanMapper;
 
     @Autowired
     private ItemMemberService itemMemberService;
@@ -134,10 +138,10 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         ItemEpcInfoVO result = new ItemEpcInfoVO();
         BeanUtil.copyProperties(item,result);
 
-        LambdaQueryWrapper<ItemPlan> wrapper = new LambdaQueryWrapper();
-        wrapper.eq(StringUtils.isNotBlank(itemEpcInfoDTO.getUid()), ItemPlan::getItemUid,itemEpcInfoDTO.getUid())
+        LambdaQueryWrapper<ItemPlan> itemPlanLambdaQueryWrapper = new LambdaQueryWrapper();
+        itemPlanLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemEpcInfoDTO.getUid()), ItemPlan::getItemUid,itemEpcInfoDTO.getUid())
                 .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        List<ItemPlan> list = itemPlanService.list(wrapper);
+        List<ItemPlan> list = itemPlanMapper.selectList(itemPlanLambdaQueryWrapper);
 
         List<String> memUIdList = list.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
         Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
@@ -148,6 +152,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 throw new BusinessException("策划系数数据为空");
             }
             ItemPlanInfoVO itemPlanInfoVO = new ItemPlanInfoVO();
+            BeanUtil.copyProperties(itemPlan,itemPlanInfoVO);
             itemPlanInfoVO.setItemName(item.getItemName())
                     .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemPlan.getItemMemberUid()) : null)
                     .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemPlan.getItemMemberUid()) : null);
@@ -182,8 +187,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String uuid = UUIDUtil.getUUID32Bits();
         item.setUid(uuid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -197,8 +202,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 itemPlan.setUid(UUIDUtil.getUUID32Bits())
                         .setItemUid(uuid)
                         .setItemMemberUid(itemPlanDTO.getItemMemberUid())
-                        .setCreatedBy(currentUser.getPhone())
-                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
                         .setUpdatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -334,7 +339,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 throw new BusinessException("策划系数数据为空");
             }
             ItemMemberDTO itemMemberDTO = new ItemMemberDTO();
-            itemMemberDTO.setMemberUid(itemMember.getUid())
+            itemMemberDTO.setMemberUid(itemMember.getMemberUid())
                     .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemMember.getMemberUid()) : null)
                     .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemMember.getMemberUid()) : null);
             return itemMemberDTO;
@@ -365,8 +370,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = UUIDUtil.getUUID32Bits();
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -383,8 +388,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 ItemMember itemMember = new ItemMember()
                         .setItemUid(itemUid)
                         .setMemberUid(e)
-                        .setCreatedBy(currentUser.getPhone())
-                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
                         .setUpdatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -468,7 +473,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 throw new BusinessException("策划系数数据为空");
             }
             ItemMemberDTO itemMemberDTO = new ItemMemberDTO();
-            itemMemberDTO.setMemberUid(itemMember.getUid())
+            itemMemberDTO.setMemberUid(itemMember.getMemberUid())
                     .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemMember.getMemberUid()) : null)
                     .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemMember.getMemberUid()) : null);
             return itemMemberDTO;
@@ -499,8 +504,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         BeanUtil.copyProperties(scientificVO,item);
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -514,8 +519,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 ItemMember itemMember = new ItemMember()
                         .setItemUid(itemUid)
                         .setMemberUid(e)
-                        .setCreatedBy(currentUser.getPhone())
-                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
                         .setUpdatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

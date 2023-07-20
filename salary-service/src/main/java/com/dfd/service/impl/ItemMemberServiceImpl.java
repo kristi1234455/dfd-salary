@@ -66,8 +66,8 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
                     .setItemUid(itemMemberAddListDTO.getItemUid())
                     .setMemberUid(uid)
                     .setDeclareTime(new Date())
-                    .setCreatedBy(currentUser.getPhone())
-                    .setUpdatedBy(currentUser.getPhone())
+                    .setCreatedBy(currentUser.getNumber())
+                    .setUpdatedBy(currentUser.getNumber())
                     .setCreatedTime(new Date())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

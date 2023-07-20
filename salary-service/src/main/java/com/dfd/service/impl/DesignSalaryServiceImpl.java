@@ -118,8 +118,8 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         DesignSalary designSalary = new DesignSalary();
         BeanUtil.copyProperties(designSalaryDTO,designSalary);
         designSalary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

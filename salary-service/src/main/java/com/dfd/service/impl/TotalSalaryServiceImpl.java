@@ -102,8 +102,8 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         TotalSalary totalSalary = new TotalSalary();
         BeanUtil.copyProperties(speciaAddlDTO,totalSalary);
         totalSalary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

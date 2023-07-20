@@ -168,8 +168,8 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     .setAuditTime(new Date())
                     .setTaskName("这是一个需要处理的"+item.getItemName())
                     .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
-                    .setCreatedBy(currentUser.getPhone())
-                    .setUpdatedBy(currentUser.getPhone())
+                    .setCreatedBy(currentUser.getNumber())
+                    .setUpdatedBy(currentUser.getNumber())
                     .setCreatedTime(new Date())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -195,8 +195,8 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                         .setAuditTime(new Date())
                         .setTaskName("这是一个需要处理的"+item.getItemName())
                         .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() + 1)
-                        .setCreatedBy(currentUser.getPhone())
-                        .setUpdatedBy(currentUser.getPhone())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
                         .setUpdatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

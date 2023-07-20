@@ -30,7 +30,7 @@ public class BidItemUpdateDTO implements Serializable {
     /**
      * uid
      */
-    @ApiModelProperty(value = "uid", name = "uid")
+    @ApiModelProperty(value = "uid", name = "uid", required = true)
     @NotBlank(message = "uid不能为空")
     private String uid;
 

@@ -117,8 +117,8 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Subsidy salary = new Subsidy();
         BeanUtil.copyProperties(subsidyOvertimeDTO,salary);
         salary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -240,8 +240,8 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Subsidy salary = new Subsidy();
         BeanUtil.copyProperties(subsidyNightDTO,salary);
         salary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -362,8 +362,8 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Subsidy salary = new Subsidy();
         BeanUtil.copyProperties(subsidyOutDTO,salary);
         salary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
@@ -482,8 +482,8 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Subsidy salary = new Subsidy();
         BeanUtil.copyProperties(subsidyHeatingDTO,salary);
         salary.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

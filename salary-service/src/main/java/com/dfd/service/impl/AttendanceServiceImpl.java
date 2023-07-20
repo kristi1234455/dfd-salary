@@ -221,8 +221,8 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         Attendance attendance = new Attendance();
         BeanUtil.copyProperties(attendanceDTO,attendance);
         attendance.setUid(UUIDUtil.getUUID32Bits())
-                .setCreatedBy(currentUser.getPhone())
-                .setUpdatedBy(currentUser.getPhone())
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);

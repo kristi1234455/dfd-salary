@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -27,7 +28,8 @@ public class ItemPlanDTO implements Serializable {
     /**
      * 项目人员表uid
      */
-    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid",required = true)
+    @NotBlank(message = "项目人员表uid能为空")
     private String itemMemberUid;
 
 
