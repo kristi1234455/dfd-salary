@@ -581,7 +581,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getItemProperties()), Item:: getItemProperties, scientificItemUpdateDTO.getItemProperties())
                 .set((scientificItemUpdateDTO.getTechnicalFee()!=null), Item:: getTechnicalFee, scientificItemUpdateDTO.getTechnicalFee())
                 .set((scientificItemUpdateDTO.getItemSalary()!=null), Item:: getItemSalary, scientificItemUpdateDTO.getItemSalary())
-                .set((scientificItemUpdateDTO.getPerformanceSalary()!=null), Item:: getItemPerformance, scientificItemUpdateDTO.getPerformanceSalary())
+                .set((scientificItemUpdateDTO.getItemPerformance()!=null), Item:: getItemPerformance, scientificItemUpdateDTO.getItemPerformance())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getScientificManager()), Item:: getItemLeader, scientificItemUpdateDTO.getScientificManager())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getItemLeader()), Item:: getItemLeader, scientificItemUpdateDTO.getItemLeader())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getSubLeader()), Item:: getSubLeader, scientificItemUpdateDTO.getSubLeader())

@@ -121,4 +121,10 @@ public class ItemInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "科研主持人", name = "scientificManager")
     private String scientificManager;
+
+    /**
+     * 项目绩效
+     */
+    @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
+    private BigDecimal itemPerformance;
 }

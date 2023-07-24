@@ -56,7 +56,7 @@ public class ScientificItemDTO implements Serializable {
      * 项目绩效
      */
     @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
-    private BigDecimal performanceSalary;
+    private BigDecimal itemPerformance;
 
     /**
      * 科研主持人

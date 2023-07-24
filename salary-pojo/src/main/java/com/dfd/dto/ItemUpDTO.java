@@ -67,7 +67,7 @@ public class ItemUpDTO implements Serializable {
     /**
      * 项目绩效
      */
-    @ApiModelProperty(value = "项目绩效", name = "itemPerformance")
+    @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
     private BigDecimal itemPerformance;
 
     /**
