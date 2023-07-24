@@ -178,7 +178,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         List<ItemMember> list = itemMemberService.list(wrapper);
 
         if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())) {
-            memUIdList = itemPlanList.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
+            for(ItemPlan e : itemPlanList){
+                memUIdList.add(e.getItemMemberUid());
+            }
         }else{
             for(ItemMember e : list){
                 memUIdList.add(e.getMemberUid());
@@ -320,21 +322,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(Item::getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         List<ItemPlanDTO> itemPlanDTOList = itemDTO.getItemPlanDTOList();
-        List<ItemPlan> list = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(itemPlanDTOList)) {
-            itemPlanDTOList.stream().forEach(itemPlanDTO -> {
-                ItemPlan itemPlan = new ItemPlan();
-                BeanUtil.copyProperties(itemPlanDTO, itemPlan);
-                itemPlan.setUpdatedBy(currentUser.getNumber())
-                        .setUpdatedTime(new Date());
-                list.add(itemPlan);
-            });
-            boolean b = itemPlanService.updateBatchById(list);
-            if (!update || !b) {
-                throw new BusinessException("项目工资更新失败!");
-            }
+        if(CollectionUtil.isNotEmpty(itemPlanDTOList)){
+            itemPlanService.updatePlanByItemId(itemDTO.getUid(), itemPlanDTOList);
         }
-
     }
 
     @Override
@@ -366,15 +356,24 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getIsDeleted, System.currentTimeMillis());
         boolean var = this.update(wrapper);
-
-        LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), ItemPlan::getItemUid, itemDelDTO.getUid())
-                .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
-                .set(ItemPlan::getIsDeleted, System.currentTimeMillis());
-        boolean var1 = itemPlanService.update(updateWrapper);
-
-        if (!var || !var1) {
+        if (!var) {
             throw new BusinessException("EPC项目删除失败!");
+        }
+
+        LambdaQueryWrapper<ItemPlan> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), ItemPlan::getUid, itemDelDTO.getUid())
+                .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        ItemPlan itemPlan = itemPlanMapper.selectOne(queryWrapper);
+        if(itemPlan != null){
+            LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), ItemPlan::getItemUid, itemDelDTO.getUid())
+                    .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
+                    .set(ItemPlan::getUpdatedTime, System.currentTimeMillis())
+                    .set(ItemPlan::getIsDeleted, System.currentTimeMillis());
+            boolean var1 = itemPlanService.update(updateWrapper);
+            if (!var1) {
+                throw new BusinessException("EPC项目删除失败!");
+            }
         }
     }
 
