@@ -20,7 +20,7 @@ public interface ItemService extends IService<Item> {
      */
     PageResult<ItemInfoVO> queryItemList(ItemInfoQueryDTO itemInfoQueryDTO);
 
-    ItemEpcInfoVO infoEpc(ItemEpcInfoDTO itemEpcInfoDTO);
+    ItemInfoDetailVO infoItem(ItemInfoDetailDTO itemEpcInfoDTO);
 
     /**
      * 保存EPC项目信息
@@ -53,7 +53,7 @@ public interface ItemService extends IService<Item> {
      */
     void deleteEpcItemPlan(ItemPlanDelDTO itemPlanDelDTO);
 
-    ItemBidInfoVO infoBid(ItemBidInfoDTO itemBidInfoDTO);
+//    ItemBidInfoVO infoBid(ItemBidInfoDTO itemBidInfoDTO);
 
     /**
      * 保存投标项目信息
@@ -74,7 +74,7 @@ public interface ItemService extends IService<Item> {
      */
     void deleteBid(BidItemDelDTO bidItemDelDTO);
 
-    ItemScientificInfoVO infoScientific(ItemScientificInfoDTO itemScientificInfoDTO);
+//    ItemScientificInfoVO infoScientific(ItemScientificInfoDTO itemScientificInfoDTO);
 
     /**
      * 保存科研项目信息

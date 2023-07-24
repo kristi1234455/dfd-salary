@@ -1,5 +1,6 @@
 package com.dfd.vo;
 
+import com.dfd.dto.ItemMemberDTO;
 import com.dfd.dto.ItemPlanDTO;
 import com.dfd.entity.ItemPlan;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Accessors(chain = true)
-public class ItemEpcInfoVO implements Serializable {
+public class ItemInfoDetailVO implements Serializable {
 
     private static final long serialVersionUID = 247833528975138822L;
     /**
@@ -76,13 +77,34 @@ public class ItemEpcInfoVO implements Serializable {
      * 设计经理
      */
     @ApiModelProperty(value = "设计经理", name = "designManager")
-    private String designManager;
+    private MemberVO designManager;
+
+    /**
+     * 投标经理
+     */
+    @ApiModelProperty(value = "投标经理", name = "bidDirector")
+    private MemberVO bidDirector;
+
+    /**
+     * 科研主持人
+     */
+    @ApiModelProperty(value = "科研主持人", name = "scientificManager")
+    private MemberVO scientificManager;
+
+    /**
+     * 项目成员对象
+     */
+    @ApiModelProperty(value = "项目成员对象", name = "itemPlanDTOList")
+    @NotNull(message = "项目成员对象不能为空")
+    @Size(min=1,message = "项目成员对象长度最小为1")
+    private List<ItemMemberDTO> itemMemberDTOS;
 
     /**
      * 项目经理
      */
     @ApiModelProperty(value = "项目经理", name = "itemManager")
-    private String itemManager;
+    private MemberVO itemManager;
+
 
     /**
      * 阶段策划系数对象
@@ -97,47 +119,48 @@ public class ItemEpcInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "项目管理所", name = "itemLeader")
     @NotBlank(message = "项目管理所不能为空")
-    private String itemLeader;
+    private MemberVO itemLeader;
 
     /**
      * 经营所
      */
     @ApiModelProperty(value = "经营所", name = "agencyLeader")
     @NotBlank(message = "经营所不能为空")
-    private String agencyLeader;
+    private MemberVO agencyLeader;
 
     /**
      * 设计所
      */
+
     @ApiModelProperty(value = "设计所", name = "designLeader")
     @NotBlank(message = "设计所不能为空")
-    private String designLeader;
+    private MemberVO designLeader;
 
     /**
      * 工程所
      */
     @ApiModelProperty(value = "工程所", name = "engineeringLeader")
     @NotBlank(message = "工程所不能为空")
-    private String engineeringLeader;
+    private MemberVO engineeringLeader;
 
     /**
      * 部门分管领导
      */
     @ApiModelProperty(value = "部门分管领导", name = "subLeader")
     @NotBlank(message = "部门分管领导不能为空")
-    private String subLeader;
+    private MemberVO subLeader;
 
     /**
      * 部门职能领导
      */
     @ApiModelProperty(value = "部门职能领导", name = "functionalLeader")
     @NotBlank(message = "部门职能领导不能为空")
-    private String functionalLeader;
+    private MemberVO functionalLeader;
 
     /**
      * 部门负责人
      */
     @ApiModelProperty(value = "部门负责人", name = "departmenLeader")
     @NotBlank(message = "部门负责人不能为空")
-    private String departmenLeader;
+    private MemberVO departmenLeader;
 }

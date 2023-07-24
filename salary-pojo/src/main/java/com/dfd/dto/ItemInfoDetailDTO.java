@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @ApiModel
-public class ItemEpcInfoDTO implements Serializable {
+public class ItemInfoDetailDTO implements Serializable {
 
     /**
      * uid
@@ -28,4 +28,11 @@ public class ItemEpcInfoDTO implements Serializable {
     @ApiModelProperty(value = "uid", name = "uid",required = true)
     @NotBlank(message = "uid不能为空")
     private String uid;
+
+    /**
+     * 项目属性，1、投标项目；2、EPC项目；3、科研项目
+     */
+    @ApiModelProperty(value = "项目属性，1、投标项目；2、EPC项目；3、科研项目", name = "itemProperties")
+    @NotBlank(message = "项目属性不能为空")
+    private String itemProperties;
 }

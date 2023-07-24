@@ -20,7 +20,9 @@ import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
+import com.dfd.vo.MemberVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -185,4 +187,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         return member;
     }
 
+    @Override
+    public Map<String, MemberVO> queryMemberByNumber(List<String> uids) {
+        LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(CollectionUtil.isNotEmpty(uids), Member::getUid, uids);
+        List<Member> members = baseMapper.selectList(queryWrapper);
+        List<MemberVO> collect = members.stream().map(e -> {
+            MemberVO memberVO = new MemberVO();
+            BeanUtils.copyProperties(e, memberVO);
+            return memberVO;
+        }).collect(Collectors.toList());
+        Map<String, MemberVO> result = collect.stream().collect(Collectors.toMap(MemberVO::getUid, MemberVO->MemberVO));
+        return result;
+    }
 }

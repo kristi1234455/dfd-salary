@@ -28,7 +28,7 @@ public class ItemInfoQueryDTO extends Query implements Serializable {
     /**
      * 项目名称
      */
-    @ApiModelProperty(value = "项目名称", name = "itemName",required = false)
+    @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
 
     /**

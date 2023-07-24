@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.Member;
 import com.dfd.utils.PageResult;
+import com.dfd.vo.MemberVO;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,7 @@ public interface MemberService extends IService<Member> {
     Map<String, String> queryNumberByUids(List<String> uids);
 
     Member queryMemberByNumber(String number);
+
+    Map<String, MemberVO> queryMemberByNumber(List<String> uids);
 
 }
