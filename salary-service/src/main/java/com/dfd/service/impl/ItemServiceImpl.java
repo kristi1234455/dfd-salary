@@ -121,9 +121,25 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     private List<ItemInfoVO> convertToItemVO(List<Item> records) {
+        List<String> memUIdList = new ArrayList<>();
+        for(Item item : records){
+            memUIdList.add(item.getBidDirector());
+            memUIdList.add(item.getDesignManager());
+            memUIdList.add(item.getScientificManager());
+            memUIdList.add(item.getItemLeader());
+            memUIdList.add(item.getSubLeader());
+            memUIdList.add(item.getFunctionalLeader());
+            memUIdList.add(item.getDepartmenLeader());
+        }
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+
         List<ItemInfoVO> result = Lists.transform(records, item -> {
             ItemInfoVO itemInfoVO = new ItemInfoVO();
             BeanUtils.copyProperties(item, itemInfoVO);
+            itemInfoVO.setDesignManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(item.getDesignManager()) : null)
+                    .setItemManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(item.getItemManager()) : null)
+                    .setScientificManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(item.getScientificManager()) : null)
+                    .setBidDirector(!itemMemberNames.isEmpty() ? itemMemberNames.get(item.getBidDirector()) : null);
             return itemInfoVO;
         });
         return result;
@@ -143,7 +159,14 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemPlan> list = itemPlanMapper.selectList(itemPlanLambdaQueryWrapper);
 
-        List<String> memUIdList = list.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
+       List<String> memUIdList = list.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
+        memUIdList.add(item.getBidDirector());
+        memUIdList.add(item.getDesignManager());
+        memUIdList.add(item.getScientificManager());
+        memUIdList.add(item.getItemLeader());
+        memUIdList.add(item.getSubLeader());
+        memUIdList.add(item.getFunctionalLeader());
+        memUIdList.add(item.getDepartmenLeader());
         Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
         Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
@@ -331,6 +354,13 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         List<ItemMember> list = itemMemberService.list(wrapper);
 
         List<String> memUIdList = list.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+        memUIdList.add(item.getBidDirector());
+        memUIdList.add(item.getDesignManager());
+        memUIdList.add(item.getScientificManager());
+        memUIdList.add(item.getItemLeader());
+        memUIdList.add(item.getSubLeader());
+        memUIdList.add(item.getFunctionalLeader());
+        memUIdList.add(item.getDepartmenLeader());
         Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
         Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
@@ -344,7 +374,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                     .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemMember.getMemberUid()) : null);
             return itemMemberDTO;
         }).collect(Collectors.toList());
-        result.setItemPlanDTOList(itemPlans);
+        result.setItemMemberDTOS(itemPlans);
 
         //根据uid获取member中的名字
         result.setBidDirector(!itemMemberNames.isEmpty() ? itemMemberNames.get(result.getBidDirector()) : null)
@@ -465,6 +495,13 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         List<ItemMember> list = itemMemberService.list(wrapper);
 
         List<String> memUIdList = list.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+        memUIdList.add(item.getBidDirector());
+        memUIdList.add(item.getDesignManager());
+        memUIdList.add(item.getScientificManager());
+        memUIdList.add(item.getItemLeader());
+        memUIdList.add(item.getSubLeader());
+        memUIdList.add(item.getFunctionalLeader());
+        memUIdList.add(item.getDepartmenLeader());
         Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
         Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 

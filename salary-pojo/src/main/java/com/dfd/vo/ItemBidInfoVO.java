@@ -51,7 +51,7 @@ public class ItemBidInfoVO implements Serializable {
      * 技术管理费
      */
     @ApiModelProperty(value = "技术管理费", name = "technologyManagerFee")
-    private BigDecimal technologyManagerFee;
+    private BigDecimal technicalFee;
 
     /**
      * 项目工资
@@ -63,7 +63,7 @@ public class ItemBidInfoVO implements Serializable {
      * 项目绩效
      */
     @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
-    private BigDecimal performanceSalary;
+    private BigDecimal itemPerformance;
 
     /**
      * 投标经理
@@ -77,7 +77,7 @@ public class ItemBidInfoVO implements Serializable {
     @ApiModelProperty(value = "项目成员对象", name = "itemPlanDTOList")
     @NotNull(message = "项目成员对象不能为空")
     @Size(min=1,message = "项目成员对象长度最小为1")
-    private List<ItemMemberDTO> itemPlanDTOList;
+    private List<ItemMemberDTO> itemMemberDTOS;
 
     /**
      * 项目管理所

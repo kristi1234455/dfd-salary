@@ -90,15 +90,15 @@ public class ItemController {
 
     @ApiOperation(value = "更新投标项目信息", httpMethod = "POST")
     @PostMapping("/update/bid")
-    public DFDResult updateBid(@RequestBody @Valid BidItemUpdateDTO bidItemDTO) {
-        itemService.updateBid(bidItemDTO);
+    public DFDResult updateBid(@RequestBody @Valid BidItemUpdateDTO bidItemUpdateDTO) {
+        itemService.updateBid(bidItemUpdateDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除投标项目信息", httpMethod = "POST")
     @PostMapping("/delete/bid")
-    public DFDResult deleteBid(@RequestBody @Valid BidItemDelDTO bidItemDTO) {
-        itemService.deleteBid(bidItemDTO);
+    public DFDResult deleteBid(@RequestBody @Valid BidItemDelDTO bidItemDelDTO) {
+        itemService.deleteBid(bidItemDelDTO);
         return DFDResult.sucess();
     }
 

@@ -52,7 +52,7 @@ public class ItemEpcInfoVO implements Serializable {
      * 技术管理费
      */
     @ApiModelProperty(value = "技术管理费", name = "technologyManagerFee")
-    private BigDecimal technologyManagerFee;
+    private BigDecimal technicalFee;
 
     /**
      * 项目工资
@@ -64,7 +64,7 @@ public class ItemEpcInfoVO implements Serializable {
      * 项目绩效
      */
     @ApiModelProperty(value = "项目绩效", name = "performanceSalary")
-    private BigDecimal performanceSalary;
+    private BigDecimal itemPerformance;
 
     /**
      * 设计工资

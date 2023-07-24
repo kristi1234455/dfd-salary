@@ -64,15 +64,15 @@ public interface ItemService extends IService<Item> {
 
     /**
      * 更新投标项目
-     * @param bidItemDTO
+     * @param bidItemUpdateDTO
      */
-    void updateBid(BidItemUpdateDTO bidItemDTO);
+    void updateBid(BidItemUpdateDTO bidItemUpdateDTO);
 
     /**
      * 删除投标项目
-     * @param bidItemDTO
+     * @param bidItemDelDTO
      */
-    void deleteBid(BidItemDelDTO bidItemDTO);
+    void deleteBid(BidItemDelDTO bidItemDelDTO);
 
     ItemScientificInfoVO infoScientific(ItemScientificInfoDTO itemScientificInfoDTO);
 

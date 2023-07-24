@@ -40,7 +40,7 @@ public class ItemDTO implements Serializable {
      * 技术管理费
      */
     @ApiModelProperty(value = "技术管理费", name = "technologyManagerFee")
-    private BigDecimal technologyManagerFee;
+    private BigDecimal technicalFee;
 
     /**
      * 项目工资

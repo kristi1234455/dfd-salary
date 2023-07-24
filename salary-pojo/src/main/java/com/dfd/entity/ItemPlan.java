@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Accessors(chain = true)
-@TableName("attendance")
+@TableName("item_plan")
 public class ItemPlan {
     /**
      * 主键
@@ -45,43 +46,43 @@ public class ItemPlan {
      * 设计阶段系数
      */
     @ApiModelProperty(value = "设计阶段系数", name = "designCoefficient")
-    private Integer designCoefficient;
+    private BigDecimal designCoefficient;
 
     /**
      * 采购阶段系数
      */
     @ApiModelProperty(value = "采购阶段系数", name = "purchaseCoefficient")
-    private Integer purchaseCoefficient;
+    private BigDecimal purchaseCoefficient;
 
     /**
      * 制造阶段系数
      */
     @ApiModelProperty(value = "制造阶段系数", name = "manufactureCoefficient")
-    private Integer manufactureCoefficient;
+    private BigDecimal manufactureCoefficient;
 
     /**
      * 安装调试阶段系数
      */
     @ApiModelProperty(value = "安装调试阶段系数", name = "installationCoefficient")
-    private Integer installationCoefficient;
+    private BigDecimal installationCoefficient;
 
     /**
      * 安装验收阶段系数
      */
     @ApiModelProperty(value = "安装验收阶段系数", name = "inspectionCoefficient")
-    private Integer inspectionCoefficient;
+    private BigDecimal inspectionCoefficient;
 
     /**
      * 终验收阶段系数
      */
     @ApiModelProperty(value = "终验收阶段系数", name = "finalCoefficient")
-    private Integer finalCoefficient;
+    private BigDecimal finalCoefficient;
 
     /**+
      * 质保阶段系数
      */
     @ApiModelProperty(value = "质保阶段系数", name = "guaranteeCoefficient")
-    private Integer guaranteeCoefficient;
+    private BigDecimal guaranteeCoefficient;
 
     /**
      * 备注

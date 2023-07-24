@@ -33,6 +33,7 @@ public class ServiceLogAspect {
         HttpServletRequest request = requestAttributes.getRequest();
         log.info("请求地址:{}", Optional.ofNullable(request.getRequestURI().toString()).orElse(null));
         log.info("请求方式:{}",request.getMethod());
+        log.info("请求方IP地址:{}",request.getRemoteAddr());
         log.info("请求类方法:{}",joinPoint.getSignature());
         log.info("请求类方法参数:{}", JSONObject.toJSONString(filterArgs(joinPoint.getArgs())));
         Object result = joinPoint.proceed();
