@@ -147,7 +147,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
                 .set((designSalaryDTO.getTotal()!=null), DesignSalary:: getTotal, designSalaryDTO.getTotal())
                 .set((designSalaryDTO.getDeclareTime()!=null), DesignSalary:: getDeclareTime, designSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(designSalaryDTO.getRemarks()), DesignSalary:: getRemarks, designSalaryDTO.getRemarks())
-                .set(DesignSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(DesignSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(DesignSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -162,7 +162,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
                 .lambda()
                 .in(!CollectionUtils.isEmpty(designSalaryDelDTO.getUids()), DesignSalary:: getUid, designSalaryDelDTO.getUids())
                 .set(DesignSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(DesignSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(DesignSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(DesignSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

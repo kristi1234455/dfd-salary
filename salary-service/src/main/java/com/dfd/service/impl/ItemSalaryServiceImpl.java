@@ -139,7 +139,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getItemStage()), ItemSalary:: getItemStage, itemSalaryDTO.getItemStage())
                 .set((itemSalaryDTO.getDeclareTime()!=null), ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getRemarks()), ItemSalary:: getRemarks, itemSalaryDTO.getRemarks())
-                .set(ItemSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(ItemSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(ItemSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -154,7 +154,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
                 .lambda()
                 .in(!CollectionUtils.isEmpty(itemSalaryDelDTO.getUids()), ItemSalary:: getUid, itemSalaryDelDTO.getUids())
                 .set(ItemSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(ItemSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(ItemSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(ItemSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

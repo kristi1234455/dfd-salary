@@ -153,7 +153,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .set((bidSalaryDTO.getBidFee()!=null), BidSalary:: getBidFee, bidSalaryDTO.getBidFee())
                 .set((bidSalaryDTO.getDeclareTime()!=null), BidSalary:: getDeclareTime, bidSalaryDTO.getDeclareTime())
                 .set((bidSalaryDTO.getDistributeTotalFee()!=null), BidSalary:: getDistributeTotalFee, bidSalaryDTO.getDistributeTotalFee())
-                .set(BidSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(BidSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(BidSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -168,7 +168,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .lambda()
                 .in(!CollectionUtils.isEmpty(bidSalaryDelDTO.getUids()), BidSalary:: getUid, bidSalaryDelDTO.getUids())
                 .set(BidSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(BidSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(BidSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(BidSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

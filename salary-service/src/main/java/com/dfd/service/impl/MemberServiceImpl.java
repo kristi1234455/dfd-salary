@@ -125,7 +125,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 .set(StringUtils.isNotBlank(memberUpdateDTO.getPost()), Member:: getPost, memberUpdateDTO.getPost())
                 .set(StringUtils.isNotBlank(memberUpdateDTO.getMajor()), Member:: getMajor, memberUpdateDTO.getMajor())
                 .set(StringUtils.isNotBlank(memberUpdateDTO.getRemarks()), Member:: getRemarks, memberUpdateDTO.getRemarks())
-                .set(Member:: getUpdatedBy, currentUser.getPhone())
+                .set(Member:: getUpdatedBy, currentUser.getNumber())
                 .set(Member:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -141,7 +141,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .in(!CollectionUtils.isEmpty(memberDelDTO.getUids()), Member:: getUid, memberDelDTO.getUids())
                 .set(Member:: getIsDeleted, System.currentTimeMillis())
-                .set(Member:: getUpdatedBy, currentUser.getPhone())
+                .set(Member:: getUpdatedBy, currentUser.getNumber())
                 .set(Member:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

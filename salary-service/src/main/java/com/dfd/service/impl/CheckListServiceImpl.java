@@ -138,7 +138,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 .set(CheckList:: getAuditTime, new Date())
                 .set(checkListHandleDTO.getTaskStatus()!=null, CheckList::getTaskStatus, checkListHandleDTO.getTaskStatus())
                 .set(StringUtils.isNotBlank(checkListHandleDTO.getTaskOpinion()), CheckList:: getTaskOpinion, checkListHandleDTO.getTaskOpinion())
-                .set(CheckList:: getUpdatedBy, currentUser.getPhone())
+                .set(CheckList:: getUpdatedBy, currentUser.getNumber())
                 .set(CheckList:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

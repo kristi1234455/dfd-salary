@@ -249,7 +249,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             attendance.setDay(e.getDay())
                     .setStatus(e.getStatus())
                     .setUid(e.getUid())
-                    .setUpdatedBy(currentUser.getPhone())
+                    .setUpdatedBy(currentUser.getNumber())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             params.add(attendance);
@@ -277,7 +277,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
             attendance.setDay(e.getDay())
                     .setStatus(e.getStatus())
                     .setUid(e.getUid())
-                    .setUpdatedBy(currentUser.getPhone())
+                    .setUpdatedBy(currentUser.getNumber())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             params.add(attendance);
@@ -296,7 +296,7 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .lambda()
                 .in(!CollectionUtils.isEmpty(attendanceDelDTO.getUids()), Attendance:: getUid, attendanceDelDTO.getUids())
                 .set(Attendance:: getIsDeleted, System.currentTimeMillis())
-                .set(Attendance:: getUpdatedBy, currentUser.getPhone())
+                .set(Attendance:: getUpdatedBy, currentUser.getNumber())
                 .set(Attendance:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

@@ -9,6 +9,7 @@ import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
 import com.dfd.entity.Member;
+import com.dfd.entity.PerformanceSalary;
 import com.dfd.entity.User;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.ItemMemberService;
@@ -96,7 +97,7 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
     }
 
     @Override
-    public void updateMembersByItemId(String itemUid, List<String> nMemberIds) {
+    public void updateMembersByItemId(String itemUid, List<String> nMemberUids) {
         User currentUser = UserRequest.getCurrentUser();
 
         LambdaUpdateWrapper<ItemMember> itemMemberWrapper = new LambdaUpdateWrapper<>();
@@ -104,39 +105,36 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
                 .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemMember> oMembers = list(itemMemberWrapper);
 
-        List<ItemMember> nMembers = this.listByIds(nMemberIds);
-
-        //批量删除
-        List<ItemMember> odifferentElements = oMembers.stream()
-                .filter(obj1 -> nMembers.stream().noneMatch(obj2 -> obj1.getId() == obj2.getId()))
-                .collect(Collectors.toList());
-        List<ItemMember> delItemMembers = new ArrayList<>();
-        odifferentElements.stream().forEach(e ->{
-            ItemMember itemMember = new ItemMember();
-            BeanUtil.copyProperties(e,itemMember);
-            itemMember.setUpdatedBy(currentUser.getPhone())
-                    .setIsDeleted(String.valueOf(System.currentTimeMillis()));
-            delItemMembers.add(itemMember);
+        oMembers.stream().forEach(e ->{
+            e.setRemarks(String.valueOf(new Date()))
+                    .setIsDeleted(String.valueOf(System.currentTimeMillis()))
+                    .setUpdatedBy(currentUser.getNumber())
+                    .setUpdatedTime(new Date());
         });
-        boolean delete = updateBatchById(delItemMembers);
+        if(CollectionUtil.isNotEmpty(oMembers)){
+            boolean delete = updateBatchById(oMembers);
+            if(!delete){
+                throw new BusinessException("项目删除原来项目人员失败！");
+            }
+        }
 
         //批量新增
         List<ItemMember> upItemMembers = new ArrayList<>();
-        List<ItemMember> ndifferentElements = nMembers.stream()
-                .filter(obj1 -> oMembers.stream().noneMatch(obj2 -> obj1.getId() == obj2.getId()))
-                .collect(Collectors.toList());
-        ndifferentElements.stream().forEach(e ->{
+        nMemberUids.stream().forEach(e ->{
             ItemMember itemMember = new ItemMember();
             BeanUtil.copyProperties(e,itemMember);
-            itemMember.setItemUid(itemUid)
-                    .setUpdatedBy(currentUser.getPhone())
+            itemMember.setUid(UUIDUtil.getUUID32Bits()).setItemUid(itemUid)
+                    .setMemberUid(e)
+                    .setDeclareTime(new Date())
+                    .setCreatedBy(currentUser.getNumber())
+                    .setCreatedTime(new Date())
+                    .setUpdatedBy(currentUser.getNumber())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             upItemMembers.add(itemMember);
         });
-        boolean update = updateBatchById(upItemMembers);
-
-        if (!delete || !update) {
+        boolean update = saveBatch(upItemMembers);
+        if ( !update) {
             throw new BusinessException("根据项目id更新项目人员数据失败!");
         }
     }

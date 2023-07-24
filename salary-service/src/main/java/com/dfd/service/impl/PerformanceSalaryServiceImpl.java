@@ -142,7 +142,7 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
                 .set(performanceSalaryDTO.getPerformanceSalary()!=null, PerformanceSalary:: getPerformanceSalary, performanceSalaryDTO.getPerformanceSalary())
                 .set((performanceSalaryDTO.getDeclareTime()!=null), PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(performanceSalaryDTO.getRemarks()), PerformanceSalary:: getRemarks, performanceSalaryDTO.getRemarks())
-                .set(PerformanceSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(PerformanceSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(PerformanceSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -159,7 +159,7 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
                 .eq(StringUtils.isNotBlank(performanceSalaryDelDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDelDTO.getDeclareTime())
                 .in(!CollectionUtils.isEmpty(performanceSalaryDelDTO.getItemMemberIds()), PerformanceSalary:: getItemMemberUid, performanceSalaryDelDTO.getItemMemberIds())
                 .set(PerformanceSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(PerformanceSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(PerformanceSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(PerformanceSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

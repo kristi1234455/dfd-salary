@@ -125,7 +125,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
                 .set(StringUtils.isNotBlank(specialVO.getStandardSubsidy()), TotalSalary:: getStandardSubsidy, specialVO.getStandardSubsidy())
                 .set(StringUtils.isNotBlank(specialVO.getSubsidyCoefficient()), TotalSalary:: getSubsidyCoefficient, specialVO.getSubsidyCoefficient())
                 .set(StringUtils.isNotBlank(specialVO.getRemarks()), TotalSalary:: getRemarks, specialVO.getRemarks())
-                .set(TotalSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(TotalSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(TotalSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -140,7 +140,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
                 .lambda()
                 .in(!CollectionUtils.isEmpty(specialDelDTO.getUids()), TotalSalary:: getUid, specialDelDTO.getUids())
                 .set(TotalSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(TotalSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(TotalSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(TotalSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

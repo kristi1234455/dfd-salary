@@ -166,16 +166,28 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
         List<String> memUIdList = new ArrayList<>();
         List<ItemPlan> itemPlanList = new ArrayList<>();
+
+        LambdaQueryWrapper<ItemPlan> itemPlanLambdaQueryWrapper = new LambdaQueryWrapper();
+        itemPlanLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemInfoDTO.getUid()), ItemPlan::getItemUid, itemInfoDTO.getUid())
+                .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        itemPlanList = itemPlanMapper.selectList(itemPlanLambdaQueryWrapper);
+
+        LambdaQueryWrapper<ItemMember> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(StringUtils.isNotBlank(itemInfoDTO.getUid()), ItemMember::getItemUid, itemInfoDTO.getUid())
+                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemMember> list = itemMemberService.list(wrapper);
+
         if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())) {
-            LambdaQueryWrapper<ItemPlan> itemPlanLambdaQueryWrapper = new LambdaQueryWrapper();
-            itemPlanLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemInfoDTO.getUid()), ItemPlan::getItemUid, itemInfoDTO.getUid())
-                    .eq(ItemPlan::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-            itemPlanList = itemPlanMapper.selectList(itemPlanLambdaQueryWrapper);
             memUIdList = itemPlanList.stream().map(ItemPlan::getItemMemberUid).collect(Collectors.toList());
-        } else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_BID.getCode())) {
-            memUIdList.add(item.getBidDirector());
-        } else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())) {
-            memUIdList.add(item.getScientificManager());
+        }else{
+            for(ItemMember e : list){
+                memUIdList.add(e.getMemberUid());
+            }
+            if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_BID.getCode())) {
+                memUIdList.add(item.getBidDirector());
+            } else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())) {
+                memUIdList.add(item.getScientificManager());
+            }
         }
         memUIdList.add(item.getDesignManager());
         memUIdList.add(item.getItemManager());
@@ -216,13 +228,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             }).collect(Collectors.toList());
             result.setItemPlanDTOList(itemPlans);
         } else {
-            LambdaQueryWrapper<ItemMember> wrapper = new LambdaQueryWrapper();
-            wrapper.eq(StringUtils.isNotBlank(itemInfoDTO.getUid()), ItemMember::getItemUid, itemInfoDTO.getUid())
-                    .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-            List<ItemMember> list = itemMemberService.list(wrapper);
             List<ItemMemberDTO> itemMemberDTOS = list.stream().map(itemMember -> {
                 if (!Optional.ofNullable(itemMember).isPresent()) {
-                    throw new BusinessException("策划系数数据为空");
+                    throw new BusinessException("项目成员数据为空");
                 }
                 ItemMemberDTO itemMemberDTO = new ItemMemberDTO();
                 itemMemberDTO.setMemberUid(itemMember.getMemberUid())
@@ -308,7 +316,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(StringUtils.isNotBlank(itemDTO.getSubLeader()), Item::getSubLeader, itemDTO.getSubLeader())
                 .set(StringUtils.isNotBlank(itemDTO.getFunctionalLeader()), Item::getFunctionalLeader, itemDTO.getFunctionalLeader())
                 .set(StringUtils.isNotBlank(itemDTO.getDepartmenLeader()), Item::getDepartmenLeader, itemDTO.getDepartmenLeader())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         List<ItemPlanDTO> itemPlanDTOList = itemDTO.getItemPlanDTOList();
@@ -317,7 +325,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             itemPlanDTOList.stream().forEach(itemPlanDTO -> {
                 ItemPlan itemPlan = new ItemPlan();
                 BeanUtil.copyProperties(itemPlanDTO, itemPlan);
-                itemPlan.setUpdatedBy(currentUser.getPhone())
+                itemPlan.setUpdatedBy(currentUser.getNumber())
                         .setUpdatedTime(new Date());
                 list.add(itemPlan);
             });
@@ -342,7 +350,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set((itemPlanUpDTO.getInspectionCoefficient() != null), ItemPlan::getInspectionCoefficient, itemPlanUpDTO.getInspectionCoefficient())
                 .set((itemPlanUpDTO.getFinalCoefficient() != null), ItemPlan::getFinalCoefficient, itemPlanUpDTO.getFinalCoefficient())
                 .set((itemPlanUpDTO.getGuaranteeCoefficient() != null), ItemPlan::getGuaranteeCoefficient, itemPlanUpDTO.getGuaranteeCoefficient())
-                .set(ItemPlan::getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
                 .set(ItemPlan::getUpdatedTime, new Date());
         boolean update = itemPlanService.update(wrapper);
         if (!update) {
@@ -355,13 +363,13 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<Item> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), Item::getUid, itemDelDTO.getUid())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getIsDeleted, System.currentTimeMillis());
         boolean var = this.update(wrapper);
 
         LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(itemDelDTO.getUid()), ItemPlan::getItemUid, itemDelDTO.getUid())
-                .set(ItemPlan::getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
                 .set(ItemPlan::getIsDeleted, System.currentTimeMillis());
         boolean var1 = itemPlanService.update(updateWrapper);
 
@@ -375,7 +383,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ItemPlan> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(itemPlanDelDTO.getUid()), ItemPlan::getUid, itemPlanDelDTO.getUid())
-                .set(ItemPlan::getUpdatedBy, currentUser.getPhone())
+                .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
                 .set(ItemPlan::getIsDeleted, System.currentTimeMillis());
         boolean var = itemPlanService.update(updateWrapper);
         if (!var) {
@@ -447,7 +455,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(StringUtils.isNotBlank(bidItemDTO.getSubLeader()), Item::getSubLeader, bidItemDTO.getSubLeader())
                 .set(StringUtils.isNotBlank(bidItemDTO.getFunctionalLeader()), Item::getFunctionalLeader, bidItemDTO.getFunctionalLeader())
                 .set(StringUtils.isNotBlank(bidItemDTO.getDepartmenLeader()), Item::getDepartmenLeader, bidItemDTO.getDepartmenLeader())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean var = this.update(updateWrapper);
         if (!var) {
@@ -469,7 +477,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .lambda()
                 .eq(StringUtils.isNotBlank(bidItemDelDTO.getUid()), Item::getUid, bidItemDelDTO.getUid())
                 .set(Item::getIsDeleted, System.currentTimeMillis())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -538,7 +546,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getSubLeader()), Item::getSubLeader, scientificItemUpdateDTO.getSubLeader())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getFunctionalLeader()), Item::getFunctionalLeader, scientificItemUpdateDTO.getFunctionalLeader())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getDepartmenLeader()), Item::getDepartmenLeader, scientificItemUpdateDTO.getDepartmenLeader())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean var = this.update(updateWrapper);
         if (!var) {
@@ -560,7 +568,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .lambda()
                 .eq(StringUtils.isNotBlank(scientificItemDelDTO.getUid()), Item::getUid, scientificItemDelDTO.getUid())
                 .set(Item::getIsDeleted, System.currentTimeMillis())
-                .set(Item::getUpdatedBy, currentUser.getPhone())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

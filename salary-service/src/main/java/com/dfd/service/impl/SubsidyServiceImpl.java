@@ -141,7 +141,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .set(subsidyOvertimeDTO.getOvertimeSubsidy()!=null, Subsidy:: getOvertimeSubsidy, subsidyOvertimeDTO.getOvertimeSubsidy())
                 .set((subsidyOvertimeDTO.getOvertimeRemarks()!=null), Subsidy:: getOvertimeRemarks, subsidyOvertimeDTO.getOvertimeRemarks())
                 .set((subsidyOvertimeDTO.getOvertimeDeclareTime()!=null), Subsidy:: getOvertimeDeclareTime, subsidyOvertimeDTO.getOvertimeDeclareTime())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -156,7 +156,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .lambda()
                 .in(!CollectionUtils.isEmpty(subsidyOvertimeDelDTO.getUids()), Subsidy:: getUid, subsidyOvertimeDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -264,7 +264,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .set(subsidyNightDTO.getNightSubsidy()!=null, Subsidy:: getNightSubsidy, subsidyNightDTO.getNightSubsidy())
                 .set((subsidyNightDTO.getNightRemarks()!=null), Subsidy:: getNightRemarks, subsidyNightDTO.getNightRemarks())
                 .set((subsidyNightDTO.getNightDeclareTime()!=null), Subsidy:: getNightDeclareTime, subsidyNightDTO.getNightDeclareTime())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -279,7 +279,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .lambda()
                 .in(!CollectionUtils.isEmpty(subsidyNightDelDTO.getUids()), Subsidy:: getUid, subsidyNightDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -384,7 +384,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .set(subsidyOutDTO.getOutSubsidy()!=null, Subsidy:: getOutSubsidy, subsidyOutDTO.getOutSubsidy())
                 .set((subsidyOutDTO.getOutRemarks()!=null), Subsidy:: getOutRemarks, subsidyOutDTO.getOutRemarks())
                 .set((subsidyOutDTO.getOutDeclareTime()!=null), Subsidy:: getOutDeclareTime, subsidyOutDTO.getOutDeclareTime())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -399,7 +399,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .lambda()
                 .in(!CollectionUtils.isEmpty(subsidyOutDelDTO.getUids()), Subsidy:: getUid, subsidyOutDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -504,7 +504,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .set(subsidyHeatingDTO.getHeatingSubsidy()!=null, Subsidy:: getHeatingSubsidy, subsidyHeatingDTO.getHeatingSubsidy())
                 .set((subsidyHeatingDTO.getHeatingRemarks()!=null), Subsidy:: getHeatingRemarks, subsidyHeatingDTO.getHeatingRemarks())
                 .set((subsidyHeatingDTO.getHeatingDeclareTime()!=null), Subsidy:: getHeatingDeclareTime, subsidyHeatingDTO.getHeatingDeclareTime())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -519,7 +519,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
                 .lambda()
                 .in(!CollectionUtils.isEmpty(subsidyHeatingDelDTO.getUids()), Subsidy:: getUid, subsidyHeatingDelDTO.getUids())
                 .set(Subsidy:: getIsDeleted, System.currentTimeMillis())
-                .set(Subsidy:: getUpdatedBy, currentUser.getPhone())
+                .set(Subsidy:: getUpdatedBy, currentUser.getNumber())
                 .set(Subsidy:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {

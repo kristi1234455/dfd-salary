@@ -145,7 +145,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
                 .set((scientificSalaryDTO.getTotal()!=null), ScientificSalary:: getTotal, scientificSalaryDTO.getTotal())
                 .set((scientificSalaryDTO.getDeclareTime()!=null), ScientificSalary:: getDeclareTime, scientificSalaryDTO.getDeclareTime())
                 .set(StringUtils.isNotBlank(scientificSalaryDTO.getRemarks()), ScientificSalary:: getRemarks, scientificSalaryDTO.getRemarks())
-                .set(ScientificSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(ScientificSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(ScientificSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
@@ -160,7 +160,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
                 .lambda()
                 .in(!CollectionUtils.isEmpty(scientificSalaryDelDTO.getUids()), ScientificSalary:: getUid, scientificSalaryDelDTO.getUids())
                 .set(ScientificSalary:: getIsDeleted, System.currentTimeMillis())
-                .set(ScientificSalary:: getUpdatedBy, currentUser.getPhone())
+                .set(ScientificSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(ScientificSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
         if (!update) {
