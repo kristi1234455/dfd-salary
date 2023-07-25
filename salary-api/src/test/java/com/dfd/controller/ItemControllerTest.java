@@ -1,12 +1,14 @@
 package com.dfd.controller;
 
 import com.dfd.dto.ItemInfoQueryDTO;
+import com.dfd.mapper.UserMapper;
 import com.dfd.service.AttendanceService;
 import com.dfd.service.ItemService;
+import com.dfd.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,14 +26,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 public class ItemControllerTest {
 
     @Resource
     private ItemService itemService;
 
+//    @Autowired
+//    private MockMvc mockMvc;
+
     @Autowired
-    private MockMvc mockMvc;
+    private UserService userService;
 
     @Test
     public void testInfo() throws Exception{
@@ -48,6 +53,7 @@ public class ItemControllerTest {
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andDo(print());
         ItemInfoQueryDTO param = ItemInfoQueryDTO.builder().build();
+        userService.selectByNumber("111");
         itemService.queryItemList(param);
     }
 }
