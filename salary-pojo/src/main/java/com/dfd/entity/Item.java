@@ -58,6 +58,11 @@ public class Item implements Serializable {
      */
     @ApiModelProperty(value = "计划号", name = "planNumber")
     private String planNumber;
+    /**
+     * 合同子项号
+     */
+    @ApiModelProperty(value = "合同子项号", name = "subItemNumber")
+    private String subItemNumber;
 
     /**
      * 虚拟合同子项号

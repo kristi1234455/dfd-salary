@@ -48,10 +48,16 @@ public class Member {
     private Integer gender;
 
     /**
-     * 部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；
+     * 部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；5、主师室
      */
-    @ApiModelProperty(value = "部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；", name = "department")
+    @ApiModelProperty(value = "部门所室：1、项目管理所；2、经营所；3、设计所；4、工程所；5、主师室", name = "department")
     private String department;
+
+    /**
+     * 部门
+     */
+    @ApiModelProperty(value = "部门", name = "room")
+    private String room;
 
     /**
      * 职级

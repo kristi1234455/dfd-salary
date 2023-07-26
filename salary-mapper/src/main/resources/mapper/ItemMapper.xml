@@ -8,6 +8,7 @@
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="item_number" property="itemNumber" jdbcType="VARCHAR" />
     <result column="plan_number" property="planNumber" jdbcType="VARCHAR" />
+    <result column="sub_item_number" property="subItemNumber" jdbcType="VARCHAR" />
     <result column="virtual_sub_item_number" property="virtualSubItemNumber" jdbcType="VARCHAR" />
     <result column="agreement_money" property="agreementMoney" jdbcType="DECIMAL" />
     <result column="forcast_agreement_money" property="forcastAgreementMoney" jdbcType="DECIMAL" />

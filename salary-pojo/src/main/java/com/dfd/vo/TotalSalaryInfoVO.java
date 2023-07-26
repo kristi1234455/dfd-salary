@@ -47,9 +47,9 @@ public class TotalSalaryInfoVO {
     private String itemName;
 
     /**
-     * 部门
+     * 部门所室
      */
-    @ApiModelProperty(value = "部门", name = "department")
+    @ApiModelProperty(value = "部门所室", name = "department")
     private String department;
 
     /**

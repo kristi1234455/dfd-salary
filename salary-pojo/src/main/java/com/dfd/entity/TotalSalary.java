@@ -50,7 +50,13 @@ public class TotalSalary {
     /**
      * 部门
      */
-    @ApiModelProperty(value = "部门", name = "department")
+    @ApiModelProperty(value = "部门", name = "room")
+    private String room;
+
+    /**
+     * 部门所室
+     */
+    @ApiModelProperty(value = "部门所室", name = "department")
     private String department;
 
     /**

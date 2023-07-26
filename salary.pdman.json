@@ -365,7 +365,7 @@
               "name": "department",
               "type": "DefaultString",
               "remark": "",
-              "chnname": "部门"
+              "chnname": "部门所室"
             },
             {
               "name": "number",

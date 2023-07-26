@@ -7,6 +7,7 @@
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
     <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
     <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="room" property="room" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />

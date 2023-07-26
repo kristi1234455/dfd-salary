@@ -48,9 +48,9 @@ public class TotalSalaryInfoDTO {
     private String itemName;
 
     /**
-     * 部门
+     * 所室
      */
-    @ApiModelProperty(value = "部门", name = "department")
+    @ApiModelProperty(value = "所室", name = "department")
     private String department;
 
     /**
