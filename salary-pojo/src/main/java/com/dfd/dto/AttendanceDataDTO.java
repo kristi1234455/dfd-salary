@@ -26,12 +26,16 @@ import java.io.Serializable;
 public class AttendanceDataDTO implements Serializable {
 
     private static final long serialVersionUID = 5099547899999541753L;
-    /**
-     * uid
-     */
-    @ApiModelProperty(value = "uid", name = "uid", required = true)
-    @NotEmpty(message = "uid不能为空")
-    private String uid;
+//    /**
+//     * 主键
+//     */
+//    @ApiModelProperty(value = "主键", name = "id", required = true)
+//    private Integer id;
+//    /**
+//     * uid
+//     */
+//    @ApiModelProperty(value = "uid", name = "uid", required = true)
+//    private String uid;
     /**
      * 日
      */

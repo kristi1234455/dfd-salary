@@ -50,7 +50,7 @@ public class AttendanceController {
         return DFDResult.sucess();
     }
 
-//    @ApiOperation(value = "批量新增项目的人员考勤状态", httpMethod = "POST")
+    @ApiOperation(value = "批量新增项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/add/list")
     public DFDResult add(@RequestBody @Valid AttendanceDayListDTO attendanceDTO){
         attendanceService.addList(attendanceDTO);

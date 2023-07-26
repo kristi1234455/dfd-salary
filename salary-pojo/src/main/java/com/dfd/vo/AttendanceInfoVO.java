@@ -1,5 +1,7 @@
 package com.dfd.vo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,11 @@ import java.io.Serializable;
 public class AttendanceInfoVO implements Serializable {
 
     private static final long serialVersionUID = -8119785685718706166L;
+    /**
+     * 主键
+     */
+    @ApiModelProperty(value = "主键", name = "id")
+    private Integer id;
     /**
      * uid
      */

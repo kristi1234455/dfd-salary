@@ -1,13 +1,11 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.SpecialAddDTO;
-import com.dfd.dto.SpecialDTO;
-import com.dfd.dto.SpecialDelDTO;
-import com.dfd.dto.SpecialInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.TotalSalary;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.SpecialInfoVO;
+import com.dfd.vo.TotalSalaryInfoVO;
 
 /**
  * @author yy
@@ -22,4 +20,6 @@ public interface TotalSalaryService extends IService<TotalSalary> {
     void updateSpecial(SpecialDTO specialVO);
 
     void delSpecial(SpecialDelDTO specialDelDTO);
+
+    TotalSalaryInfoVO info(TotalSalaryInfoDTO totalSalaryInfoDTO);
 }

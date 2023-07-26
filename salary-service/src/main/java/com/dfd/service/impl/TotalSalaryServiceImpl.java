@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.SpecialAddDTO;
-import com.dfd.dto.SpecialDTO;
-import com.dfd.dto.SpecialDelDTO;
-import com.dfd.dto.SpecialInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.BidSalary;
 import com.dfd.entity.DesignSalary;
 import com.dfd.entity.TotalSalary;
@@ -27,6 +24,7 @@ import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.SpecialInfoVO;
+import com.dfd.vo.TotalSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -147,4 +145,22 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
             throw new BusinessException("设计状态删除失败!");
         }
     }
+
+    @Override
+    public TotalSalaryInfoVO info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
+
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

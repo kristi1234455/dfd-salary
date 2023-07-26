@@ -26,12 +26,19 @@ public class AttendanceDTO implements Serializable {
 
     private static final long serialVersionUID = 5973207165741597324L;
 
-    /**
-     * uid
-     */
-    @ApiModelProperty(value = "uid", name = "uid", required = true)
-    @NotBlank(message = "uid不能为空")
-    private String uid;
+//    /**
+//     * 主键
+//     */
+//    @ApiModelProperty(value = "主键", name = "id")
+//    @NotBlank(message = "主键id不能为空")
+//    private Integer id;
+
+//    /**
+//     * uid
+//     */
+//    @ApiModelProperty(value = "uid", name = "uid", required = true)
+//    @NotBlank(message = "uid不能为空")
+//    private String uid;
     /**
      * 项目uid
      */

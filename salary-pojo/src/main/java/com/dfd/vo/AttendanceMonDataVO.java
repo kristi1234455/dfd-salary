@@ -25,6 +25,11 @@ public class AttendanceMonDataVO implements Serializable {
 
     private static final long serialVersionUID = 5099547899999541753L;
     /**
+     * 主键
+     */
+    @ApiModelProperty(value = "主键", name = "id")
+    private Integer id;
+    /**
      * uid
      */
     @ApiModelProperty(value = "uid", name = "uid")

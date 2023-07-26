@@ -223,6 +223,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 }
                 ItemPlanInfoVO itemPlanInfoVO = new ItemPlanInfoVO();
                 BeanUtil.copyProperties(itemPlan, itemPlanInfoVO);
+                //特殊处理
+                itemPlanInfoVO.setUid(itemPlanInfoVO.getItemMemberUid());
                 itemPlanInfoVO.setItemName(item.getItemName())
                         .setName(!itemMemberNames.isEmpty() ? itemMemberNames.get(itemPlan.getItemMemberUid()) : null)
                         .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(itemPlan.getItemMemberUid()) : null);
