@@ -151,6 +151,10 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
         return null;
     }
+
+    private void flushTotaSalary(){
+
+    }
 }
 
 

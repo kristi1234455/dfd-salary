@@ -73,8 +73,8 @@ public class AttendanceController {
 
     @ApiOperation(value = "删除项目的人员考勤状态", httpMethod = "POST")
     @PostMapping("/delete")
-    public DFDResult delete(@RequestBody @Valid AttendanceDelDTO attendanceDelDTO){
-        attendanceService.delete(attendanceDelDTO);
+    public DFDResult delete(@RequestBody @Valid List<AttendanceDelDTO> list){
+        attendanceService.delete(list);
         return DFDResult.sucess();
     }
 

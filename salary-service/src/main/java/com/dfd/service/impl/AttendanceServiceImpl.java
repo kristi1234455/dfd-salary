@@ -55,8 +55,6 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .eq(attendanceInfoDTO.getYear() !=null, Attendance:: getYear, attendanceInfoDTO.getYear())
                 .eq(attendanceInfoDTO.getMonth() !=null, Attendance:: getMonth, attendanceInfoDTO.getMonth())
                 .eq(attendanceInfoDTO.getDay() !=null, Attendance:: getDay, attendanceInfoDTO.getDay())
-                //todo：没有考勤状态的人
-//                .no( Attendance:: getStatus, attendanceInfoDTO.getDay())
                 .eq(Attendance::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         Integer pageNum = attendanceInfoDTO.getCurrentPage();
         Integer pageSize = attendanceInfoDTO.getPageSize();
@@ -101,10 +99,6 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .eq(attendanceMonInfoDTO.getMonth() !=null, Attendance:: getMonth, attendanceMonInfoDTO.getMonth())
                 .eq(Attendance::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(Attendance :: getCreatedTime);
-
-//        Page<Attendance> pageReq = new Page(attendanceMonInfoDTO.getCurrentPage(), attendanceMonInfoDTO.getPageSize());
-//        IPage<Attendance> page = baseMapper.selectPage(pageReq, queryWrapper);
-//        return convertToAttendanceMonInfoVO(page);
 
         Integer pageNum = attendanceMonInfoDTO.getCurrentPage();
         Integer pageSize = attendanceMonInfoDTO.getPageSize();
@@ -357,17 +351,26 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
     }
 
     @Override
-    public void delete(AttendanceDelDTO attendanceDelDTO) {
-        User currentUser = UserRequest.getCurrentUser();
-        LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
-                .lambda()
-                .in(!CollectionUtils.isEmpty(attendanceDelDTO.getUids()), Attendance:: getUid, attendanceDelDTO.getUids())
-                .set(Attendance:: getIsDeleted, System.currentTimeMillis())
-                .set(Attendance:: getUpdatedBy, currentUser.getNumber())
-                .set(Attendance:: getUpdatedTime, new Date());
-        boolean update = this.update(updateWrapper);
-        if (!update) {
-            throw new BusinessException("考勤状态删除失败");
+    public void delete(List<AttendanceDelDTO> list) {
+        for(AttendanceDelDTO attendanceDelDTO :  list) {
+            List<AttendanceMonDataVO> dataVOList = attendanceDelDTO.getAttendanceMonDataVOList();
+            if (CollectionUtil.isEmpty(list)) {
+                throw new BusinessException("考勤数据删除失败，考勤对象为空");
+            }
+            List<String> uids = dataVOList.stream().map(AttendanceMonDataVO::getUid).collect(Collectors.toList());
+            User currentUser = UserRequest.getCurrentUser();
+            LambdaUpdateWrapper<Attendance> updateWrapper = new UpdateWrapper<Attendance>()
+                    .lambda()
+                    .eq(StringUtils.isNotBlank(attendanceDelDTO.getItemUid()), Attendance::getItemUid, attendanceDelDTO.getItemUid())
+                    .eq(StringUtils.isNotBlank(attendanceDelDTO.getItemMemberUid()), Attendance::getItemMemberUid, attendanceDelDTO.getItemMemberUid())
+                    .in(!CollectionUtils.isEmpty(uids), Attendance::getUid, uids)
+                    .set(Attendance::getIsDeleted, System.currentTimeMillis())
+                    .set(Attendance::getUpdatedBy, currentUser.getNumber())
+                    .set(Attendance::getUpdatedTime, new Date());
+            boolean update = this.update(updateWrapper);
+            if (!update) {
+                throw new BusinessException("考勤状态删除失败");
+            }
         }
     }
 }

@@ -25,16 +25,16 @@ import java.util.List;
 public class AttendanceMonInfoVO implements Serializable {
 
     private static final long serialVersionUID = -8119785685718706166L;
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value = "主键", name = "id")
-    private Integer id;
-    /**
-     * uid
-     */
-    @ApiModelProperty(value = "uid", name = "uid")
-    private String uid;
+//    /**
+//     * 主键
+//     */
+//    @ApiModelProperty(value = "主键", name = "id")
+//    private Integer id;
+//    /**
+//     * uid
+//     */
+//    @ApiModelProperty(value = "uid", name = "uid")
+//    private String uid;
     /**
      * itemUid
      */
