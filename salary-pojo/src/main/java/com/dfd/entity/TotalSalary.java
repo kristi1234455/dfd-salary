@@ -102,10 +102,10 @@ public class TotalSalary {
     private String scientificTotal;
 
     /**
-     * 所室
+     * 专岗申报时间
      */
-    @ApiModelProperty(value = "所室", name = "office")
-    private String office;
+    @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
+    private Date specialDeclareTime;
 
     /**
      * 专岗基础工资

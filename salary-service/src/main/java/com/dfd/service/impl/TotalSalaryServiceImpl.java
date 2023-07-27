@@ -50,7 +50,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
     public PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO) {
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(specialInfoDTO.getItemUid()), TotalSalary:: getItemUid, specialInfoDTO.getItemUid())
-                .likeRight(specialInfoDTO.getDeclareTime() !=null, TotalSalary:: getDeclareTime, specialInfoDTO.getDeclareTime())
+                .likeRight(specialInfoDTO.getSpecialDeclareTime() !=null, TotalSalary:: getSpecialDeclareTime, specialInfoDTO.getSpecialDeclareTime())
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
 
@@ -89,13 +89,13 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public void addSpecial(SpecialAddDTO speciaAddlDTO) {
-        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotBlank(speciaAddlDTO.getItemUid()), TotalSalary:: getItemUid, speciaAddlDTO.getItemUid())
-                .eq(speciaAddlDTO.getDeclareTime()!=null, TotalSalary:: getDeclareTime, speciaAddlDTO.getDeclareTime())
-                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        if(baseMapper.exists(queryWrapper)){
-            throw new BusinessException("添加失败，专岗工资数据已经存在！");
-        }
+//        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
+//        queryWrapper.eq(StringUtils.isNotBlank(speciaAddlDTO.getItemUid()), TotalSalary:: getItemUid, speciaAddlDTO.getItemUid())
+//                .eq(speciaAddlDTO.getDeclareTime()!=null, TotalSalary:: getDeclareTime, speciaAddlDTO.getDeclareTime())
+//                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+//        if(baseMapper.exists(queryWrapper)){
+//            throw new BusinessException("添加失败，专岗工资数据已经存在！");
+//        }
         User currentUser = UserRequest.getCurrentUser();
         TotalSalary totalSalary = new TotalSalary();
         BeanUtil.copyProperties(speciaAddlDTO,totalSalary);
@@ -117,12 +117,13 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         LambdaUpdateWrapper<TotalSalary> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(StringUtils.isNotBlank(specialVO.getUid()), TotalSalary:: getUid, specialVO.getUid())
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
-                .set(StringUtils.isNotBlank(specialVO.getOffice()), TotalSalary:: getOffice, specialVO.getOffice())
+                .set(StringUtils.isNotBlank(specialVO.getDepartment()), TotalSalary:: getDepartment, specialVO.getDepartment())
                 .set(StringUtils.isNotBlank(specialVO.getSpecialBaseFee()), TotalSalary:: getSpecialBaseFee, specialVO.getSpecialBaseFee())
                 .set(StringUtils.isNotBlank(specialVO.getSpecialMaxCoefficient()), TotalSalary:: getSpecialMaxCoefficient, specialVO.getSpecialMaxCoefficient())
                 .set(StringUtils.isNotBlank(specialVO.getStandardSubsidy()), TotalSalary:: getStandardSubsidy, specialVO.getStandardSubsidy())
                 .set(StringUtils.isNotBlank(specialVO.getSubsidyCoefficient()), TotalSalary:: getSubsidyCoefficient, specialVO.getSubsidyCoefficient())
                 .set(StringUtils.isNotBlank(specialVO.getRemarks()), TotalSalary:: getRemarks, specialVO.getRemarks())
+                .set((specialVO.getSpecialDeclareTime()!=null), TotalSalary:: getSpecialDeclareTime, specialVO.getSpecialDeclareTime())
                 .set(TotalSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(TotalSalary:: getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);

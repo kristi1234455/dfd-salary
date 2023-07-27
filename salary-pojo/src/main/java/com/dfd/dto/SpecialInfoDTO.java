@@ -33,8 +33,8 @@ public class SpecialInfoDTO extends Query implements Serializable {
     private String itemUid;
 
     /**
-     * 申报时间
+     * 专岗申报时间
      */
-    @ApiModelProperty(value = "申报时间", name = "declareTime")
-    private String declareTime;
+    @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
+    private Date specialDeclareTime;
 }

@@ -54,10 +54,10 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
                 .likeRight(bidSalaryInfoDTO.getDeclareTime() !=null, BidSalary:: getDeclareTime, bidSalaryInfoDTO.getDeclareTime())
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(BidSalary :: getCreatedTime);
+        List<BidSalary> olist = baseMapper.selectList(queryWrapper);
 
         Integer pageNum = bidSalaryInfoDTO.getCurrentPage();
         Integer pageSize = bidSalaryInfoDTO.getPageSize();
-        List<BidSalary> olist = baseMapper.selectList(queryWrapper);
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (olist.size() + pageSize - 1) / pageSize;

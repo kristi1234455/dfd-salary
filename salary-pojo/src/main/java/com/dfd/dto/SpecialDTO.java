@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author yy
@@ -46,8 +47,8 @@ public class SpecialDTO implements Serializable {
     /**
      * 所室
      */
-    @ApiModelProperty(value = "所室", name = "office")
-    private String office;
+    @ApiModelProperty(value = "所室", name = "department")
+    private String department;
 
     /**
      * 专岗基础工资
@@ -78,4 +79,9 @@ public class SpecialDTO implements Serializable {
      */
     @ApiModelProperty(value = "备注", name = "remarks")
     private String remarks;
+    /**
+     * 专岗申报时间
+     */
+    @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
+    private Date specialDeclareTime;
 }

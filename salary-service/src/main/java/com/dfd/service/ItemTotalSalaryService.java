@@ -6,7 +6,11 @@ import com.dfd.entity.ItemTotalSalary;
 import com.dfd.entity.TotalSalary;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.SpecialInfoVO;
+import com.dfd.vo.TechnicalFeeInfoVO;
 import com.dfd.vo.TotalSalaryInfoVO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yy
@@ -14,5 +18,13 @@ import com.dfd.vo.TotalSalaryInfoVO;
  */
 public interface ItemTotalSalaryService extends IService<ItemTotalSalary> {
 
+    PageResult<TechnicalFeeInfoVO> infoTechnical(TechnicalFeeInfoDTO technicalFeeInfoDTO);
 
+
+    /**
+     * 根据itemuid获取项目的技术管理费
+     * @param uids
+     * @return
+     */
+    Map<String, String> queryUsedTechnicalFeeByUids(List<String> uids);
 }

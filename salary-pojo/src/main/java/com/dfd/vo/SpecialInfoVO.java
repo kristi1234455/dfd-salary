@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author yy
@@ -64,8 +65,14 @@ public class SpecialInfoVO extends Query implements Serializable {
     /**
      * 所室
      */
-    @ApiModelProperty(value = "所室", name = "office")
-    private String office;
+    @ApiModelProperty(value = "所室", name = "department")
+    private String department;
+
+    /**
+     * 专岗申报时间
+     */
+    @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
+    private Date specialDeclareTime;
 
     /**
      * 专岗基础工资

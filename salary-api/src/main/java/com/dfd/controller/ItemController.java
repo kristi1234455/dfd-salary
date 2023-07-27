@@ -115,4 +115,5 @@ public class ItemController {
         itemService.deleteScientific(scientificItemDelDTO);
         return DFDResult.sucess();
     }
+
 }
