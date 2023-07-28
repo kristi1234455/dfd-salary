@@ -39,10 +39,10 @@ public class PerformanceSalaryDelDTO implements Serializable {
     private String declareTime;
 
     /**
-     * 项目人员ids
+     * 项目人员uids
      */
-    @ApiModelProperty(value = "项目人员ids", name = "itemMemberIds", required = true)
-    @NotNull(message = "项目人员ids不能为空")
-    @Size(min = 1, message = "项目人员ids不能为空")
-    private List<String> itemMemberIds;
+    @ApiModelProperty(value = "项目人员uids", name = "itemMemberUids", required = true)
+    @NotNull(message = "项目人员uids不能为空")
+    @Size(min = 1, message = "项目人员uids不能为空")
+    private List<String> itemMemberUids;
 }

@@ -21,11 +21,11 @@ import java.util.List;
 public class MemberDelDTO implements Serializable {
 
     /**
-     * 项目人员ids
+     * 项目人员uids
      */
-    @ApiModelProperty(value = "项目人员ids", name = "uids", required = true)
-    @NotNull(message = "项目人员ids不能为空")
-    @Size(min = 1, message = "项目人员ids不能为空")
+    @ApiModelProperty(value = "项目人员uids", name = "uids", required = true)
+    @NotNull(message = "项目人员uids不能为空")
+    @Size(min = 1, message = "项目人员uids不能为空")
     private List<String> uids;
 
 

@@ -59,24 +59,32 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
 
     @Override
     public void addItemMemberList(ItemMemberAddListDTO itemMemberAddListDTO) {
+        LambdaQueryWrapper<ItemMember> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(itemMemberAddListDTO.getItemUid()), ItemMember:: getItemUid, itemMemberAddListDTO.getItemUid())
+                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<ItemMember> omemberUids = baseMapper.selectList(queryWrapper);
+        List<String> oUids = omemberUids.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+
         List<ItemMember> result = new ArrayList<>();
         User currentUser = UserRequest.getCurrentUser();
         itemMemberAddListDTO.getUids().stream().forEach(uid ->{
-            ItemMember itemMember = new ItemMember();
-            itemMember.setUid(UUIDUtil.getUUID32Bits())
-                    .setItemUid(itemMemberAddListDTO.getItemUid())
-                    .setMemberUid(uid)
-                    .setDeclareTime(new Date())
-                    .setCreatedBy(currentUser.getNumber())
-                    .setUpdatedBy(currentUser.getNumber())
-                    .setCreatedTime(new Date())
-                    .setUpdatedTime(new Date())
-                    .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-            result.add(itemMember);
+            if(!oUids.contains(uid)){
+                ItemMember itemMember = new ItemMember();
+                itemMember.setUid(UUIDUtil.getUUID32Bits())
+                        .setItemUid(itemMemberAddListDTO.getItemUid())
+                        .setMemberUid(uid)
+                        .setDeclareTime(new Date())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                result.add(itemMember);
+            }
         });
         boolean b = this.saveBatch(result);
         if (!b) {
-            throw new BusinessException("设计状态保存失败");
+            throw new BusinessException("项目中添加人员状态保存失败");
         }
     }
 

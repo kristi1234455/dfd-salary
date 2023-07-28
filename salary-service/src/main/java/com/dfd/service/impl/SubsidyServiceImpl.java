@@ -108,7 +108,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemUid()), Subsidy:: getItemUid, subsidyOvertimeDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOvertimeDTO.getItemMemberUid())
-                .eq(subsidyOvertimeDTO.getOvertimeDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyOvertimeDTO.getOvertimeDeclareTime())
+                .likeRight(subsidyOvertimeDTO.getOvertimeDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyOvertimeDTO.getOvertimeDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户加班补贴数据已经存在！");
@@ -231,7 +231,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyNightDTO.getItemUid()), Subsidy:: getItemUid, subsidyNightDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyNightDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyNightDTO.getItemMemberUid())
-                .eq(subsidyNightDTO.getNightDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyNightDTO.getNightDeclareTime())
+                .likeRight(subsidyNightDTO.getNightDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyNightDTO.getNightDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户夜班补贴数据已经存在！");
@@ -473,7 +473,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemUid()), Subsidy:: getItemUid, subsidyHeatingDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyHeatingDTO.getItemMemberUid())
-                .eq(subsidyHeatingDTO.getHeatingDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyHeatingDTO.getHeatingDeclareTime())
+                .likeRight(subsidyHeatingDTO.getHeatingDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyHeatingDTO.getHeatingDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户高温补贴数据已经存在！");

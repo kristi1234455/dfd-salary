@@ -90,4 +90,10 @@ public class PerformanceSalaryInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "备注", name = "remarks")
     private String remarks;
+
+    /**
+     * 申报时间
+     */
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private String declareTime;
 }

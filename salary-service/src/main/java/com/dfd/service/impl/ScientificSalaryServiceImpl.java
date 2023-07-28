@@ -107,7 +107,7 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
         LambdaQueryWrapper<ScientificSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemUid()), ScientificSalary:: getItemUid, scientificSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(scientificSalaryDTO.getItemMemberUid()), ScientificSalary:: getItemMemberUid, scientificSalaryDTO.getItemMemberUid())
-                .eq(scientificSalaryDTO.getDeclareTime()!=null, ScientificSalary:: getDeclareTime, scientificSalaryDTO.getDeclareTime())
+                .likeRight(scientificSalaryDTO.getDeclareTime()!=null, ScientificSalary:: getDeclareTime, scientificSalaryDTO.getDeclareTime())
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户科研数据已经存在！");

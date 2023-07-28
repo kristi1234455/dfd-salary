@@ -109,7 +109,7 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         LambdaQueryWrapper<DesignSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getItemUid()), DesignSalary:: getItemUid, designSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(designSalaryDTO.getItemMemberUid()), DesignSalary:: getItemMemberUid, designSalaryDTO.getItemMemberUid())
-                .eq(designSalaryDTO.getDeclareTime()!=null, DesignSalary:: getDeclareTime, designSalaryDTO.getDeclareTime())
+                .likeRight(designSalaryDTO.getDeclareTime()!=null, DesignSalary:: getDeclareTime, designSalaryDTO.getDeclareTime())
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户设计数据已经存在！");

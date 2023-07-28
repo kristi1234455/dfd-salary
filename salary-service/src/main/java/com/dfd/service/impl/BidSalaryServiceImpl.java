@@ -114,7 +114,7 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         LambdaQueryWrapper<BidSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(bidSalaryDTO.getItemUid()), BidSalary:: getItemUid, bidSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(bidSalaryDTO.getItemMemberUid()), BidSalary:: getItemMemberUid, bidSalaryDTO.getItemMemberUid())
-                .eq(bidSalaryDTO.getDeclareTime()!=null, BidSalary:: getDeclareTime, bidSalaryDTO.getDeclareTime())
+                .likeRight(bidSalaryDTO.getDeclareTime()!=null, BidSalary:: getDeclareTime, bidSalaryDTO.getDeclareTime())
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户投标数据已经存在！");

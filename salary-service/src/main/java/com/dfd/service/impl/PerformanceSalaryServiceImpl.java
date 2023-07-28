@@ -107,7 +107,7 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         LambdaQueryWrapper<PerformanceSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(performanceSalaryAddDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryAddDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(performanceSalaryAddDTO.getItemMemberUid()), PerformanceSalary:: getItemMemberUid, performanceSalaryAddDTO.getItemMemberUid())
-                .eq(performanceSalaryAddDTO.getDeclareTime()!=null, PerformanceSalary:: getDeclareTime, performanceSalaryAddDTO.getDeclareTime())
+                .likeRight(performanceSalaryAddDTO.getDeclareTime()!=null, PerformanceSalary:: getDeclareTime, performanceSalaryAddDTO.getDeclareTime())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户绩效数据已经存在！");
@@ -153,8 +153,8 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         LambdaUpdateWrapper<PerformanceSalary> updateWrapper = new UpdateWrapper<PerformanceSalary>()
                 .lambda()
                 .eq(StringUtils.isNotBlank(performanceSalaryDelDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryDelDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(performanceSalaryDelDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDelDTO.getDeclareTime())
-                .in(!CollectionUtils.isEmpty(performanceSalaryDelDTO.getItemMemberIds()), PerformanceSalary:: getItemMemberUid, performanceSalaryDelDTO.getItemMemberIds())
+                .likeRight(StringUtils.isNotBlank(performanceSalaryDelDTO.getDeclareTime()), PerformanceSalary:: getDeclareTime, performanceSalaryDelDTO.getDeclareTime())
+                .in(!CollectionUtils.isEmpty(performanceSalaryDelDTO.getItemMemberUids()), PerformanceSalary:: getItemMemberUid, performanceSalaryDelDTO.getItemMemberUids())
                 .set(PerformanceSalary:: getIsDeleted, System.currentTimeMillis())
                 .set(PerformanceSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(PerformanceSalary:: getUpdatedTime, new Date());

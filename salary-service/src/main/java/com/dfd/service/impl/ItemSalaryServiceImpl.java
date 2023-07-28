@@ -106,7 +106,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         LambdaQueryWrapper<ItemSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(itemSalaryDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(itemSalaryDTO.getItemMemberUid()), ItemSalary:: getItemMemberUid, itemSalaryDTO.getItemMemberUid())
-                .eq(itemSalaryDTO.getDeclareTime()!=null, ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
+                .likeRight(itemSalaryDTO.getDeclareTime()!=null, ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户项目工资数据已经存在！");

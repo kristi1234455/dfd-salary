@@ -89,13 +89,13 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public void addSpecial(SpecialAddDTO speciaAddlDTO) {
-//        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
-//        queryWrapper.eq(StringUtils.isNotBlank(speciaAddlDTO.getItemUid()), TotalSalary:: getItemUid, speciaAddlDTO.getItemUid())
-//                .eq(speciaAddlDTO.getDeclareTime()!=null, TotalSalary:: getDeclareTime, speciaAddlDTO.getDeclareTime())
-//                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-//        if(baseMapper.exists(queryWrapper)){
-//            throw new BusinessException("添加失败，专岗工资数据已经存在！");
-//        }
+        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(speciaAddlDTO.getItemUid()), TotalSalary:: getItemUid, speciaAddlDTO.getItemUid())
+                .likeRight(speciaAddlDTO.getSpecialDeclareTime()!=null, TotalSalary:: getSpecialDeclareTime, speciaAddlDTO.getSpecialDeclareTime())
+                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        if(baseMapper.exists(queryWrapper)){
+            throw new BusinessException("添加失败，专岗工资数据已经存在！");
+        }
         User currentUser = UserRequest.getCurrentUser();
         TotalSalary totalSalary = new TotalSalary();
         BeanUtil.copyProperties(speciaAddlDTO,totalSalary);
