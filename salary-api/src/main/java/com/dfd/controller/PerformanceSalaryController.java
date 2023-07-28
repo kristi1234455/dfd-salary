@@ -36,8 +36,8 @@ public class PerformanceSalaryController {
 
     @ApiOperation(value = "增加绩效基本工资", httpMethod = "POST")
     @PostMapping("/add")
-    public DFDResult add(@RequestBody @Valid PerformanceSalaryDTO performanceSalaryDTO){
-        performanceSalaryService.add(performanceSalaryDTO);
+    public DFDResult add(@RequestBody @Valid PerformanceSalaryAddDTO performanceSalaryAddDTO){
+        performanceSalaryService.add(performanceSalaryAddDTO);
         return DFDResult.sucess();
     }
 

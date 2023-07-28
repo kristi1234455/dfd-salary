@@ -1,6 +1,7 @@
 package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dfd.dto.PerformanceSalaryAddDTO;
 import com.dfd.dto.PerformanceSalaryDTO;
 import com.dfd.dto.PerformanceSalaryDelDTO;
 import com.dfd.dto.PerformanceSalaryInfoDTO;
@@ -15,7 +16,7 @@ import com.dfd.vo.PerformanceSalaryInfoVO;
 public interface PerformanceSalaryService extends IService<PerformanceSalary> {
     PageResult<PerformanceSalaryInfoVO> info(PerformanceSalaryInfoDTO performanceSalaryInfoDTO);
 
-    void add(PerformanceSalaryDTO performanceSalaryDTO);
+    void add(PerformanceSalaryAddDTO performanceSalaryAddDTO);
 
     void update(PerformanceSalaryDTO performanceSalaryDTO);
 

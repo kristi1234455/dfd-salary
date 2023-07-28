@@ -8,10 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.MemberInfoVO;
-import com.dfd.dto.PerformanceSalaryDTO;
-import com.dfd.dto.PerformanceSalaryDelDTO;
-import com.dfd.dto.PerformanceSalaryInfoDTO;
+import com.dfd.dto.*;
 import com.dfd.entity.*;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.PerformanceSalaryMapper;
@@ -106,18 +103,18 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
     }
 
     @Override
-    public void add(PerformanceSalaryDTO performanceSalaryDTO) {
+    public void add(PerformanceSalaryAddDTO performanceSalaryAddDTO) {
         LambdaQueryWrapper<PerformanceSalary> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryDTO.getItemUid())
-                .eq(StringUtils.isNotBlank(performanceSalaryDTO.getItemMemberUid()), PerformanceSalary:: getItemMemberUid, performanceSalaryDTO.getItemMemberUid())
-                .eq(performanceSalaryDTO.getDeclareTime()!=null, PerformanceSalary:: getDeclareTime, performanceSalaryDTO.getDeclareTime())
+        queryWrapper.eq(StringUtils.isNotBlank(performanceSalaryAddDTO.getItemUid()), PerformanceSalary:: getItemUid, performanceSalaryAddDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(performanceSalaryAddDTO.getItemMemberUid()), PerformanceSalary:: getItemMemberUid, performanceSalaryAddDTO.getItemMemberUid())
+                .eq(performanceSalaryAddDTO.getDeclareTime()!=null, PerformanceSalary:: getDeclareTime, performanceSalaryAddDTO.getDeclareTime())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户绩效数据已经存在！");
         }
         User currentUser = UserRequest.getCurrentUser();
         PerformanceSalary salary = new PerformanceSalary();
-        BeanUtil.copyProperties(performanceSalaryDTO,salary);
+        BeanUtil.copyProperties(performanceSalaryAddDTO,salary);
         salary.setUid(UUIDUtil.getUUID32Bits())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())

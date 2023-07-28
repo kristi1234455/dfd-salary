@@ -84,7 +84,7 @@ public class ItemTotalSalaryServiceImpl extends ServiceImpl<ItemTotalSalaryMappe
 
         List<TechnicalFeeInfoVO> result = list.stream().map(item -> {
             if(!Optional.ofNullable(item).isPresent()){
-                throw new BusinessException("投标数据为空");
+                throw new BusinessException("item项目数据为空");
             }
             TechnicalFeeInfoVO infoVO = new TechnicalFeeInfoVO();
             BeanUtil.copyProperties(item,infoVO);
