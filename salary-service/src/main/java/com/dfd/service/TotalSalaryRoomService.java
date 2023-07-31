@@ -2,12 +2,11 @@ package com.dfd.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
-import com.dfd.entity.ItemTotalSalary;
-import com.dfd.entity.TotalSalary;
+import com.dfd.entity.TotalSalaryRoom;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.SpecialInfoVO;
+import com.dfd.vo.TotalSalaryRoomExportInfoVO;
+import com.dfd.vo.TotalSalaryRoomInfoVO;
 import com.dfd.vo.TechnicalFeeInfoVO;
-import com.dfd.vo.TotalSalaryInfoVO;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Map;
  * @author yy
  * @date 2023/6/9 17:26
  */
-public interface ItemTotalSalaryService extends IService<ItemTotalSalary> {
+public interface TotalSalaryRoomService extends IService<TotalSalaryRoom> {
 
     PageResult<TechnicalFeeInfoVO> infoTechnical(TechnicalFeeInfoDTO technicalFeeInfoDTO);
 
@@ -27,4 +26,10 @@ public interface ItemTotalSalaryService extends IService<ItemTotalSalary> {
      * @return
      */
     Map<String, String> queryUsedTechnicalFeeByUids(List<String> uids);
+
+    PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
+
+    int exportRoomSalaryCount(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
+
+    List<TotalSalaryRoomExportInfoVO> exportRoomSalaryList(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
 }

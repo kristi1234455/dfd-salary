@@ -6,6 +6,10 @@ import com.dfd.entity.TotalSalary;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.SpecialInfoVO;
 import com.dfd.vo.TotalSalaryInfoVO;
+import com.dfd.vo.TotalSalaryPayrollExportVO;
+import com.dfd.vo.TotalSalaryPayrollInfoVO;
+
+import java.util.List;
 
 /**
  * @author yy
@@ -22,4 +26,10 @@ public interface TotalSalaryService extends IService<TotalSalary> {
     void delSpecial(SpecialDelDTO specialDelDTO);
 
     TotalSalaryInfoVO info(TotalSalaryInfoDTO totalSalaryInfoDTO);
+
+    PageResult<TotalSalaryPayrollInfoVO> infoPayroll(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
+
+    int exportSalaryCount(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
+
+    List<TotalSalaryPayrollExportVO> exportSalaryList(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
 }

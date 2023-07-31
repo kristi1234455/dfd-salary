@@ -15,9 +15,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@TableName("item_total_salary")
+@TableName("total_salary_room")
 @Accessors(chain = true)
-public class ItemTotalSalary {
+public class TotalSalaryRoom {
     /**
      * 主键
      */
@@ -49,10 +49,23 @@ public class ItemTotalSalary {
     private String room;
 
     /**
+     * 合同子项号
+     */
+    @ApiModelProperty(value = "合同子项号", name = "subItemNumber")
+    private String subItemNumber;
+
+    /**
+     * 虚拟合同子项号
+     */
+    @ApiModelProperty(value = "虚拟合同子项号", name = "virtualSubItemNumbe")
+    private String virtualSubItemNumbe;
+
+    /**
      * 立项号
      */
     @ApiModelProperty(value = "立项号", name = "itemNumber")
     private String itemNumber;
+
 
     /**
      * 项目名称
@@ -61,7 +74,7 @@ public class ItemTotalSalary {
     private String itemName;
 
     /**
-     * 项目阶段
+     * 项目阶段:1、设计；2、采购；3、制造；4、安装调试；5、安调验收；6、终验收；7、质保；
      */
     @ApiModelProperty(value = "项目阶段", name = "itemStage")
     private String itemStage;
@@ -70,19 +83,19 @@ public class ItemTotalSalary {
      * 项目经理
      */
     @ApiModelProperty(value = "项目经理", name = "itemProperties")
-    private String itemProperties;
+    private String itemManager;
 
     /**
      * 项目工资申报日期
      */
-    @ApiModelProperty(value = "项目工资申报日期", name = "payday")
-    private Date payday;
+    @ApiModelProperty(value = "项目工资申报日期", name = "declareTime")
+    private Date declareTime;
 
     /**
      * 项目工资申报金额（元）
      */
-    @ApiModelProperty(value = "项目工资申报金额（元）", name = "salary")
-    private BigDecimal salary;
+    @ApiModelProperty(value = "项目工资申报金额（元）", name = "totalSalary")
+    private BigDecimal totalSalary;
 
     /**
      * 备注

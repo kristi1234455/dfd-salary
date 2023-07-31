@@ -125,7 +125,7 @@ public class Item implements Serializable {
     private Date itemPlanFinishTime;
 
     /**
-     * 项目阶段
+     * 项目阶段:1、设计；2、采购；3、制造；4、安装调试；5、安调验收；6、终验收；7、质保；
      */
     @ApiModelProperty(value = "项目阶段", name = "itemStage")
     private Integer itemStage;
