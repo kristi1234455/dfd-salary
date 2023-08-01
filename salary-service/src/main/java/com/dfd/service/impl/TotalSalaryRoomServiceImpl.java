@@ -94,7 +94,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public Map<String, String> queryUsedTechnicalFeeByUids(List<String> uids) {
-        //todo:
+        //todo:获取项目技术费用
         return null;
     }
 

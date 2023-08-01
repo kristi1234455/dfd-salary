@@ -31,13 +31,13 @@ public class TotalSalaryController {
     @Autowired
     private TotalSalaryService totalSalaryService;
 
-    @ApiOperation(value = "获取工资汇总相关数据", httpMethod = "POST")
+    @ApiOperation(value = "获取工资综合汇总相关数据", httpMethod = "POST")
     @PostMapping("/summary/info")
     public DFDResult<PageResult<TotalSalaryInfoVO>> info(@RequestBody @Valid TotalSalaryInfoDTO totalSalaryInfoDTO){
         return DFDResult.sucess(totalSalaryService.info(totalSalaryInfoDTO));
     }
 
-    @ApiOperation(value = "导出工资汇总相关数据", httpMethod = "POST")
+    @ApiOperation(value = "工资综合汇总数据导出", httpMethod = "POST")
     @PostMapping("/summary/export")
     public DFDResult<TotalSalarySummaryExportVO> exportSummarySalary(TotalSalaryInfoDTO totalSalaryInfoDTO, HttpServletResponse response){
         int totalSize = totalSalaryService.exportSummarySalaryCount(totalSalaryInfoDTO);

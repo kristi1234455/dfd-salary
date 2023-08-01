@@ -77,7 +77,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 //        List<BidSalary> bidSalaries = bidSalaryService.list(bidSalaryWrapper);
 //        Map<String, BidSalary> itemMemberUidsbidSalaryMap = bidSalaries.stream().collect(Collectors.toMap(BidSalary::getItemMemberUid, o->o));
 //
-//        //todo:时间 item的list 主键
+//        //todo:查询添加当前时间 item的名字 mysql添加项目和项目人员主键
 //        Map<String, List<TotalSalaryItemInfoVO>> result = new HashMap<>();
 ////        Map<String, List<Item>> itemMemberUidItemMap = new HashMap<>();
 //        for(TotalSalary totalSalary : list){

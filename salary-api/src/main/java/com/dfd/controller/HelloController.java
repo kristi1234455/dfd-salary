@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @CrossOrigin
-//todo:日志测试
 @BusLog(name = "内部日志管理测试")
 @RequestMapping("hello")
 public class HelloController {

@@ -15,7 +15,6 @@ import java.util.Map;
  * @date 2023/5/11 11:19
  */
 public class TokenUtil {
-    // TODO: 2023/6/5 开启和验证
 //    private static Map<String, User> tokenMap = new HashMap<>();
 //
 //
