@@ -35,6 +35,11 @@ public class TotalSalaryBasicInfoVO implements Serializable {
     @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
     /**
+     * 项目人员表uid
+     */
+    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    private String itemMemberUid;
+    /**
      * 部门
      */
     @ApiModelProperty(value = "部门", name = "room")

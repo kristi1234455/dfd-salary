@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -17,12 +18,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class TotalSalarySummaryExportVO {
-    /**
-     * 主键
-     */
-    @TableId(value="id",type = IdType.AUTO)
-    @ApiModelProperty(value = "主键", name = "id")
-    private Integer id;
     /**
      * uid
      */
@@ -33,19 +28,21 @@ public class TotalSalarySummaryExportVO {
      */
     @ApiModelProperty(value = "项目信息表uid", name = "itemUid")
     private String itemUid;
-
-    /**
-     * 项目人员表uid
-     */
-    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
-    private String itemMemberUid;
-
     /**
      * 项目名称
      */
     @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
-
+    /**
+     * 项目人员表uid
+     */
+    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    private String itemMemberUid;
+    /**
+     * 部门
+     */
+    @ApiModelProperty(value = "部门", name = "room")
+    private String room;
     /**
      * 部门所室
      */
@@ -63,12 +60,6 @@ public class TotalSalarySummaryExportVO {
      */
     @ApiModelProperty(value = "姓名", name = "name")
     private String name;
-
-    /**
-     * 工资发放日期
-     */
-    @ApiModelProperty(value = "工资发放日期", name = "payday")
-    private String payday;
 
     /**
      * 项目绩效工资合计
@@ -93,12 +84,6 @@ public class TotalSalarySummaryExportVO {
      */
     @ApiModelProperty(value = "科研工资", name = "scientificTotal")
     private String scientificTotal;
-
-    /**
-     * 所室
-     */
-    @ApiModelProperty(value = "所室", name = "office")
-    private String office;
 
     /**
      * 专岗基础工资
@@ -167,70 +152,15 @@ public class TotalSalarySummaryExportVO {
     private String coefficientTotal;
 
     /**
-     * 驻外补助
-     */
-    @ApiModelProperty(value = "驻外补助", name = "outSubsidy")
-    private String outSubsidy;
-
-    /**
-     * 夜班补助
-     */
-    @ApiModelProperty(value = "夜班补助", name = "nightSubsidy")
-    private String nightSubsidy;
-
-    /**
-     * 加班补助
-     */
-    @ApiModelProperty(value = "加班补助", name = "overtimeSubsidy")
-    private String overtimeSubsidy;
-
-    /**
-     * 高温补助
-     */
-    @ApiModelProperty(value = "高温补助", name = "heatingSubsidy")
-    private String heatingSubsidy;
-
-    /**
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间", name = "declareTime")
-    private String declareTime;
+    private Date declareTime;
 
     /**
-     * 备注
+     * 当月项目工资汇总数据对象
      */
-    @ApiModelProperty(value = "备注", name = "remarks")
-    private String remarks;
-
-    /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人", name = "createdBy")
-    private String createdBy;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间", name = "createdTime")
-    private Date createdTime;
-
-    /**
-     * 更新人
-     */
-    @ApiModelProperty(value = "更新人", name = "updatedBy")
-    private String updatedBy;
-
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间", name = "updatedTime")
-    private Date updatedTime;
-
-    /**
-     * 是否删除：0:未删除；其他时间，删除
-     */
-    @ApiModelProperty(value = "是否删除：0:未删除；其他时间，删除", name = "isDeleted")
-    private String isDeleted;
-
+    @ApiModelProperty(value = "当月项目工资汇总数据对象", name = "totalSalaryItemInfoVOList")
+    private List<TotalSalaryItemInfoVO> totalSalaryItemInfoVOList;
 
 }

@@ -7,6 +7,7 @@ import com.dfd.utils.PageResult;
 import com.dfd.vo.TotalSalaryRoomExportInfoVO;
 import com.dfd.vo.TotalSalaryRoomInfoVO;
 import com.dfd.vo.TechnicalFeeInfoVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,6 @@ public interface TotalSalaryRoomService extends IService<TotalSalaryRoom> {
     int exportRoomSalaryCount(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
 
     List<TotalSalaryRoomExportInfoVO> exportRoomSalaryList(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
+
+    Integer updateByItemUid(List<TotalSalaryRoom> list);
 }

@@ -45,7 +45,7 @@ public class TotalSalaryController {
         totalSalaryInfoDTO.setPageSize(pageSize);
         int pages = PageUtil.totalPage(totalSize,pageSize);
         if (totalSize > 0) {
-            ExcelUtils.exportBigData(response, "工资汇总清单",  TotalSalarySummaryExportVO.class,pageSize,pages,(i)->{
+            ExcelUtils.exportBigData(response, "工资汇总表",  TotalSalarySummaryExportVO.class,pageSize,pages,(i)->{
                 totalSalaryInfoDTO.setCurrentPage(i);
                 List<TotalSalarySummaryExportVO> data = totalSalaryService.exportSummarySalaryList(totalSalaryInfoDTO);
                 return data;

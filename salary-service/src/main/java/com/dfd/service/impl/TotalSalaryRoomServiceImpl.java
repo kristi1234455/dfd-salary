@@ -8,10 +8,7 @@ import com.dfd.dto.*;
 import com.dfd.entity.*;
 import com.dfd.enums.ItemStageEnum;
 import com.dfd.mapper.TotalSalaryRoomMapper;
-import com.dfd.service.ItemService;
-import com.dfd.service.MemberService;
-import com.dfd.service.TotalSalaryRoomService;
-import com.dfd.service.TotalSalaryService;
+import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -36,10 +33,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
     private ItemService itemService;
 
     @Autowired
-    private TotalSalaryRoomMapper totalSalaryRoomMapper;
-
-    @Autowired
-    private TotalSalaryService totalSalaryService;
+    private TotalSalaryFlushService totalSalaryFlushService;
 
     @Autowired
     private MemberService memberService;
@@ -100,6 +94,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public Map<String, String> queryUsedTechnicalFeeByUids(List<String> uids) {
+        //todo:
         return null;
     }
 
@@ -107,7 +102,8 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO) {
-        flushTotalSalaryRoom();
+        totalSalaryFlushService.flushTotalSalaryRoom();
+        totalSalaryFlushService.flushTotalSalary();
         LambdaQueryWrapper<TotalSalaryRoom> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getRoom()), TotalSalaryRoom:: getRoom, totalSalaryRoomInfoDTO.getRoom())
                 .likeRight(totalSalaryRoomInfoDTO.getDeclareTime() !=null, TotalSalaryRoom:: getDeclareTime, totalSalaryRoomInfoDTO.getDeclareTime())
@@ -139,76 +135,6 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
                 .setTotalPages(totalPage)
                 .setTotalRecords(size);
         return pageResult;
-    }
-
-    /**
-     * 根据itemUid将item项目数据刷新到TotalSalaryRoom表中
-     * 根据itemUid将TotalSalary表中数据刷新到TotalSalaryRoom表中
-     */
-    private void flushTotalSalaryRoom() {
-        flushItem();
-        flushSalary();
-    }
-
-    private void flushItem(){
-        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        List<Item> itemList = itemService.list(queryWrapper);
-
-        LambdaQueryWrapper<TotalSalaryRoom> wrapper = new LambdaQueryWrapper();
-        wrapper.eq(TotalSalaryRoom::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        List<TotalSalaryRoom> totalSalaryRoomList = list(wrapper);
-
-        List<Item> addElements = itemList.stream()
-                .filter(obj1 -> totalSalaryRoomList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemUid())))
-                .collect(Collectors.toList());
-
-        List<Item> updateElements = itemList.stream()
-                .filter(obj1 -> !totalSalaryRoomList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemUid())))
-                .collect(Collectors.toList());
-
-        User currentUser = UserRequest.getCurrentUser();
-        if(!CollectionUtils.isEmpty(addElements)){
-            List<TotalSalaryRoom> collect = addElements.stream().map(var -> {
-                TotalSalaryRoom totalSalaryRoom = new TotalSalaryRoom();
-                BeanUtil.copyProperties(var, totalSalaryRoom);
-                totalSalaryRoom.setId(null)
-                        .setUid(UUIDUtil.getUUID32Bits())
-                        .setItemUid(var.getUid())
-                        .setCreatedBy(currentUser.getNumber())
-                        .setCreatedTime(new Date()).setUpdatedBy(currentUser.getNumber())
-                        .setUpdatedTime(new Date());
-                return totalSalaryRoom;
-            }).collect(Collectors.toList());
-
-            boolean b = saveBatch(collect);
-            if (!b) {
-                throw new BusinessException("项目工资添加失败!");
-            }
-        }
-        if(!CollectionUtils.isEmpty(updateElements)){
-            List<TotalSalaryRoom> collect = updateElements.stream().map(var -> {
-                TotalSalaryRoom totalSalaryRoom = new TotalSalaryRoom();
-                BeanUtil.copyProperties(var, totalSalaryRoom);
-                totalSalaryRoom.setId(null)
-                        .setUid(null)
-                        .setItemUid(var.getUid())
-                        .setCreatedBy(currentUser.getNumber())
-                        .setCreatedTime(new Date()).setUpdatedBy(currentUser.getNumber())
-                        .setUpdatedTime(new Date());
-                return totalSalaryRoom;
-            }).collect(Collectors.toList());
-
-            int update = totalSalaryRoomMapper.updateByItemUid(collect);
-            if (update<=0) {
-                throw new BusinessException("项目工资更新失败!");
-            }
-        }
-
-    }
-
-    private void flushSalary() {
-        totalSalaryService.flushTotalSalary();
     }
 
     private List<TotalSalaryRoomInfoVO> convertToRoomInfoVO(List<TotalSalaryRoom> list){
@@ -257,6 +183,11 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
             return infoVO;
         }).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public Integer updateByItemUid(List<TotalSalaryRoom> list) {
+        return updateByItemUid(list);
     }
 }
 

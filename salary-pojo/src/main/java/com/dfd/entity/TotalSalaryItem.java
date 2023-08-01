@@ -1,5 +1,6 @@
-package com.dfd.vo;
+package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,29 +8,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Builder
 @Accessors(chain = true)
-public class TotalSalaryItemInfoVO implements Serializable {
+@TableName("total_salary_item")
+public class TotalSalaryItem {
+    /**
+     * 主键
+     */
+    @ApiModelProperty(value = "主键", name = "id")
+    private Integer id;
 
-    private static final long serialVersionUID = -1325759829897239212L;
+    /**
+     * uid
+     */
+    @ApiModelProperty(value = "uid", name = "uid")
+    private String uid;
 
     /**
      * 项目信息表uid
      */
     @ApiModelProperty(value = "项目信息表uid", name = "itemUid")
     private String itemUid;
+
     /**
      * 项目名称
      */
     @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
+
     /**
      * 项目人员表uid
      */
@@ -37,16 +49,34 @@ public class TotalSalaryItemInfoVO implements Serializable {
     private String itemMemberUid;
 
     /**
-     * 立项号
+     * 工号
      */
-    @ApiModelProperty(value = "立项号", name = "itemNumber")
-    private String itemNumber;
+    @ApiModelProperty(value = "工号", name = "number")
+    private String number;
+
+    /**
+     * 姓名
+     */
+    @ApiModelProperty(value = "姓名", name = "name")
+    private String name;
+
+    /**
+     * 合同子项号
+     */
+    @ApiModelProperty(value = "合同子项号", name = "subItemNumber")
+    private String subItemNumber;
 
     /**
      * 虚拟合同子项号
      */
-    @ApiModelProperty(value = "虚拟合同子项号", name = "virtualSubItemNumber")
-    private String virtualSubItemNumber;
+    @ApiModelProperty(value = "虚拟合同子项号", name = "virtualSubItemNumbe")
+    private String virtualSubItemNumbe;
+
+    /**
+     * 立项号
+     */
+    @ApiModelProperty(value = "立项号", name = "itemNumber")
+    private String itemNumber;
 
     /**
      * 合同金额(万元）
@@ -109,21 +139,21 @@ public class TotalSalaryItemInfoVO implements Serializable {
     private BigDecimal declareGrant;
 
     /**
-     * 本次发放绩效工资
+     * 绩效工资
      */
-    @ApiModelProperty(value = "本次发放绩效工资", name = "performanceSalary")
+    @ApiModelProperty(value = "绩效工资", name = "performanceSalary")
     private BigDecimal performanceSalary;
 
     /**
      * 设计工资
      */
-    @ApiModelProperty(value = "设计工资",name = "designSalary")
+    @ApiModelProperty(value = "设计工资", name = "designSalary")
     private BigDecimal designSalary;
 
     /**
      * 投标工资
      */
-    @ApiModelProperty(value = "投标工资",name = "bidFee")
+    @ApiModelProperty(value = "投标工资", name = "bidSalary")
     private BigDecimal bidSalary;
 
     /**
@@ -149,5 +179,55 @@ public class TotalSalaryItemInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "当月专岗津贴实际发放", name = "realitySubsidy")
     private String realitySubsidy;
+
+    /**
+     * 项目工资申报日期
+     */
+    @ApiModelProperty(value = "项目工资申报日期", name = "declareTime")
+    private Date declareTime;
+
+    /**
+     * 项目工资申报金额（元）
+     */
+    @ApiModelProperty(value = "项目工资申报金额（元）", name = "totalSalary")
+    private BigDecimal totalSalary;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注", name = "mark")
+    private String mark;
+
+    /**
+     * 创建人
+     */
+    @ApiModelProperty(value = "创建人", name = "createdBy")
+    private String createdBy;
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间", name = "createdTime")
+    private Date createdTime;
+
+    /**
+     * 更新人
+     */
+    @ApiModelProperty(value = "更新人", name = "updatedBy")
+    private String updatedBy;
+
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty(value = "更新时间", name = "updatedTime")
+    private Date updatedTime;
+
+    /**
+     * 是否删除：0:未删除；其他时间，删除
+     */
+    @ApiModelProperty(value = "是否删除：0:未删除；其他时间，删除", name = "isDeleted")
+    private String isDeleted;
+
+
 
 }

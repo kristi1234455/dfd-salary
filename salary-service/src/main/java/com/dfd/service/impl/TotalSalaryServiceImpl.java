@@ -1,6 +1,8 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -13,9 +15,7 @@ import com.dfd.entity.*;
 import com.dfd.enums.ItemStageEnum;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.TotalSalaryMapper;
-import com.dfd.service.ItemService;
-import com.dfd.service.MemberService;
-import com.dfd.service.TotalSalaryService;
+import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -41,6 +41,12 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private TotalSalaryItemService totalSalaryItemService;
+
+    @Autowired
+    private TotalSalaryFlushService totalSalaryFlushService;
 
     @Override
     public PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO) {
@@ -145,7 +151,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-        flushTotalSalary();
+        totalSalaryFlushService.flushTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
                 .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())
@@ -159,7 +165,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (olist.size() + pageSize - 1) / pageSize;
-        List<TotalSalaryInfoVO> list = convertToTotalSalaryInfoVO(olist);
+        List<TotalSalaryInfoVO> list = convertToTotalSalaryInfoVO(totalSalaryInfoDTO,olist);
         int size = list.size();
         //先判断pageNum(使之page <= 0 与page==1返回结果相同)
         pageNum = pageNum <= 0 ? 1 : pageNum;
@@ -180,42 +186,123 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         return pageResult;
     }
 
-    private List<TotalSalaryInfoVO> convertToTotalSalaryInfoVO(List<TotalSalary> list) {
+    private List<TotalSalaryInfoVO> convertToTotalSalaryInfoVO(TotalSalaryInfoDTO totalSalaryInfoDTO, List<TotalSalary> list) {
         if (CollectionUtils.isEmpty(list)) {
             return Collections.emptyList();
         }
+        LambdaQueryWrapper<TotalSalaryItem> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalaryItem:: getNumber, totalSalaryInfoDTO.getNumber())
+                .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalaryItem:: getName, totalSalaryInfoDTO.getName())
+                .likeRight(totalSalaryInfoDTO.getDeclareTime() !=null, TotalSalaryItem:: getDeclareTime, totalSalaryInfoDTO.getDeclareTime())
+                .eq(TotalSalaryItem::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(TotalSalaryItem :: getCreatedTime);
+        List<TotalSalaryItem> totalSalaryItems = totalSalaryItemService.list(queryWrapper);
+
+        List<String> memUIdList = new ArrayList<>();
+        for (TotalSalaryItem totalSalaryItem : totalSalaryItems) {
+            memUIdList.add(totalSalaryItem.getItemManager());
+            memUIdList.add(totalSalaryItem.getBidDirector());
+            memUIdList.add(totalSalaryItem.getDesignManager());
+            memUIdList.add(totalSalaryItem.getScientificManager());
+        }
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
+
+        List<TotalSalaryItemInfoVO> totalSalaryItemInfoVOS = totalSalaryItems.stream().map(var -> {
+            TotalSalaryItemInfoVO infoVO = new TotalSalaryItemInfoVO();
+            BeanUtil.copyProperties(var, infoVO);
+            infoVO.setItemManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getItemManager()) : null)
+                    .setBidDirector(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getBidDirector()) : null)
+                    .setDesignManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getDesignManager()) : null)
+                    .setScientificManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getScientificManager()) : null);
+            return infoVO;
+        }).collect(Collectors.toList());
+        Map<String, List<TotalSalaryItemInfoVO>> itemMemberUidTotalSalaryItem = totalSalaryItemInfoVOS.stream()
+                .collect(Collectors.groupingBy(TotalSalaryItemInfoVO::getItemMemberUid));
+
         List<TotalSalaryInfoVO> result = list.stream().map(var -> {
             if(!Optional.ofNullable(var).isPresent()){
                 throw new BusinessException("项目工资部门汇总数据为空");
             }
-            TotalSalaryInfoVO infoVO = new TotalSalaryInfoVO();
-            BeanUtil.copyProperties(var,infoVO);
-            return infoVO;
+            TotalSalaryInfoVO resultVO = new TotalSalaryInfoVO();
+            TotalSalaryBasicInfoVO basicInfoVO = new TotalSalaryBasicInfoVO();
+            BeanUtil.copyProperties(var,basicInfoVO);
+            resultVO.setTotalSalaryBasicInfoVO(basicInfoVO);
+            resultVO.setTotalSalaryItemInfoVOList(itemMemberUidTotalSalaryItem.get(var.getItemMemberUid()));
+            return resultVO;
         }).collect(Collectors.toList());
         return result;
     }
 
     @Override
     public int exportSummarySalaryCount(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-        return 0;
+        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
+                .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())
+                .likeRight(totalSalaryInfoDTO.getDeclareTime() !=null, TotalSalary:: getDeclareTime, totalSalaryInfoDTO.getDeclareTime())
+                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
+        return Integer.parseInt(String.valueOf(baseMapper.selectCount(queryWrapper)));
     }
 
     @Override
     public List<TotalSalarySummaryExportVO> exportSummarySalaryList(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-        return null;
-    }
+        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
+                .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())
+                .likeRight(totalSalaryInfoDTO.getDeclareTime() !=null, TotalSalary:: getDeclareTime, totalSalaryInfoDTO.getDeclareTime())
+                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
+        List<TotalSalary> list = baseMapper.selectList(queryWrapper);
 
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
 
-    public void flushTotalSalary() {
-        //todo
+        LambdaQueryWrapper<TotalSalaryItem> wrapper = new LambdaQueryWrapper();
+        wrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalaryItem:: getNumber, totalSalaryInfoDTO.getNumber())
+                .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalaryItem:: getName, totalSalaryInfoDTO.getName())
+                .likeRight(totalSalaryInfoDTO.getDeclareTime() !=null, TotalSalaryItem:: getDeclareTime, totalSalaryInfoDTO.getDeclareTime())
+                .eq(TotalSalaryItem::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        wrapper.orderByDesc(TotalSalaryItem :: getCreatedTime);
+        List<TotalSalaryItem> totalSalaryItems = totalSalaryItemService.list(wrapper);
 
+        List<String> memUIdList = new ArrayList<>();
+        for (TotalSalaryItem totalSalaryItem : totalSalaryItems) {
+            memUIdList.add(totalSalaryItem.getItemManager());
+            memUIdList.add(totalSalaryItem.getBidDirector());
+            memUIdList.add(totalSalaryItem.getDesignManager());
+            memUIdList.add(totalSalaryItem.getScientificManager());
+        }
+        Map<String, String> itemMemberNames = memberService.queryNameByUids(memUIdList);
 
+        List<TotalSalaryItemInfoVO> totalSalaryItemInfoVOS = totalSalaryItems.stream().map(var -> {
+            TotalSalaryItemInfoVO infoVO = new TotalSalaryItemInfoVO();
+            BeanUtil.copyProperties(var, infoVO);
+            infoVO.setItemManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getItemManager()) : null)
+                    .setBidDirector(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getBidDirector()) : null)
+                    .setDesignManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getDesignManager()) : null)
+                    .setScientificManager(!itemMemberNames.isEmpty() ? itemMemberNames.get(var.getScientificManager()) : null);
+            return infoVO;
+        }).collect(Collectors.toList());
+        Map<String, List<TotalSalaryItemInfoVO>> itemMemberUidTotalSalaryItem = totalSalaryItemInfoVOS.stream().collect(Collectors.groupingBy(TotalSalaryItemInfoVO::getItemMemberUid));
+
+        List<TotalSalarySummaryExportVO> result = list.stream().map(var -> {
+            if(!Optional.ofNullable(var).isPresent()){
+                throw new BusinessException("工资综合汇总数据为空！");
+            }
+            TotalSalarySummaryExportVO resultVO = new TotalSalarySummaryExportVO();
+            TotalSalaryBasicInfoVO basicInfoVO = new TotalSalaryBasicInfoVO();
+            BeanUtil.copyProperties(var,basicInfoVO);
+            resultVO.setTotalSalaryItemInfoVOList(itemMemberUidTotalSalaryItem.get(var.getItemMemberUid()));
+            return resultVO;
+        }).collect(Collectors.toList());
+        return result;
     }
 
 
     @Override
     public PageResult<TotalSalaryPayrollInfoVO> infoPayroll(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO) {
-        flushTotalSalary();
+        totalSalaryFlushService.flushTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryPayrollInfoDTO.getRoom()), TotalSalary:: getRoom, totalSalaryPayrollInfoDTO.getRoom())
                  .like(StringUtils.isNotBlank(totalSalaryPayrollInfoDTO.getName()), TotalSalary:: getName, totalSalaryPayrollInfoDTO.getName())

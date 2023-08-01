@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.TotalSalaryItemMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.TotalSalaryItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sub_item_number" property="subItemNumber" jdbcType="VARCHAR" />
+    <result column="virtual_sub_item_numbe" property="virtualSubItemNumbe" jdbcType="VARCHAR" />
+    <result column="item_number" property="itemNumber" jdbcType="VARCHAR" />
+    <result column="agreement_money" property="agreementMoney" jdbcType="DECIMAL" />
+    <result column="item_manager" property="itemManager" jdbcType="VARCHAR" />
+    <result column="bid_director" property="bidDirector" jdbcType="VARCHAR" />
+    <result column="design_manager" property="designManager" jdbcType="VARCHAR" />
+    <result column="scientific_manager" property="scientificManager" jdbcType="VARCHAR" />
+    <result column="post_salary_standard" property="postSalaryStandard" jdbcType="DECIMAL" />
+    <result column="declare_factor" property="declareFactor" jdbcType="VARCHAR" />
+    <result column="check_plan_salary" property="checkPlanSalary" jdbcType="DECIMAL" />
+    <result column="check_salary" property="checkSalary" jdbcType="DECIMAL" />
+    <result column="declare_grant" property="declareGrant" jdbcType="DECIMAL" />
+    <result column="performance_salary" property="performanceSalary" jdbcType="DECIMAL" />
+    <result column="design_salary" property="designSalary" jdbcType="DECIMAL" />
+    <result column="bid_salary" property="bidSalary" jdbcType="DECIMAL" />
+    <result column="subsidy_coefficient" property="subsidyCoefficient" jdbcType="VARCHAR" />
+    <result column="plan_subsidy" property="planSubsidy" jdbcType="VARCHAR" />
+    <result column="check_subsidy" property="checkSubsidy" jdbcType="VARCHAR" />
+    <result column="reality_subsidy" property="realitySubsidy" jdbcType="VARCHAR" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
+    <result column="total_salary" property="totalSalary" jdbcType="DECIMAL" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>
