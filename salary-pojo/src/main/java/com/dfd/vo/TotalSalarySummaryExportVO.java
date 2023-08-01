@@ -1,8 +1,7 @@
-package com.dfd.entity;
+package com.dfd.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +10,13 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@TableName("total_salary")
 @Accessors(chain = true)
-public class TotalSalary {
+public class TotalSalarySummaryExportVO {
     /**
      * 主键
      */
@@ -46,12 +45,6 @@ public class TotalSalary {
      */
     @ApiModelProperty(value = "项目名称", name = "itemName")
     private String itemName;
-
-    /**
-     * 部门
-     */
-    @ApiModelProperty(value = "部门", name = "room")
-    private String room;
 
     /**
      * 部门所室
@@ -102,10 +95,10 @@ public class TotalSalary {
     private String scientificTotal;
 
     /**
-     * 专岗申报时间
+     * 所室
      */
-    @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
-    private Date specialDeclareTime;
+    @ApiModelProperty(value = "所室", name = "office")
+    private String office;
 
     /**
      * 专岗基础工资
@@ -201,7 +194,7 @@ public class TotalSalary {
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间", name = "declareTime")
-    private Date declareTime;
+    private String declareTime;
 
     /**
      * 备注

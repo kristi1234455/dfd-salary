@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.TotalSalary;
 import com.dfd.utils.PageResult;
-import com.dfd.vo.SpecialInfoVO;
-import com.dfd.vo.TotalSalaryInfoVO;
-import com.dfd.vo.TotalSalaryPayrollExportVO;
-import com.dfd.vo.TotalSalaryPayrollInfoVO;
+import com.dfd.vo.*;
 
 import java.util.List;
 
@@ -25,11 +22,19 @@ public interface TotalSalaryService extends IService<TotalSalary> {
 
     void delSpecial(SpecialDelDTO specialDelDTO);
 
-    TotalSalaryInfoVO info(TotalSalaryInfoDTO totalSalaryInfoDTO);
+    PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO);
+
+
+    int exportSummarySalaryCount(TotalSalaryInfoDTO totalSalaryInfoDTO);
+
+    List<TotalSalarySummaryExportVO> exportSummarySalaryList(TotalSalaryInfoDTO totalSalaryInfoDTO);
 
     PageResult<TotalSalaryPayrollInfoVO> infoPayroll(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
 
     int exportSalaryCount(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
 
     List<TotalSalaryPayrollExportVO> exportSalaryList(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
+
+    void flushTotalSalary();
+
 }

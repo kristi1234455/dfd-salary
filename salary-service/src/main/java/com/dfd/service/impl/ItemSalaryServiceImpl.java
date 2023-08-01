@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -114,7 +116,17 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         User currentUser = UserRequest.getCurrentUser();
         ItemSalary salary = new ItemSalary();
         BeanUtil.copyProperties(itemSalaryDTO,salary);
+        BigDecimal checkPlanSalary = itemSalaryDTO.getPostSalaryStandard() .multiply(new BigDecimal(itemSalaryDTO.getDeclareFactor()))
+                .setScale(2, RoundingMode.HALF_UP);
+        BigDecimal checkSalary = checkPlanSalary.multiply(new BigDecimal(0.15))
+                .setScale(2, RoundingMode.HALF_UP);
+        if(itemSalaryDTO.getDeclareGrant() == null){
+            BigDecimal declareGrant = checkPlanSalary.subtract(checkSalary);
+            salary.setDeclareGrant(declareGrant);
+        }
         salary.setUid(UUIDUtil.getUUID32Bits())
+                .setCheckPlanSalary(checkPlanSalary.toString())
+                .setCheckSalary(checkSalary.toString())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())

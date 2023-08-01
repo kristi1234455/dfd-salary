@@ -40,6 +40,7 @@ public class ItemSalaryAddDTO implements Serializable {
      * 项目人员表uid
      */
     @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
+    @NotBlank(message = "项目人员表uid不能为空")
     private String itemMemberUid;
     /**
      * 工号
@@ -57,18 +58,21 @@ public class ItemSalaryAddDTO implements Serializable {
      * 岗位工资标准
      */
     @ApiModelProperty(value = "岗位工资标准", name = "postSalaryStandard")
+    @NotBlank(message = "项目人员表uid不能为空")
     private BigDecimal postSalaryStandard;
 
     /**
      * 策划批准系数
      */
     @ApiModelProperty(value = "策划批准系数", name = "planApproveFactor")
+    @NotBlank(message = "策划批准系数不能为空")
     private String planApproveFactor;
 
     /**
      * 申报系数
      */
     @ApiModelProperty(value = "申报系数", name = "declareFactor")
+    @NotBlank(message = "申报系数不能为空")
     private String declareFactor;
 
     /**

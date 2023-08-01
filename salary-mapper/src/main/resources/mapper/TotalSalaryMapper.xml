@@ -32,7 +32,7 @@
     <result column="night_subsidy" property="nightSubsidy" jdbcType="VARCHAR" />
     <result column="overtime_subsidy" property="overtimeSubsidy" jdbcType="VARCHAR" />
     <result column="heating_subsidy" property="heatingSubsidy" jdbcType="VARCHAR" />
-    <result column="declare_time" property="declareTime" jdbcType="VARCHAR" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />

@@ -144,13 +144,71 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
     }
 
     @Override
-    public TotalSalaryInfoVO info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
+    public PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
+        flushTotalSalary();
+        LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
+                .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())
+                .likeRight(totalSalaryInfoDTO.getDeclareTime() !=null, TotalSalary:: getDeclareTime, totalSalaryInfoDTO.getDeclareTime())
+                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
+        List<TotalSalary> olist = baseMapper.selectList(queryWrapper);
 
+        Integer pageNum = totalSalaryInfoDTO.getCurrentPage();
+        Integer pageSize = totalSalaryInfoDTO.getPageSize();
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+        List<TotalSalaryInfoVO> list = convertToTotalSalaryInfoVO(olist);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<TotalSalaryInfoVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
+        return pageResult;
+    }
+
+    private List<TotalSalaryInfoVO> convertToTotalSalaryInfoVO(List<TotalSalary> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
+        List<TotalSalaryInfoVO> result = list.stream().map(var -> {
+            if(!Optional.ofNullable(var).isPresent()){
+                throw new BusinessException("项目工资部门汇总数据为空");
+            }
+            TotalSalaryInfoVO infoVO = new TotalSalaryInfoVO();
+            BeanUtil.copyProperties(var,infoVO);
+            return infoVO;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    @Override
+    public int exportSummarySalaryCount(TotalSalaryInfoDTO totalSalaryInfoDTO) {
+        return 0;
+    }
+
+    @Override
+    public List<TotalSalarySummaryExportVO> exportSummarySalaryList(TotalSalaryInfoDTO totalSalaryInfoDTO) {
         return null;
     }
 
 
-    private void flushTotaSalary(){
+    public void flushTotalSalary() {
+        //todo
+
 
     }
 
@@ -206,11 +264,6 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
         }).collect(Collectors.toList());
         return result;
     }
-
-    private void flushTotalSalary() {
-        //todo
-    }
-
 
     @Override
     public int exportSalaryCount(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO) {

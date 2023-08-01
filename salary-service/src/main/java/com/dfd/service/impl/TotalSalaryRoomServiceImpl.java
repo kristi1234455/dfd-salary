@@ -11,6 +11,7 @@ import com.dfd.mapper.TotalSalaryRoomMapper;
 import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.TotalSalaryRoomService;
+import com.dfd.service.TotalSalaryService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -36,6 +37,9 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Autowired
     private TotalSalaryRoomMapper totalSalaryRoomMapper;
+
+    @Autowired
+    private TotalSalaryService totalSalaryService;
 
     @Autowired
     private MemberService memberService;
@@ -203,9 +207,8 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     }
 
-
     private void flushSalary() {
-        //todo
+        totalSalaryService.flushTotalSalary();
     }
 
     private List<TotalSalaryRoomInfoVO> convertToRoomInfoVO(List<TotalSalaryRoom> list){

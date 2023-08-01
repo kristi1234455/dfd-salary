@@ -12,6 +12,8 @@
     <result column="post_salary_standard" property="postSalaryStandard" jdbcType="DECIMAL" />
     <result column="plan_approve_factor" property="planApproveFactor" jdbcType="VARCHAR" />
     <result column="declare_factor" property="declareFactor" jdbcType="VARCHAR" />
+    <result column="check_plan_salary" property="checkPlanSalary" jdbcType="VARCHAR" />
+    <result column="check_salary" property="checkSalary" jdbcType="VARCHAR" />
     <result column="declare_grant" property="declareGrant" jdbcType="DECIMAL" />
     <result column="item_stage" property="itemStage" jdbcType="VARCHAR" />
     <result column="declare_time" property="declareTime" jdbcType="VARCHAR" />

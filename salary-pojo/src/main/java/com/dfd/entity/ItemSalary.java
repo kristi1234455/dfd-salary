@@ -74,10 +74,22 @@ public class ItemSalary {
     private String planApproveFactor;
 
     /**
-     * 申报系数
+     * 实际申报批准系数
      */
-    @ApiModelProperty(value = "申报系数", name = "declareFactor")
+    @ApiModelProperty(value = "实际申报批准系数", name = "declareFactor")
     private String declareFactor;
+
+    /**
+     * 考核工资应发
+     */
+    @ApiModelProperty(value = "考核工资应发", name = "checkPlanSalary")
+    private String checkPlanSalary;
+
+    /**
+     * 考核工资
+     */
+    @ApiModelProperty(value = "考核工资", name = "checkSalary")
+    private String checkSalary;
 
     /**
      * 申报发放工资
