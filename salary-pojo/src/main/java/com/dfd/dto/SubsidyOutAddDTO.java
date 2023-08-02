@@ -63,6 +63,7 @@ public class SubsidyOutAddDTO implements Serializable {
      * 驻外天数
      */
     @ApiModelProperty(value = "驻外天数", name = "outDays")
+    @NotBlank(message = "驻外天数不能为空")
     private Integer outDays;
 
     /**

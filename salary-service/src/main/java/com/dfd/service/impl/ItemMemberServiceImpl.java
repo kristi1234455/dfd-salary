@@ -116,6 +116,7 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
         oMembers.stream().forEach(e ->{
             e.setRemarks(String.valueOf(new Date()))
                     .setIsDeleted(String.valueOf(System.currentTimeMillis()))
+                    .setDeclareTime(new Date())
                     .setUpdatedBy(currentUser.getNumber())
                     .setUpdatedTime(new Date());
         });

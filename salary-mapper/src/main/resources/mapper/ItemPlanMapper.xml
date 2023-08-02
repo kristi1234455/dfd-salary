@@ -13,6 +13,7 @@
     <result column="inspection_coefficient" property="inspectionCoefficient" jdbcType="DECIMAL" />
     <result column="final_coefficient" property="finalCoefficient" jdbcType="DECIMAL" />
     <result column="guarantee_coefficient" property="guaranteeCoefficient" jdbcType="DECIMAL" />
+    <result column="declare_time" property="declareTime" jdbcType="TIMESTAMP" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />

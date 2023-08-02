@@ -9,10 +9,8 @@ import com.dfd.entity.*;
 import com.dfd.enums.ItemStageEnum;
 import com.dfd.mapper.TotalSalaryRoomMapper;
 import com.dfd.service.*;
-import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
-import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +100,8 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO) {
-        totalSalaryFlushService.flushTotalSalaryRoom();
-        totalSalaryFlushService.flushTotalSalary();
+        totalSalaryFlushService.flushMonthTotalSalaryRoom();
+        totalSalaryFlushService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalaryRoom> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getRoom()), TotalSalaryRoom:: getRoom, totalSalaryRoomInfoDTO.getRoom())
                 .likeRight(totalSalaryRoomInfoDTO.getDeclareTime() !=null, TotalSalaryRoom:: getDeclareTime, totalSalaryRoomInfoDTO.getDeclareTime())

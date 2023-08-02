@@ -76,6 +76,7 @@ public class SubsidyNightAddDTO implements Serializable {
      * 夜班天数
      */
     @ApiModelProperty(value = "夜班天数", name = "nightDays")
+    @NotBlank(message = "夜班天数不能为空")
     private Integer nightDays;
 
     /**

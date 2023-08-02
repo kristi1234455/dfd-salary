@@ -83,7 +83,11 @@ public class ItemPlan {
      */
     @ApiModelProperty(value = "质保阶段系数", name = "guaranteeCoefficient")
     private BigDecimal guaranteeCoefficient;
-
+    /**
+     * 申报时间
+     */
+    @ApiModelProperty(value = "申报时间", name = "declareTime")
+    private Date declareTime;
     /**
      * 备注
      */

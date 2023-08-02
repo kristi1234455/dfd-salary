@@ -71,6 +71,7 @@ public class SubsidyHeatingAddDTO implements Serializable {
      * 高温天数
      */
     @ApiModelProperty(value = "高温天数", name = "heatingDays")
+    @NotBlank(message = "高温天数不能为空")
     private Integer heatingDays;
 
     /**

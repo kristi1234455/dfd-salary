@@ -53,6 +53,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Integer pageNum = subsidyOvertimeInfoDTO.getCurrentPage();
         Integer pageSize = subsidyOvertimeInfoDTO.getPageSize();
         List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        members = members.stream().filter(e -> e.getOvertimeDays() != null).collect(Collectors.toList());
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (members.size() + pageSize - 1) / pageSize;
@@ -176,6 +177,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Integer pageNum = subsidyNightInfoDTO.getCurrentPage();
         Integer pageSize = subsidyNightInfoDTO.getPageSize();
         List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        members = members.stream().filter(e -> e.getNightDays() != null).collect(Collectors.toList());
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (members.size() + pageSize - 1) / pageSize;
@@ -298,6 +300,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Integer pageNum = subsidyOutInfoDTO.getCurrentPage();
         Integer pageSize = subsidyOutInfoDTO.getPageSize();
         List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        members = members.stream().filter(e -> e.getOutDays() != null).collect(Collectors.toList());
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (members.size() + pageSize - 1) / pageSize;
@@ -418,6 +421,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         Integer pageNum = subsidyHeatingInfoDTO.getCurrentPage();
         Integer pageSize = subsidyHeatingInfoDTO.getPageSize();
         List<Subsidy> members = baseMapper.selectList(queryWrapper);
+        members = members.stream().filter(e -> e.getHeatingDays() != null).collect(Collectors.toList());
         //总页数
 //        int totalPage = list.size() / pageSize;
         int totalPage = (members.size() + pageSize - 1) / pageSize;

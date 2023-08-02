@@ -59,7 +59,7 @@ public class ItemSalaryAddDTO implements Serializable {
      */
     @ApiModelProperty(value = "岗位工资标准", name = "postSalaryStandard")
     @NotBlank(message = "项目人员表uid不能为空")
-    private BigDecimal postSalaryStandard;
+    private String postSalaryStandard;
 
     /**
      * 策划批准系数
@@ -79,7 +79,7 @@ public class ItemSalaryAddDTO implements Serializable {
      * 申报发放工资
      */
     @ApiModelProperty(value = "申报发放工资", name = "declareGrant")
-    private BigDecimal declareGrant;
+    private String declareGrant;
 
     /**
      * 项目阶段：1、设计阶段；2、采购阶段；3、制造阶段；4、安装调试阶段；5、安装验收阶段；6、终验收阶段；7、质保阶段；

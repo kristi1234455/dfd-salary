@@ -1,8 +1,6 @@
 package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -12,8 +10,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
-import com.dfd.enums.ItemStageEnum;
-import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.TotalSalaryMapper;
 import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
@@ -151,7 +147,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-        totalSalaryFlushService.flushTotalSalary();
+        totalSalaryFlushService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
                 .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())
@@ -302,7 +298,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public PageResult<TotalSalaryPayrollInfoVO> infoPayroll(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO) {
-        totalSalaryFlushService.flushTotalSalary();
+        totalSalaryFlushService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryPayrollInfoDTO.getRoom()), TotalSalary:: getRoom, totalSalaryPayrollInfoDTO.getRoom())
                  .like(StringUtils.isNotBlank(totalSalaryPayrollInfoDTO.getName()), TotalSalary:: getName, totalSalaryPayrollInfoDTO.getName())
@@ -379,6 +375,11 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
             return infoVO;
         }).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public int updateByItemUid(List<TotalSalary> collect) {
+        return 0;
     }
 }
 

@@ -63,4 +63,6 @@ public interface TotalSalaryService extends IService<TotalSalary> {
      * @return
      */
     List<TotalSalaryPayrollExportVO> exportSalaryList(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
+
+    int updateByItemUid(List<TotalSalary> collect);
 }

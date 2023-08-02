@@ -2,6 +2,7 @@ package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.io.unit.DataUnit;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -23,6 +24,7 @@ import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
@@ -151,6 +153,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         LambdaQueryWrapper<Item> itemLambdaQueryWrapper = new LambdaQueryWrapper();
         itemLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemInfoDTO.getUid()), Item::getUid, itemInfoDTO.getUid())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        itemLambdaQueryWrapper.orderByDesc(Item :: getCreatedTime);
         Item item = itemMapper.selectOne(itemLambdaQueryWrapper);
         if(item == null){
             throw new BusinessException("根据项目uid:"+itemInfoDTO.getUid()+"没有查询到相关项目信息");
@@ -282,6 +285,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 itemPlan.setUid(UUIDUtil.getUUID32Bits())
                         .setItemUid(uuid)
                         .setItemMemberUid(itemPlanDTO.getItemMemberUid())
+                        .setUid(UUIDUtil.getUUID32Bits())
+                        .setDeclareTime(new Date())
                         .setCreatedBy(currentUser.getNumber())
                         .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
@@ -342,6 +347,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set((itemPlanUpDTO.getInspectionCoefficient() != null), ItemPlan::getInspectionCoefficient, itemPlanUpDTO.getInspectionCoefficient())
                 .set((itemPlanUpDTO.getFinalCoefficient() != null), ItemPlan::getFinalCoefficient, itemPlanUpDTO.getFinalCoefficient())
                 .set((itemPlanUpDTO.getGuaranteeCoefficient() != null), ItemPlan::getGuaranteeCoefficient, itemPlanUpDTO.getGuaranteeCoefficient())
+                .set( ItemPlan::getDeclareTime, new Date())
                 .set(ItemPlan::getUpdatedBy, currentUser.getNumber())
                 .set(ItemPlan::getUpdatedTime, new Date());
         boolean update = itemPlanService.update(wrapper);
@@ -425,6 +431,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 ItemMember itemMember = new ItemMember()
                         .setItemUid(itemUid)
                         .setMemberUid(e)
+                        .setUid(UUIDUtil.getUUID32Bits())
+                        .setDeclareTime(new Date())
                         .setCreatedBy(currentUser.getNumber())
                         .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
@@ -516,6 +524,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 ItemMember itemMember = new ItemMember()
                         .setItemUid(itemUid)
                         .setMemberUid(e)
+                        .setUid(UUIDUtil.getUUID32Bits())
+                        .setDeclareTime(new Date())
                         .setCreatedBy(currentUser.getNumber())
                         .setUpdatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())

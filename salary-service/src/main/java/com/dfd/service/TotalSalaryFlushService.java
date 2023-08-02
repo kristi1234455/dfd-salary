@@ -7,17 +7,22 @@ package com.dfd.service;
 public interface TotalSalaryFlushService {
 
     /**
+     * todo:项目一启动，全量刷新
+     */
+
+
+    /**
      * 刷新工资汇总表
      */
-    void flushTotalSalary();
+    void flushMonthTotalSalary();
 
     /**
      * 刷新工资汇总项目表
      */
-    void flushTotalSalaryItem();
+    void flushMonthTotalSalaryItem();
 
     /**
      * 刷新工资清单申报表
      */
-    void flushTotalSalaryRoom();
+    void flushMonthTotalSalaryRoom();
 }

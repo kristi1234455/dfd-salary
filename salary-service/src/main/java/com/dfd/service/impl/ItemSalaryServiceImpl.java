@@ -116,7 +116,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         User currentUser = UserRequest.getCurrentUser();
         ItemSalary salary = new ItemSalary();
         BeanUtil.copyProperties(itemSalaryDTO,salary);
-        BigDecimal checkPlanSalary = itemSalaryDTO.getPostSalaryStandard() .multiply(new BigDecimal(itemSalaryDTO.getDeclareFactor()))
+        BigDecimal checkPlanSalary = new BigDecimal(itemSalaryDTO.getPostSalaryStandard()) .multiply(new BigDecimal(itemSalaryDTO.getDeclareFactor()))
                 .setScale(2, RoundingMode.HALF_UP);
         BigDecimal checkSalary = checkPlanSalary.multiply(new BigDecimal(0.15))
                 .setScale(2, RoundingMode.HALF_UP);

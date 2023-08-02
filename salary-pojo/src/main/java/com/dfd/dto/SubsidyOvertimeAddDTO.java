@@ -78,6 +78,7 @@ public class SubsidyOvertimeAddDTO implements Serializable {
      * 加班天数
      */
     @ApiModelProperty(value = "加班天数", name = "overtimeDays")
+    @NotBlank(message = "加班天数不能为空")
     private Integer overtimeDays;
 
     /**
