@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -76,7 +77,7 @@ public class SubsidyNightAddDTO implements Serializable {
      * 夜班天数
      */
     @ApiModelProperty(value = "夜班天数", name = "nightDays")
-    @NotBlank(message = "夜班天数不能为空")
+    @NotNull(message = "夜班天数不能为空")
     private Integer nightDays;
 
     /**

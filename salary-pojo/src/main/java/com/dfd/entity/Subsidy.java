@@ -149,7 +149,7 @@ public class Subsidy {
      * 加班备注
      */
     @ApiModelProperty(value = "加班备注", name = "overtimeRemarks")
-    private Date overtimeRemarks;
+    private String overtimeRemarks;
 
     /**
      * 加班申报时间

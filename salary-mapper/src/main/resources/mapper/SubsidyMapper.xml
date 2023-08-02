@@ -23,7 +23,7 @@
     <result column="overtime_subsidy_standard" property="overtimeSubsidyStandard" jdbcType="DECIMAL" />
     <result column="overtime_days" property="overtimeDays" jdbcType="INTEGER" />
     <result column="overtime_subsidy" property="overtimeSubsidy" jdbcType="DECIMAL" />
-    <result column="overtime_remarks" property="overtimeRemarks" jdbcType="TIMESTAMP" />
+    <result column="overtime_remarks" property="overtimeRemarks" jdbcType="VARCHAR" />
     <result column="overtime_declare_time" property="overtimeDeclareTime" jdbcType="VARCHAR" />
     <result column="is_heating_grant" property="isHeatingGrant" jdbcType="INTEGER" />
     <result column="heating_subsidy_standart" property="heatingSubsidyStandard" jdbcType="DECIMAL" />

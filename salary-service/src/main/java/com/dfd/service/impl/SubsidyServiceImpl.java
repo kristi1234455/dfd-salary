@@ -109,6 +109,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemUid()), Subsidy:: getItemUid, subsidyOvertimeDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyOvertimeDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOvertimeDTO.getItemMemberUid())
+                .eq(subsidyOvertimeDTO.getOvertimeDays()!=null, Subsidy:: getOvertimeDays, subsidyOvertimeDTO.getOvertimeDays())
                 .likeRight(subsidyOvertimeDTO.getOvertimeDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyOvertimeDTO.getOvertimeDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
@@ -233,6 +234,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyNightDTO.getItemUid()), Subsidy:: getItemUid, subsidyNightDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyNightDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyNightDTO.getItemMemberUid())
+                .eq(subsidyNightDTO.getNightDays()!=null, Subsidy:: getNightDays, subsidyNightDTO.getNightDays())
                 .likeRight(subsidyNightDTO.getNightDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyNightDTO.getNightDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
@@ -356,6 +358,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         LambdaQueryWrapper<Subsidy> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOutDTO.getItemUid()), Subsidy:: getItemUid, subsidyOutDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyOutDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyOutDTO.getItemMemberUid())
+                .eq(subsidyOutDTO.getOutDays()!=null, Subsidy:: getOutDays, subsidyOutDTO.getOutDays())
                 .eq(subsidyOutDTO.getOutDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyOutDTO.getOutDeclareTime())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
@@ -478,6 +481,7 @@ public class SubsidyServiceImpl extends ServiceImpl<SubsidyMapper, Subsidy> impl
         queryWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemUid()), Subsidy:: getItemUid, subsidyHeatingDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(subsidyHeatingDTO.getItemMemberUid()), Subsidy:: getItemMemberUid, subsidyHeatingDTO.getItemMemberUid())
                 .likeRight(subsidyHeatingDTO.getHeatingDeclareTime()!=null, Subsidy:: getOvertimeDeclareTime, subsidyHeatingDTO.getHeatingDeclareTime())
+                .eq(subsidyHeatingDTO.getHeatingDays()!=null, Subsidy:: getHeatingDays, subsidyHeatingDTO.getHeatingDays())
                 .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，该用户高温补贴数据已经存在！");

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -63,7 +64,7 @@ public class SubsidyOutAddDTO implements Serializable {
      * 驻外天数
      */
     @ApiModelProperty(value = "驻外天数", name = "outDays")
-    @NotBlank(message = "驻外天数不能为空")
+    @NotNull(message = "驻外天数不能为空")
     private Integer outDays;
 
     /**

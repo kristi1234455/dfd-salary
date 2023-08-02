@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -78,7 +79,7 @@ public class SubsidyOvertimeAddDTO implements Serializable {
      * 加班天数
      */
     @ApiModelProperty(value = "加班天数", name = "overtimeDays")
-    @NotBlank(message = "加班天数不能为空")
+    @NotNull(message = "加班天数不能为空")
     private Integer overtimeDays;
 
     /**
@@ -91,7 +92,7 @@ public class SubsidyOvertimeAddDTO implements Serializable {
      * 加班备注
      */
     @ApiModelProperty(value = "加班备注", name = "overtimeRemarks")
-    private Date overtimeRemarks;
+    private String overtimeRemarks;
 
     /**
      * 加班申报时间

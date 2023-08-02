@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -71,7 +72,7 @@ public class SubsidyHeatingAddDTO implements Serializable {
      * 高温天数
      */
     @ApiModelProperty(value = "高温天数", name = "heatingDays")
-    @NotBlank(message = "高温天数不能为空")
+    @NotNull(message = "高温天数不能为空")
     private Integer heatingDays;
 
     /**

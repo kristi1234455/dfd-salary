@@ -31,6 +31,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     private ItemMemberService itemMemberService;
 
     @Autowired
+    private PerformanceSalaryService performanceSalaryService;
+
+    @Autowired
     private TotalSalaryService totalSalaryService;
 
     @Autowired
@@ -146,13 +149,13 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         }
 
         //更新绩效工资
-//        List<String> itemUids = itemList.stream().map(Item::getUid).collect(Collectors.toList());
-//        LambdaQueryWrapper<ItemMember> itemMemberWrap = new LambdaQueryWrapper();
-//        itemMemberWrap.in(CollectionUtil.isNotEmpty(itemUids), ItemMember::getItemUid, itemUids)
-//                .likeRight( ItemMember:: getDeclareTime, DateUtil.getYM())
-//                .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-//        List<ItemMember> itemMemberList = itemMemberService.list(itemMemberWrap);
-//
+//        List<String> itemMemberUids = itemMemberList.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
+//        LambdaQueryWrapper<PerformanceSalary> performanceSalaryWrap = new LambdaQueryWrapper();
+//        performanceSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), PerformanceSalary::getItemMemberUid, itemMemberUids)
+//                .likeRight( PerformanceSalary:: getDeclareTime, DateUtil.getYM())
+//                .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+//        List<PerformanceSalary> performanceSalaryList = performanceSalaryService.list(itemMemberWrap);
+
 //        List<ItemMember> addItemMember = itemMemberList.stream()
 //                .filter(obj1 -> totalSalaryList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemMemberUid())))
 //                .collect(Collectors.toList());
