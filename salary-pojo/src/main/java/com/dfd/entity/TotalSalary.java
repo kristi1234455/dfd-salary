@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.Date;
 @Builder
 @NoArgsConstructor
@@ -78,28 +79,34 @@ public class TotalSalary {
     private String payday;
 
     /**
+     * 岗位工资发放
+     */
+    @ApiModelProperty(value = "岗位工资发放", name = "declareGrant")
+    private BigDecimal declareGrant;
+
+    /**
      * 项目绩效工资合计
      */
     @ApiModelProperty(value = "项目绩效工资合计", name = "performanceTotal")
-    private String performanceTotal;
+    private BigDecimal performanceTotal;
 
     /**
      * 设计工资
      */
     @ApiModelProperty(value = "设计工资", name = "designTotal")
-    private String designTotal;
+    private BigDecimal designTotal;
 
     /**
      * 投标工资
      */
     @ApiModelProperty(value = "投标工资", name = "tenderTotal")
-    private String tenderTotal;
+    private BigDecimal tenderTotal;
 
     /**
      * 科研工资
      */
     @ApiModelProperty(value = "科研工资", name = "scientificTotal")
-    private String scientificTotal;
+    private BigDecimal scientificTotal;
 
     /**
      * 专岗申报时间
@@ -177,25 +184,25 @@ public class TotalSalary {
      * 驻外补助
      */
     @ApiModelProperty(value = "驻外补助", name = "outSubsidy")
-    private String outSubsidy;
+    private BigDecimal outSubsidy;
 
     /**
      * 夜班补助
      */
     @ApiModelProperty(value = "夜班补助", name = "nightSubsidy")
-    private String nightSubsidy;
+    private BigDecimal nightSubsidy;
 
     /**
      * 加班补助
      */
     @ApiModelProperty(value = "加班补助", name = "overtimeSubsidy")
-    private String overtimeSubsidy;
+    private BigDecimal overtimeSubsidy;
 
     /**
      * 高温补助
      */
     @ApiModelProperty(value = "高温补助", name = "heatingSubsidy")
-    private String heatingSubsidy;
+    private BigDecimal heatingSubsidy;
 
     /**
      * 申报时间

@@ -14,6 +14,7 @@ import com.dfd.dto.MemberInfoVO;
 import com.dfd.enums.ItemPropertiesEnum;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
+import com.dfd.enums.ItemStageEnum;
 import com.dfd.enums.RoleEnum;
 import com.dfd.mapper.ItemMapper;
 import com.dfd.mapper.ItemPlanMapper;
@@ -270,6 +271,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String uuid = UUIDUtil.getUUID32Bits();
         item.setUid(uuid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -413,6 +415,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = UUIDUtil.getUUID32Bits();
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -509,6 +512,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         BeanUtil.copyProperties(scientificVO, item);
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())

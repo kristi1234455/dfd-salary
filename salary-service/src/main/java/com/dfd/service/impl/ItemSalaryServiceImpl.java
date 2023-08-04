@@ -136,6 +136,16 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         if (!b) {
             throw new BusinessException("项目工资数据保存失败");
         }
+        LambdaUpdateWrapper<Item> updateWrapper = new UpdateWrapper<Item>()
+                .lambda()
+                .eq( Item:: getUid, itemSalaryDTO.getItemUid())
+                .set(Item:: getItemStage, Integer.parseInt(itemSalaryDTO.getItemStage()))
+                .set(Item:: getUpdatedBy, currentUser.getNumber())
+                .set(Item:: getUpdatedTime, new Date());
+        boolean update = itemService.update(updateWrapper);
+        if(!update){
+            throw new BusinessException("项目阶段更新失败");
+        }
     }
 
     @Override
@@ -156,6 +166,18 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         boolean update = this.update(updateWrapper);
         if (!update) {
             throw new BusinessException("项目工资更新失败!");
+        }
+        if(itemSalaryDTO.getItemStage()!=null){
+            LambdaUpdateWrapper<Item> updateItemWrapper = new UpdateWrapper<Item>()
+                    .lambda()
+                    .eq( Item:: getUid, itemSalaryDTO.getItemUid())
+                    .set(Item:: getItemStage, Integer.parseInt(itemSalaryDTO.getItemStage()))
+                    .set(Item:: getUpdatedBy, currentUser.getNumber())
+                    .set(Item:: getUpdatedTime, new Date());
+            boolean var = itemService.update(updateItemWrapper);
+            if(!var){
+                throw new BusinessException("项目阶段更新失败");
+            }
         }
     }
 
