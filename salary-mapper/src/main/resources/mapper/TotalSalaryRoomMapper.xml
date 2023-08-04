@@ -45,9 +45,9 @@
         <if test="item.itemStage != null">
           item_stage = #{item.itemStage,jdbcType=VARCHAR},
         </if>
-        <if test="item.itemProperties != null">
-          item_properties = #{item.itemProperties,jdbcType=VARCHAR},
-        </if>
+<!--        <if test="item.itemProperties != null">-->
+<!--          item_properties = #{item.itemProperties,jdbcType=VARCHAR},-->
+<!--        </if>-->
         <if test="item.mark != null">
           mark = #{item.mark,jdbcType=VARCHAR},
         </if>

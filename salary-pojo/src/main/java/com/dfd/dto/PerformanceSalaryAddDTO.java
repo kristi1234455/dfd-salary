@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -54,18 +55,21 @@ public class PerformanceSalaryAddDTO implements Serializable {
      * 岗位工资标准
      */
     @ApiModelProperty(value = "岗位工资标准", name = "postSalaryStandard")
+    @NotNull(message = "岗位工资标准不能为空")
     private BigDecimal postSalaryStandard;
 
     /**
      * 绩效系数
      */
     @ApiModelProperty(value = "绩效系数", name = "performanceRatio")
+    @NotBlank(message = "绩效系数不能为空")
     private String performanceRatio;
 
     /**
      * 出勤月数
      */
     @ApiModelProperty(value = "出勤月数", name = "attendanceMonths")
+    @NotNull(message = "出勤月数不能为空")
     private Integer attendanceMonths;
 
     /**

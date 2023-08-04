@@ -49,7 +49,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         //登录接口放行
-        if (uri.contains("/passport") || uri.contains("/register") || uri.contains("/error") || uri.contains("/static")) {
+        if (uri.contains("/hello") || uri.contains("/passport") ||uri.contains("/register") || uri.contains("/error") || uri.contains("/static")
+                || uri.contains("/total/salary/room/export") || uri.contains("/total/salary/export")) {
             return true;
         }
         //权限路径拦截

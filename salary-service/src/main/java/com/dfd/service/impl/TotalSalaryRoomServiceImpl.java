@@ -36,6 +36,9 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private TotalSalaryRoomMapper totalSalaryRoomMapper;
+
 
     @Override
     public PageResult<TechnicalFeeInfoVO> infoTechnical(TechnicalFeeInfoDTO technicalFeeInfoDTO) {
@@ -185,7 +188,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public Integer updateByItemUid(List<TotalSalaryRoom> list) {
-        return updateByItemUid(list);
+        return totalSalaryRoomMapper.updateByItemUid(list);
     }
 }
 

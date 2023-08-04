@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -121,6 +122,11 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+        if(salary.getPerformanceSalary() == null){
+            BigDecimal multiply = salary.getPostSalaryStandard().multiply(new BigDecimal(salary.getPerformanceRatio()))
+                    .multiply(new BigDecimal(salary.getAttendanceMonths()));
+            salary.setPerformanceSalary(multiply);
+        }
         boolean b = this.saveOrUpdate(salary);
         if (!b) {
             throw new BusinessException("绩效数据保存失败");

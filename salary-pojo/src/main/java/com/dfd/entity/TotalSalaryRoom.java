@@ -74,7 +74,7 @@ public class TotalSalaryRoom {
     private String itemName;
 
     /**
-     * 项目阶段:1、设计；2、采购；3、制造；4、安装调试；5、安调验收；6、终验收；7、质保；
+     * 项目阶段:1、设计；2、采购；3、制造；4、安装调试；5、安调验收；6、终验收；7、质保；8、已完结；
      */
     @ApiModelProperty(value = "项目阶段", name = "itemStage")
     private String itemStage;
@@ -82,7 +82,7 @@ public class TotalSalaryRoom {
     /**
      * 项目经理
      */
-    @ApiModelProperty(value = "项目经理", name = "itemProperties")
+    @ApiModelProperty(value = "项目经理", name = "itemManager")
     private String itemManager;
 
     /**

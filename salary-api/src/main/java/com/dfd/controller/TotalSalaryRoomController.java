@@ -12,6 +12,7 @@ import com.dfd.vo.TechnicalFeeInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ import java.util.List;
  * @date 2023/6/12 10:28
  */
 @Api(value = "项目清单", tags = {"用于项目清单汇总模块的相关接口"})
-@RestController
+@Controller
 @RequestMapping("/total/salary/room")
 @CrossOrigin
 public class TotalSalaryRoomController {
@@ -34,12 +35,14 @@ public class TotalSalaryRoomController {
 
     @ApiOperation(value = "返回项目的技术管理费", httpMethod = "POST")
     @PostMapping("info/technical")
+    @ResponseBody
     public DFDResult<PageResult<TechnicalFeeInfoVO>> infoTechnical(@RequestBody @Valid TechnicalFeeInfoDTO technicalFeeInfoDTO){
         return DFDResult.sucess(totalSalaryRoomService.infoTechnical(technicalFeeInfoDTO));
     }
 
     @ApiOperation(value = "获取项目清单汇总工资", httpMethod = "POST")
     @PostMapping("info")
+    @ResponseBody
     public DFDResult<PageResult<TotalSalaryRoomInfoVO>> infoRoomSalary(@RequestBody @Valid TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO){
         return DFDResult.sucess(totalSalaryRoomService.infoRoomSalary(totalSalaryRoomInfoDTO));
     }
