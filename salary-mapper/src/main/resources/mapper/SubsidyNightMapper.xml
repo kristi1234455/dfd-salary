@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.SubsidyNightMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.SubsidyNight" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="night_duty" property="nightDuty" jdbcType="VARCHAR" />
+    <result column="night_work_content" property="nightWorkContent" jdbcType="VARCHAR" />
+    <result column="night_subsidy_standard" property="nightSubsidyStandard" jdbcType="DECIMAL" />
+    <result column="night_days" property="nightDays" jdbcType="INTEGER" />
+    <result column="night_subsidy" property="nightSubsidy" jdbcType="DECIMAL" />
+    <result column="night_remarks" property="nightRemarks" jdbcType="VARCHAR" />
+    <result column="night_declare_time" property="nightDeclareTime" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+</mapper>

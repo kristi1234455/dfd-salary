@@ -1,13 +1,13 @@
 package com.dfd.controller;
 
 import com.dfd.dto.*;
+import com.dfd.entity.SubsidyOut;
 import com.dfd.service.CheckListService;
-import com.dfd.service.SubsidyService;
+import com.dfd.service.SubsidyOutService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.CheckListPartInfoVO;
 import com.dfd.vo.SubsidyOutInfoVO;
-import com.dfd.vo.SubsidyOvertimeInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,32 +27,32 @@ import java.util.List;
 public class SubsidyOutController {
 
     @Autowired
-    private SubsidyService subsidyService;
+    private SubsidyOutService subsidyOutService;
 
     @ApiOperation(value = "获取驻外工资信息",httpMethod = "POST")
     @PostMapping("info")
     public DFDResult<PageResult<SubsidyOutInfoVO>> info(@RequestBody @Valid SubsidyOutInfoDTO subsidyOutInfoDTO){
-        return DFDResult.sucess(subsidyService.info(subsidyOutInfoDTO));
+        return DFDResult.sucess(subsidyOutService.info(subsidyOutInfoDTO));
     }
 
     @ApiOperation(value = "新增驻外工资信息",httpMethod = "POST")
     @PostMapping("add")
     public DFDResult add(@RequestBody @Valid SubsidyOutAddDTO subsidyOutDTO){
-        subsidyService.add(subsidyOutDTO);
+        subsidyOutService.add(subsidyOutDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新驻外工资信息",httpMethod = "POST")
     @PostMapping("update")
     public DFDResult update(@RequestBody @Valid SubsidyOutDTO subsidyOutDTO){
-        subsidyService.update(subsidyOutDTO);
+        subsidyOutService.update(subsidyOutDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除驻外工资信息",httpMethod = "POST")
     @PostMapping("delete")
     public DFDResult delete(@RequestBody @Valid SubsidyOutDelDTO subsidyOutDelDTO){
-        subsidyService.delete(subsidyOutDelDTO);
+        subsidyOutService.delete(subsidyOutDelDTO);
         return DFDResult.sucess();
     }
 

@@ -2,7 +2,7 @@ package com.dfd.controller;
 
 import com.dfd.dto.*;
 import com.dfd.service.CheckListService;
-import com.dfd.service.SubsidyService;
+import com.dfd.service.SubsidyOvertimeService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.CheckListPartInfoVO;
@@ -26,32 +26,32 @@ import java.util.List;
 public class SubsidyOvertimeController {
 
     @Autowired
-    private SubsidyService subsidyService;
+    private SubsidyOvertimeService subsidyOvertimeService;
 
     @ApiOperation(value = "获取加班工资信息",httpMethod = "POST")
     @PostMapping("info")
     public DFDResult<PageResult<SubsidyOvertimeInfoVO>> info(@RequestBody @Valid SubsidyOvertimeInfoDTO subsidyOvertimeInfoDTO){
-        return DFDResult.sucess(subsidyService.info(subsidyOvertimeInfoDTO));
+        return DFDResult.sucess(subsidyOvertimeService.info(subsidyOvertimeInfoDTO));
     }
 
     @ApiOperation(value = "新增加班工资信息",httpMethod = "POST")
     @PostMapping("add")
     public DFDResult add(@RequestBody @Valid SubsidyOvertimeAddDTO subsidyOvertimeDTO){
-        subsidyService.add(subsidyOvertimeDTO);
+        subsidyOvertimeService.add(subsidyOvertimeDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新加班工资信息",httpMethod = "POST")
     @PostMapping("update")
     public DFDResult update(@RequestBody @Valid SubsidyOvertimeDTO subsidyOvertimeDTO){
-        subsidyService.update(subsidyOvertimeDTO);
+        subsidyOvertimeService.update(subsidyOvertimeDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除加班工资信息",httpMethod = "POST")
     @PostMapping("delete")
     public DFDResult delete(@RequestBody @Valid SubsidyOvertimeDelDTO subsidyOvertimeDelDTO){
-        subsidyService.delete(subsidyOvertimeDelDTO);
+        subsidyOvertimeService.delete(subsidyOvertimeDelDTO);
         return DFDResult.sucess();
     }
 

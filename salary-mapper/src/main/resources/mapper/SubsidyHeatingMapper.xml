@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfd.mapper.SubsidyHeatingMapper" >
+  <resultMap id="BaseResultMap" type="com.dfd.entity.SubsidyHeating" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
+    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
+    <result column="is_heating_grant" property="isHeatingGrant" jdbcType="INTEGER" />
+    <result column="heating_subsidy_standard" property="heatingSubsidyStandard" jdbcType="DECIMAL" />
+    <result column="heating_days" property="heatingDays" jdbcType="INTEGER" />
+    <result column="heating_subsidy" property="heatingSubsidy" jdbcType="DECIMAL" />
+    <result column="heating_remarks" property="heatingRemarks" jdbcType="VARCHAR" />
+    <result column="heating_declare_time" property="heatingDeclareTime" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+</mapper>

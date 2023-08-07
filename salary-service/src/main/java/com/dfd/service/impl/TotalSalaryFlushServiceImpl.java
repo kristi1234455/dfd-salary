@@ -55,7 +55,16 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     private ScientificSalaryService scientificSalaryService;
 
     @Autowired
-    private SubsidyService subsidyService;
+    private SubsidyOutService subsidyOutService;
+
+    @Autowired
+    private SubsidyHeatingService subsidyHeatingService;
+
+    @Autowired
+    private SubsidyNightService subsidyNightService;
+
+    @Autowired
+    private SubsidyOvertimeService subsidyOvertimeService;
 
     @Autowired
     private TotalSalaryService totalSalaryService;
@@ -128,83 +137,92 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         }
 
         //更新项目基本工资
-        List<String> itemMemberUids = itemMemberList.stream().map(ItemMember::getMemberUid).collect(Collectors.toList());
         LambdaQueryWrapper<ItemSalary> itemSalaryWrap = new LambdaQueryWrapper();
-        itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), ItemSalary::getItemMemberUid, itemMemberUids)
-                .likeRight( ItemSalary:: getDeclareTime, DateUtil.getYM())
+        itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), ItemSalary::getUid, itemUidItemMemberUidDate)
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemSalary> itemSalaryWrapList = itemSalaryService.list(itemSalaryWrap);
-        Map<String, BigDecimal> itemMemberUidItemSalary = null;
+        Map<String, ItemSalary> itemMemberUidItemSalary = null;
         if(!CollectionUtils.isEmpty(itemSalaryWrapList)){
-            itemMemberUidItemSalary = itemSalaryWrapList.stream()
-                    .collect(Collectors.toMap(ItemSalary::getUid, ItemSalary::getDeclareGrant));
+            itemMemberUidItemSalary = itemSalaryWrapList.stream().collect(Collectors.toMap(ItemSalary::getUid, o->o));
         }
 
         //更新绩效工资
         LambdaQueryWrapper<PerformanceSalary> performanceSalaryWrap = new LambdaQueryWrapper();
-        performanceSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), PerformanceSalary::getItemMemberUid, itemMemberUids)
-                .likeRight( PerformanceSalary:: getDeclareTime, DateUtil.getYM())
+        performanceSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), PerformanceSalary::getUid, itemUidItemMemberUidDate)
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<PerformanceSalary> performanceSalaryList = performanceSalaryService.list(performanceSalaryWrap);
-        Map<String, BigDecimal> itemMemberUidPerformanceSalary = null;
+        Map<String, PerformanceSalary> itemMemberUidPerformanceSalary = null;
         if(!CollectionUtils.isEmpty(performanceSalaryList)){
-            itemMemberUidPerformanceSalary = performanceSalaryList.stream()
-                    .collect(Collectors.toMap(PerformanceSalary::getUid, PerformanceSalary::getPerformanceSalary));
+            itemMemberUidPerformanceSalary = performanceSalaryList.stream().collect(Collectors.toMap(PerformanceSalary::getUid, o->o));
         }
 
         //更新设计工资
         LambdaQueryWrapper<DesignSalary> designSalaryWrap = new LambdaQueryWrapper();
-        designSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), DesignSalary::getItemMemberUid, itemMemberUids)
-                .likeRight( DesignSalary:: getDeclareTime, DateUtil.getYM())
+        designSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), DesignSalary::getUid, itemUidItemMemberUidDate)
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<DesignSalary> designSalaryList = designSalaryService.list(designSalaryWrap);
-        Map<String, BigDecimal> itemMemberUidDesignSalary = null;
-        if(!CollectionUtils.isEmpty(designSalaryList)){
-            itemMemberUidDesignSalary = designSalaryList.stream().collect(Collectors.toMap(DesignSalary::getUid, DesignSalary::getSubtotal));
+        Map<String, DesignSalary> itemMemberUidDesignSalary = null;
+        if(!CollectionUtils.isEmpty(designSalaryList)){itemMemberUidDesignSalary = designSalaryList.stream().collect(Collectors.toMap(DesignSalary::getUid, o->o));
         }
 
         //更新投标工资
         LambdaQueryWrapper<BidSalary> bidSalaryWrap = new LambdaQueryWrapper();
-        bidSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), BidSalary::getItemMemberUid, itemMemberUids)
-                .likeRight( BidSalary:: getDeclareTime, DateUtil.getYM())
+        bidSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), BidSalary::getUid, itemUidItemMemberUidDate)
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<BidSalary> bidSalaryList = bidSalaryService.list(bidSalaryWrap);
-        Map<String, BigDecimal> itemMemberUidBidSalary = null;
+        Map<String, BidSalary> itemMemberUidBidSalary = null;
         if (!CollectionUtils.isEmpty(bidSalaryList)){
-            itemMemberUidBidSalary = bidSalaryList.stream()
-                    .collect(Collectors.toMap(BidSalary::getUid, BidSalary::getBidFee));
+            itemMemberUidBidSalary = bidSalaryList.stream().collect(Collectors.toMap(BidSalary::getUid, o->o));
         }
 
         //更新科研工资
         LambdaQueryWrapper<ScientificSalary> scientificWrap = new LambdaQueryWrapper();
-        scientificWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), ScientificSalary::getItemMemberUid, itemMemberUids)
-                .likeRight( ScientificSalary:: getDeclareTime, DateUtil.getYM())
+        scientificWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), ScientificSalary::getUid, itemUidItemMemberUidDate)
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ScientificSalary> scientificList = scientificSalaryService.list(scientificWrap);
-        Map<String, BigDecimal> itemMemberUidScientificSalary = null;
+        Map<String, ScientificSalary> itemMemberUidScientificSalary = null;
         if(!CollectionUtils.isEmpty(scientificList)){
-            itemMemberUidScientificSalary = scientificList.stream()
-                    .collect(Collectors.toMap(ScientificSalary::getUid, ScientificSalary::getSubtotal));
+            itemMemberUidScientificSalary = scientificList.stream().collect(Collectors.toMap(ScientificSalary::getUid, o->o));
         }
 
-        //更新补助
-        LambdaQueryWrapper<Subsidy> subsidyWrap = new LambdaQueryWrapper();
-        subsidyWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), Subsidy::getItemMemberUid, itemMemberUids)
-                .likeRight( Subsidy:: getOutDeclareTime, DateUtil.getYM())
-                .likeRight( Subsidy:: getNightDeclareTime, DateUtil.getYM())
-                .likeRight( Subsidy:: getOvertimeDeclareTime, DateUtil.getYM())
-                .likeRight( Subsidy:: getHeatingDeclareTime, DateUtil.getYM())
-                .eq(Subsidy::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        List<Subsidy> subsidyList = subsidyService.list(subsidyWrap);
-        Map<String, BigDecimal> itemMemberUidOutSubsidy = null;
-        Map<String, BigDecimal> itemMemberUidNightSubsidy =null;
-        Map<String, BigDecimal> itemMemberUidOvertimeSubsidy = null;
-        Map<String, BigDecimal> itemMemberUidHeatingSubsidy = null;
+        //更新高温补助
+        LambdaQueryWrapper<SubsidyHeating> subsidyHeatingWrap = new LambdaQueryWrapper();
+        subsidyHeatingWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), SubsidyHeating::getUid, itemUidItemMemberUidDate)
+                .eq(SubsidyHeating::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SubsidyHeating> subsidyHeatingList = subsidyHeatingService.list(subsidyHeatingWrap);
+        Map<String, SubsidyHeating> itemMemberUidHeatingSubsidy = null;
+        if(!CollectionUtils.isEmpty(subsidyHeatingList)){
+            itemMemberUidHeatingSubsidy  = subsidyHeatingList.stream().collect(Collectors.toMap(SubsidyHeating::getUid, o->o));
+        }
+
+        //更新夜班补助
+        LambdaQueryWrapper<SubsidyNight> subsidyNightWrap = new LambdaQueryWrapper();
+        subsidyNightWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), SubsidyNight::getUid, itemUidItemMemberUidDate)
+                .eq(SubsidyNight::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SubsidyNight> subsidyNightList = subsidyNightService.list(subsidyNightWrap);
+        Map<String, SubsidyNight> itemMemberUidNightSubsidy = null;
+        if(!CollectionUtils.isEmpty(subsidyNightList)){
+            itemMemberUidNightSubsidy  = subsidyNightList.stream().collect(Collectors.toMap(SubsidyNight::getUid, o->o));
+        }
+
+        //更新驻外补助
+        LambdaQueryWrapper<SubsidyOut> subsidyOutWrap = new LambdaQueryWrapper();
+        subsidyOutWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), SubsidyOut::getUid, itemUidItemMemberUidDate)
+                .eq(SubsidyOut::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SubsidyOut> subsidyList = subsidyOutService.list(subsidyOutWrap);
+        Map<String, SubsidyOut> itemMemberUidOutSubsidy = null;
         if(!CollectionUtils.isEmpty(subsidyList)){
-            itemMemberUidOutSubsidy  = subsidyList.stream().collect(Collectors.toMap(Subsidy::getUid, Subsidy::getOutSubsidy));
-            itemMemberUidNightSubsidy = subsidyList.stream().collect(Collectors.toMap(Subsidy::getUid, Subsidy::getNightSubsidy));
-            itemMemberUidOvertimeSubsidy = subsidyList.stream().collect(Collectors.toMap(Subsidy::getUid, Subsidy::getOvertimeSubsidy));
-            itemMemberUidHeatingSubsidy = subsidyList.stream().collect(Collectors.toMap(Subsidy::getUid, Subsidy::getHeatingSubsidy));
+            itemMemberUidOutSubsidy  = subsidyList.stream().collect(Collectors.toMap(SubsidyOut::getUid, o->o));
+        }
+
+        //更新加班补助
+        LambdaQueryWrapper<SubsidyOvertime> subsidyOvertimeWrap = new LambdaQueryWrapper();
+        subsidyOvertimeWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), SubsidyOvertime::getUid, itemUidItemMemberUidDate)
+                .eq(SubsidyOvertime::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SubsidyOvertime> subsidyOvertimeList = subsidyOvertimeService.list(subsidyOvertimeWrap);
+        Map<String, SubsidyOvertime> itemMemberUidOvertimeSubsidy = null;
+        if(!CollectionUtils.isEmpty(subsidyOvertimeList)){
+            itemMemberUidOvertimeSubsidy  = subsidyOvertimeList.stream().collect(Collectors.toMap(SubsidyOvertime::getUid, o->o));
         }
 
         List<TotalSalary> addCollect = new ArrayList<>();
@@ -224,15 +242,15 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                         .setDepartment(member.getDepartment())
                         .setNumber(member.getNumber())
                         .setName(member.getName())
-                        .setDeclareGrant(itemMemberUidItemSalary!=null ? itemMemberUidItemSalary.get(uid): totalSalary.getDeclareGrant())
-                        .setPerformanceTotal(itemMemberUidPerformanceSalary!=null ? itemMemberUidPerformanceSalary.get(uid): totalSalary.getPerformanceTotal())
-                        .setDesignTotal(itemMemberUidDesignSalary != null ? itemMemberUidDesignSalary.get(uid) : totalSalary.getDesignTotal())
-                        .setTenderTotal(itemMemberUidBidSalary!=null ? itemMemberUidBidSalary.get(uid) : totalSalary.getTenderTotal())
-                        .setScientificTotal(itemMemberUidScientificSalary !=null ? itemMemberUidScientificSalary.get(uid): totalSalary.getScientificTotal())
-                        .setOutSubsidy(itemMemberUidOutSubsidy !=null ? itemMemberUidOutSubsidy.get(uid) : totalSalary.getOutSubsidy())
-                        .setNightSubsidy(itemMemberUidNightSubsidy!=null ? itemMemberUidNightSubsidy.get(uid) :totalSalary.getNightSubsidy())
-                        .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid) : totalSalary.getOvertimeSubsidy())
-                        .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid): totalSalary.getHeatingSubsidy())
+                        .setDeclareGrant(itemMemberUidItemSalary!=null ? itemMemberUidItemSalary.get(uid).getDeclareGrant(): totalSalary.getDeclareGrant())
+                        .setPerformanceTotal(itemMemberUidPerformanceSalary!=null ? itemMemberUidPerformanceSalary.get(uid).getPerformanceSalary(): totalSalary.getPerformanceTotal())
+                        .setDesignTotal(itemMemberUidDesignSalary != null ? itemMemberUidDesignSalary.get(uid).getSubtotal() : totalSalary.getDesignTotal())
+                        .setTenderTotal(itemMemberUidBidSalary!=null ? itemMemberUidBidSalary.get(uid).getBidFee() : totalSalary.getTenderTotal())
+                        .setScientificTotal(itemMemberUidScientificSalary !=null ? itemMemberUidScientificSalary.get(uid).getSubtotal(): totalSalary.getScientificTotal())
+                        .setOutSubsidy(itemMemberUidOutSubsidy !=null ? itemMemberUidOutSubsidy.get(uid).getOutSubsidy(): totalSalary.getOutSubsidy())
+                        .setNightSubsidy(itemMemberUidNightSubsidy!=null ? itemMemberUidNightSubsidy.get(uid).getNightSubsidy() :totalSalary.getNightSubsidy())
+                        .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid).getOvertimeSubsidy() : totalSalary.getOvertimeSubsidy())
+                        .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid).getHeatingSubsidy(): totalSalary.getHeatingSubsidy())
                         .setDeclareTime(new Date())
                         .setCreatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
@@ -257,15 +275,15 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                         .setDepartment(member.getDepartment())
                         .setNumber(member.getNumber())
                         .setName(member.getName())
-                        .setDeclareGrant(itemMemberUidItemSalary!=null ? itemMemberUidItemSalary.get(uid): oldTotalSalary.getDeclareGrant())
-                        .setPerformanceTotal(itemMemberUidPerformanceSalary!=null ? itemMemberUidPerformanceSalary.get(uid): oldTotalSalary.getPerformanceTotal())
-                        .setDesignTotal(itemMemberUidDesignSalary != null ? itemMemberUidDesignSalary.get(uid) : oldTotalSalary.getDesignTotal())
-                        .setTenderTotal(itemMemberUidBidSalary!=null ? itemMemberUidBidSalary.get(uid) : oldTotalSalary.getTenderTotal())
-                        .setScientificTotal(itemMemberUidScientificSalary !=null ? itemMemberUidScientificSalary.get(uid): oldTotalSalary.getScientificTotal())
-                        .setOutSubsidy(itemMemberUidOutSubsidy !=null ? itemMemberUidOutSubsidy.get(uid) : oldTotalSalary.getOutSubsidy())
-                        .setNightSubsidy(itemMemberUidNightSubsidy!=null ? itemMemberUidNightSubsidy.get(uid) :oldTotalSalary.getNightSubsidy())
-                        .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid) : oldTotalSalary.getOvertimeSubsidy())
-                        .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid): oldTotalSalary.getHeatingSubsidy())
+                        .setDeclareGrant(itemMemberUidItemSalary!=null ? itemMemberUidItemSalary.get(uid).getDeclareGrant(): oldTotalSalary.getDeclareGrant())
+                        .setPerformanceTotal(itemMemberUidPerformanceSalary!=null ? itemMemberUidPerformanceSalary.get(uid).getPerformanceSalary(): oldTotalSalary.getPerformanceTotal())
+                        .setDesignTotal(itemMemberUidDesignSalary != null ? itemMemberUidDesignSalary.get(uid).getSubtotal() : oldTotalSalary.getDesignTotal())
+                        .setTenderTotal(itemMemberUidBidSalary!=null ? itemMemberUidBidSalary.get(uid).getBidFee() : oldTotalSalary.getTenderTotal())
+                        .setScientificTotal(itemMemberUidScientificSalary !=null ? itemMemberUidScientificSalary.get(uid).getSubtotal(): oldTotalSalary.getScientificTotal())
+                        .setOutSubsidy(itemMemberUidOutSubsidy !=null ? itemMemberUidOutSubsidy.get(uid).getOutSubsidy(): oldTotalSalary.getOutSubsidy())
+                        .setNightSubsidy(itemMemberUidNightSubsidy!=null ? itemMemberUidNightSubsidy.get(uid).getNightSubsidy() :oldTotalSalary.getNightSubsidy())
+                        .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid).getOvertimeSubsidy() : oldTotalSalary.getOvertimeSubsidy())
+                        .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid).getHeatingSubsidy(): oldTotalSalary.getHeatingSubsidy())
                         .setDeclareTime(new Date())
                         .setUpdatedBy(currentUser.getNumber())
                         .setUpdatedTime(new Date());

@@ -2,12 +2,11 @@ package com.dfd.controller;
 
 import com.dfd.dto.*;
 import com.dfd.service.CheckListService;
-import com.dfd.service.SubsidyService;
+import com.dfd.service.SubsidyNightService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.CheckListPartInfoVO;
 import com.dfd.vo.SubsidyNightInfoVO;
-import com.dfd.vo.SubsidyOvertimeInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,32 +26,32 @@ import java.util.List;
 public class SubsidyNightController {
 
     @Autowired
-    private SubsidyService subsidyService;
+    private SubsidyNightService subsidyNightService;
 
     @ApiOperation(value = "获取夜班工资信息",httpMethod = "POST")
     @PostMapping("info")
     public DFDResult<PageResult<SubsidyNightInfoVO>> info(@RequestBody @Valid SubsidyNightInfoDTO subsidyNightInfoDTO){
-        return DFDResult.sucess(subsidyService.info(subsidyNightInfoDTO));
+        return DFDResult.sucess(subsidyNightService.info(subsidyNightInfoDTO));
     }
 
     @ApiOperation(value = "新增夜班工资信息",httpMethod = "POST")
     @PostMapping("add")
     public DFDResult add(@RequestBody @Valid SubsidyNightAddDTO subsidyNightDTO){
-        subsidyService.add(subsidyNightDTO);
+        subsidyNightService.add(subsidyNightDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新夜班工资信息",httpMethod = "POST")
     @PostMapping("update")
     public DFDResult update(@RequestBody @Valid SubsidyNightDTO subsidyNightDTO){
-        subsidyService.update(subsidyNightDTO);
+        subsidyNightService.update(subsidyNightDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除夜班工资信息",httpMethod = "POST")
     @PostMapping("delete")
     public DFDResult delete(@RequestBody @Valid SubsidyNightDelDTO subsidyNightDelDTO){
-        subsidyService.delete(subsidyNightDelDTO);
+        subsidyNightService.delete(subsidyNightDelDTO);
         return DFDResult.sucess();
     }
 
