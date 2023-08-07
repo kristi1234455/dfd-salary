@@ -2,6 +2,7 @@ package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.stream.CollectorUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -80,6 +81,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         itemQueryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<Item> itemList = itemService.list(itemQueryWrapper);
+        if(CollectionUtil.isEmpty(itemList)){
+            return;
+        }
         Map<String, Item> itemUidItem = itemList.stream().collect(Collectors.toMap(Item::getUid, o -> o));
 
         List<String> itemUids = itemList.stream().map(Item::getUid).collect(Collectors.toList());
@@ -96,6 +100,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         memberWrap.in(CollectionUtil.isNotEmpty(memberUids), Member::getUid, memberUids)
                 .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<Member> memberList = memberService.list(memberWrap);
+        if(CollectionUtils.isEmpty(memberList)){
+            return;
+        }
         Map<String, Member> memberUidMember = memberList.stream().collect(Collectors.toMap(Member::getUid, o -> o));
 
         List<ItemMember> addItemMember = itemMemberList.stream()
@@ -262,12 +269,18 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<Item> itemList = itemService.list(queryWrapper);
+        if(CollectionUtil.isEmpty(itemList)){
+            return;
+        }
 
         List<String> itemUids = itemList.stream().map(Item::getUid).collect(Collectors.toList());
         LambdaQueryWrapper<ItemMember> itemMemberWrap = new LambdaQueryWrapper();
         itemMemberWrap.in(CollectionUtil.isNotEmpty(itemUids), ItemMember::getItemUid, itemUids)
                 .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemMember> itemMemberUids = itemMemberService.list(itemMemberWrap);
+        if(CollectionUtil.isEmpty(itemMemberUids)){
+            return;
+        }
 
         LambdaQueryWrapper<TotalSalary> totalSalaryWrap = new LambdaQueryWrapper();
         totalSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), TotalSalary::getItemMemberUid, itemMemberUids)
@@ -281,6 +294,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 .eq(TotalSalaryItem::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<TotalSalaryItem> totalSalaryItemList = totalSalaryItemService.list(totalSalaryItemWrap);
 
+        if(CollectionUtil.isEmpty(totalSalaryList) || CollectionUtil.isEmpty(totalSalaryItemList)){
+            return;
+        }
         List<TotalSalary> addTotalSalary = totalSalaryList.stream()
                 .filter(obj1 -> totalSalaryItemList.stream().noneMatch(obj2 -> obj1.getItemMemberUid().equals(obj2.getItemMemberUid())))
                 .collect(Collectors.toList());
@@ -335,9 +351,13 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         List<Item> itemList = itemService.list(queryWrapper);
 
         LambdaQueryWrapper<TotalSalaryRoom> wrapper = new LambdaQueryWrapper();
-        wrapper.eq(TotalSalaryRoom::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        wrapper.likeRight( TotalSalaryRoom:: getDeclareTime, DateUtil.getYM())
+                .eq(TotalSalaryRoom::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<TotalSalaryRoom> totalSalaryRoomList = totalSalaryRoomService.list(wrapper);
 
+        if(CollectionUtil.isEmpty(itemList) || CollectionUtil.isEmpty(totalSalaryRoomList)){
+            return;
+        }
         List<Item> addElements = itemList.stream()
                 .filter(obj1 -> totalSalaryRoomList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemUid())))
                 .collect(Collectors.toList());
