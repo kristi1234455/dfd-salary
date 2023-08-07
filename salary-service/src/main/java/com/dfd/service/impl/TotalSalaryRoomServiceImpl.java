@@ -103,7 +103,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO) {
-        totalSalaryFlushService.flushMonthTotalSalaryRoom();
+//        totalSalaryFlushService.flushMonthTotalSalaryRoom();
         totalSalaryFlushService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalaryRoom> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getRoom()), TotalSalaryRoom:: getRoom, totalSalaryRoomInfoDTO.getRoom())

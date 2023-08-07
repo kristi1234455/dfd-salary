@@ -109,7 +109,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 .filter(obj1 -> totalSalaryList.stream().noneMatch(obj2 -> obj1.getMemberUid().equals(obj2.getItemMemberUid())))
                 .collect(Collectors.toList());
         List<TotalSalary> updateItemMember = totalSalaryList.stream()
-                .filter(obj1 -> !addItemMember.stream().noneMatch(obj2 -> obj1.getItemMemberUid().equals(obj2.getMemberUid())))
+                .filter(obj1 -> addItemMember.stream().noneMatch(obj2 -> obj1.getItemMemberUid().equals(obj2.getMemberUid())))
                 .collect(Collectors.toList());
         if(!CollectionUtils.isEmpty(addItemMember)){
             List<TotalSalary> collect = addItemMember.stream().map(itemMember -> {
@@ -141,15 +141,14 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
             List<TotalSalary> collect = updateItemMember.stream().map(oldTotalSalary -> {
                 Item item = itemUidItem.get(oldTotalSalary.getItemUid());
                 Member member = memberUidMember.get(oldTotalSalary.getItemMemberUid());
-                TotalSalary totalSalary = new TotalSalary();
-                totalSalary.setItemName(item.getItemName())
+                oldTotalSalary.setItemName(item.getItemName())
                         .setRoom(member.getRoom())
                         .setDepartment(member.getDepartment())
                         .setNumber(member.getNumber())
                         .setName(member.getName())
                         .setUpdatedBy(currentUser.getNumber())
                         .setUpdatedTime(new Date());
-                return totalSalary;
+                return oldTotalSalary;
             }).collect(Collectors.toList());
             boolean b = totalSalaryService.updateBatchById(collect);
             if (!b) {
@@ -404,7 +403,5 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 throw new BusinessException("项目工资更新失败!");
             }
         }
-
     }
-
 }
