@@ -22,6 +22,7 @@ import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.AttendanceInfoVO;
@@ -122,7 +123,8 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
         User currentUser = UserRequest.getCurrentUser();
         BidSalary bidSalary = new BidSalary();
         BeanUtil.copyProperties(bidSalaryDTO,bidSalary);
-        bidSalary.setUid(UUIDUtil.getUUID32Bits())
+        String uid = bidSalaryDTO.getItemUid() + bidSalaryDTO.getItemMemberUid() + DateUtil.getYM();
+        bidSalary.setUid(uid)
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -138,8 +140,10 @@ public class BidSalaryServiceImpl extends ServiceImpl<BidSalaryMapper, BidSalary
     public void update(BidSalaryDTO bidSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<BidSalary> updateWrapper = new LambdaUpdateWrapper<BidSalary>();
+        String uid = bidSalaryDTO.getItemUid() + bidSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         updateWrapper.eq(StringUtils.isNotBlank(bidSalaryDTO.getUid()), BidSalary:: getUid, bidSalaryDTO.getUid())
                 .eq(BidSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(BidSalary:: getUid, uid)
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getDeviceCategory()), BidSalary:: getDeviceCategory, bidSalaryDTO.getDeviceCategory())
                 .set(StringUtils.isNotBlank(bidSalaryDTO.getDeviceName()), BidSalary:: getDeviceName, bidSalaryDTO.getDeviceName())
                 .set((bidSalaryDTO.getDeviceOutput()!=null), BidSalary:: getDeviceOutput, bidSalaryDTO.getDeviceOutput())

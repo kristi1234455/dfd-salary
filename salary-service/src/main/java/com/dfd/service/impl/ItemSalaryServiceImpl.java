@@ -17,6 +17,7 @@ import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.ItemSalaryInfoVO;
@@ -124,7 +125,8 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
             BigDecimal declareGrant = checkPlanSalary.subtract(checkSalary);
             salary.setDeclareGrant(declareGrant);
         }
-        salary.setUid(UUIDUtil.getUUID32Bits())
+        String uid = itemSalaryDTO.getItemUid() + itemSalaryDTO.getItemMemberUid() + DateUtil.getYM();
+        salary.setUid(uid)
                 .setCheckPlanSalary(checkPlanSalary.toString())
                 .setCheckSalary(checkSalary.toString())
                 .setCreatedBy(currentUser.getNumber())
@@ -152,8 +154,10 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
     public void update(ItemSalaryDTO itemSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ItemSalary> updateWrapper = new LambdaUpdateWrapper<>();
+        String uid = itemSalaryDTO.getItemUid() + itemSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         updateWrapper.eq(StringUtils.isNotBlank(itemSalaryDTO.getUid()), ItemSalary:: getUid, itemSalaryDTO.getUid())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(ItemSalary:: getUid, uid)
                 .set((itemSalaryDTO.getPostSalaryStandard()!=null), ItemSalary:: getPostSalaryStandard, itemSalaryDTO.getPostSalaryStandard())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getPlanApproveFactor()), ItemSalary:: getPlanApproveFactor, itemSalaryDTO.getPlanApproveFactor())
                 .set(StringUtils.isNotBlank(itemSalaryDTO.getDeclareFactor()), ItemSalary:: getDeclareFactor, itemSalaryDTO.getDeclareFactor())

@@ -20,6 +20,7 @@ import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.BidSalaryInfoVO;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -116,8 +118,13 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         }
         User currentUser = UserRequest.getCurrentUser();
         DesignSalary designSalary = new DesignSalary();
+        BigDecimal subTotal = designSalary.getDesignManager().add(designSalary.getDirector())
+                .add(designSalary.getDesign()).add(designSalary.getProofread()).add(designSalary.getAudit()) ;
+        subTotal = subTotal != null ? subTotal : new BigDecimal(0);
         BeanUtil.copyProperties(designSalaryDTO,designSalary);
-        designSalary.setUid(UUIDUtil.getUUID32Bits())
+        String uid = designSalaryDTO.getItemUid() + designSalaryDTO.getItemMemberUid() + DateUtil.getYM();
+        designSalary.setUid(uid)
+                .setSubtotal(subTotal)
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -133,8 +140,10 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
     public void update(DesignSalaryDTO designSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<DesignSalary> updateWrapper = new LambdaUpdateWrapper<>();
+        String uid = designSalaryDTO.getItemUid() + designSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         updateWrapper.eq(StringUtils.isNotBlank(designSalaryDTO.getUid()), DesignSalary:: getUid, designSalaryDTO.getUid())
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(DesignSalary:: getUid, uid)
                 .set(StringUtils.isNotBlank(designSalaryDTO.getMainMajor()), DesignSalary:: getMainMajor, designSalaryDTO.getMainMajor())
                 .set(StringUtils.isNotBlank(designSalaryDTO.getMinorMajor()), DesignSalary:: getMinorMajor, designSalaryDTO.getMinorMajor())
                 .set((designSalaryDTO.getDesignManager()!=null), DesignSalary:: getDesignManager, designSalaryDTO.getDesignManager())

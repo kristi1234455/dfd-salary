@@ -28,6 +28,11 @@ public interface TotalSalaryRoomService extends IService<TotalSalaryRoom> {
      */
     Map<String, String> queryUsedTechnicalFeeByUids(List<String> uids);
 
+    /**
+     * 获取项目清单汇总工资
+     * @param totalSalaryRoomInfoDTO
+     * @return
+     */
     PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);
 
     int exportRoomSalaryCount(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO);

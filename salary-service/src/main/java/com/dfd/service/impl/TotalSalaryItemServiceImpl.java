@@ -25,20 +25,4 @@ import java.util.stream.Collectors;
 @Service
 public class TotalSalaryItemServiceImpl extends ServiceImpl<TotalSalaryItemMapper, TotalSalaryItem> implements TotalSalaryItemService {
 
-    @Autowired
-    private ItemMemberService itemMemberService;
-
-    @Autowired
-    private ItemSalaryService itemSalaryService;
-
-    @Autowired
-    private PerformanceSalaryService performanceSalaryService;
-
-    @Autowired
-    private DesignSalaryService designSalaryService;
-
-    @Autowired
-    private BidSalaryService bidSalaryService;
-
-
 }

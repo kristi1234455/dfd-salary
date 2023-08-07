@@ -150,7 +150,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-//        totalSalaryFlushService.flushMonthTotalSalary();
+        totalSalaryFlushService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
                 .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())

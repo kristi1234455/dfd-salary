@@ -17,6 +17,7 @@ import com.dfd.service.MemberService;
 import com.dfd.service.ScientificSalaryService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.ScientificSalaryInfoVO;
@@ -115,7 +116,8 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
         User currentUser = UserRequest.getCurrentUser();
         ScientificSalary scientificSalary = new ScientificSalary();
         BeanUtil.copyProperties(scientificSalaryDTO,scientificSalary);
-        scientificSalary.setUid(UUIDUtil.getUUID32Bits())
+        String uid = scientificSalaryDTO.getItemUid() + scientificSalaryDTO.getItemMemberUid() + DateUtil.getYM();
+        scientificSalary.setUid(uid)
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -131,8 +133,10 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
     public void update(ScientificSalaryDTO scientificSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<ScientificSalary> updateWrapper = new LambdaUpdateWrapper<>();
+        String uid = scientificSalaryDTO.getItemUid() + scientificSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         updateWrapper.eq(StringUtils.isNotBlank(scientificSalaryDTO.getUid()), ScientificSalary:: getUid, scientificSalaryDTO.getUid())
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(ScientificSalary:: getUid, uid)
                 .set(StringUtils.isNotBlank(scientificSalaryDTO.getMainMajor()), ScientificSalary:: getMainMajor, scientificSalaryDTO.getMainMajor())
                 .set(StringUtils.isNotBlank(scientificSalaryDTO.getMinorMajor()), ScientificSalary:: getMinorMajor, scientificSalaryDTO.getMinorMajor())
                 .set((scientificSalaryDTO.getScientificManager()!=null), ScientificSalary:: getScientificManager, scientificSalaryDTO.getScientificManager())

@@ -17,6 +17,7 @@ import com.dfd.service.MemberService;
 import com.dfd.service.PerformanceSalaryService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.PerformanceSalaryInfoVO;
@@ -116,7 +117,8 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
         User currentUser = UserRequest.getCurrentUser();
         PerformanceSalary salary = new PerformanceSalary();
         BeanUtil.copyProperties(performanceSalaryAddDTO,salary);
-        salary.setUid(UUIDUtil.getUUID32Bits())
+        String uid = performanceSalaryAddDTO.getItemUid() + performanceSalaryAddDTO.getItemMemberUid() + DateUtil.getYM();
+        salary.setUid(uid)
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -137,8 +139,10 @@ public class PerformanceSalaryServiceImpl extends ServiceImpl<PerformanceSalaryM
     public void update(PerformanceSalaryDTO performanceSalaryDTO) {
         User currentUser = UserRequest.getCurrentUser();
         LambdaUpdateWrapper<PerformanceSalary> updateWrapper = new LambdaUpdateWrapper<>();
+        String uid = performanceSalaryDTO.getItemUid() + performanceSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         updateWrapper.eq(StringUtils.isNotBlank(performanceSalaryDTO.getUid()), PerformanceSalary:: getUid, performanceSalaryDTO.getUid())
                 .eq(PerformanceSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(PerformanceSalary:: getUid, uid)
                 .set((performanceSalaryDTO.getPostSalaryStandard()!=null), PerformanceSalary:: getPostSalaryStandard, performanceSalaryDTO.getPostSalaryStandard())
                 .set(StringUtils.isNotBlank(performanceSalaryDTO.getPerformanceRatio()), PerformanceSalary:: getPerformanceRatio, performanceSalaryDTO.getPerformanceRatio())
                 .set((performanceSalaryDTO.getAttendanceMonths()!=null), PerformanceSalary:: getAttendanceMonths, performanceSalaryDTO.getAttendanceMonths())
