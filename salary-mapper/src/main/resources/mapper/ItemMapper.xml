@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.dfd.entity.Item" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="room" property="room" jdbcType="VARCHAR" />
     <result column="item_name" property="itemName" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="item_number" property="itemNumber" jdbcType="VARCHAR" />

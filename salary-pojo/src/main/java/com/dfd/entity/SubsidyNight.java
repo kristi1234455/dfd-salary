@@ -1,5 +1,7 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class SubsidyNight {
      * 主键
      */
     @ApiModelProperty(value = "主键", name = "id")
+    @TableId(value="id",type = IdType.AUTO)
     private Integer id;
 
     /**

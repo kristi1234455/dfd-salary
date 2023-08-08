@@ -1,5 +1,7 @@
 package com.dfd.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ public class TotalSalaryRoom {
      * 主键
      */
     @ApiModelProperty(value = "主键", name = "id")
+    @TableId(value="id",type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -35,12 +38,6 @@ public class TotalSalaryRoom {
      */
     @ApiModelProperty(value = "项目信息表uid", name = "itemUid")
     private String itemUid;
-
-    /**
-     * 项目人员表uid
-     */
-    @ApiModelProperty(value = "项目人员表uid", name = "itemMemberUid")
-    private String itemMemberUid;
 
     /**
      * 部门

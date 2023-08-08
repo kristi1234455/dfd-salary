@@ -326,25 +326,39 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         }
         Map<String, Member> memberUidMember = memberList.stream().collect(Collectors.toMap(Member::getUid, o -> o));
 
+        List<String> itemUidItemMemberUidDate = new ArrayList<>();
+        for(ItemMember itemMember : itemMemberList){
+            String key = itemMember.getItemUid() + itemMember.getMemberUid() + DateUtil.getYM();
+            itemUidItemMemberUidDate.add(key);
+        }
+
         LambdaQueryWrapper<TotalSalary> totalSalaryWrap = new LambdaQueryWrapper();
-        totalSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), TotalSalary::getItemMemberUid, itemMemberUids)
+        totalSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), TotalSalary::getUid, itemUidItemMemberUidDate)
                 .likeRight( TotalSalary:: getDeclareTime, DateUtil.getYM())
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<TotalSalary> totalSalaryList = totalSalaryService.list(totalSalaryWrap);
         Map<String, TotalSalary> uidTotalSalary = totalSalaryList.stream().collect(Collectors.toMap(TotalSalary::getUid, o -> o));
 
+
         LambdaQueryWrapper<TotalSalaryItem> totalSalaryItemWrap = new LambdaQueryWrapper();
-        totalSalaryItemWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), TotalSalaryItem::getItemMemberUid, itemMemberUids)
+        totalSalaryItemWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), TotalSalaryItem::getUid, itemUidItemMemberUidDate)
                 .likeRight( TotalSalaryItem:: getDeclareTime, DateUtil.getYM())
                 .eq(TotalSalaryItem::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<TotalSalaryItem> totalSalaryItemList = totalSalaryItemService.list(totalSalaryItemWrap);
 
-        List<TotalSalary> addTotalSalary = totalSalaryList.stream()
-                .filter(obj1 -> totalSalaryItemList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getUid())))
-                .collect(Collectors.toList());
-        List<TotalSalaryItem> updateTotalSalaryItem = totalSalaryItemList.stream()
-                .filter(obj1 -> addTotalSalary.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getUid())))
-                .collect(Collectors.toList());
+        List<TotalSalary> addTotalSalary = new ArrayList<>();
+        List<TotalSalaryItem> updateTotalSalaryItem = new ArrayList<>();
+        Map<String, TotalSalaryItem> uidTotalSalaryItem = totalSalaryItemList.stream().collect(Collectors.toMap(TotalSalaryItem::getUid, o -> o));
+        for(Map.Entry<String, TotalSalary> entry : uidTotalSalary.entrySet()){
+            if(uidTotalSalaryItem.containsKey(entry.getKey())){
+                updateTotalSalaryItem.add(uidTotalSalaryItem.get(entry.getKey()));
+            }else{
+                addTotalSalary.add(entry.getValue());
+            }
+        }
+        if(CollectionUtils.isEmpty(addTotalSalary) && CollectionUtils.isEmpty(updateTotalSalaryItem)){
+            return;
+        }
 
         User currentUser = UserRequest.getCurrentUser();
 
@@ -362,8 +376,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
             List<TotalSalaryItem> collect = new ArrayList<>();
             for(TotalSalary var : addTotalSalary){
                 TotalSalaryItem totalSalaryItem = doTotalSalaryItem(var,currentUser, itemUidItem, memberUidMember,itemMemberUidItemSalary);
-                totalSalaryItem.setUid(itemUidItem.get(var.getItemUid()).getUid()+memberUidMember.get(var.getItemMemberUid()).getUid()+DateUtil.getYM())
-                        .setCreatedBy(currentUser.getNumber())
+                totalSalaryItem.setCreatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date());
                 collect.add(totalSalaryItem);
             }
@@ -394,7 +407,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         Item item = itemUidItem.get(var.getItemUid());
         Member member = memberUidMember.get(var.getItemMemberUid());
         ItemSalary itemSalary = itemMemberUidItemSalary != null ? itemMemberUidItemSalary.get(var.getItemMemberUid()) : null;
+        String uid = itemUidItem.get(var.getItemUid()).getUid() + memberUidMember.get(var.getItemMemberUid()).getUid() + DateUtil.getYM();
         TotalSalaryItem totalSalaryItem = TotalSalaryItem.builder()
+                .uid(uid)
                 .itemUid(var.getUid())
                 .itemName(item.getItemName())
                 .itemMemberUid(var.getItemMemberUid())
@@ -432,43 +447,67 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
     @Override
     public void flushMonthTotalSalaryRoom(){
-        //todo：total-salary到total-salary-room
-        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        List<Item> itemList = itemService.list(queryWrapper);
+        User currentUser = UserRequest.getCurrentUser();
 
-//        LambdaQueryWrapper<TotalSalary> totalSalaryWrap = new LambdaQueryWrapper();
-//        totalSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), TotalSalary::getItemMemberUid, itemMemberUids)
-//                .likeRight( TotalSalary:: getDeclareTime, DateUtil.getYM())
-//                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-//        List<TotalSalary> totalSalaryList = totalSalaryService.list(totalSalaryWrap);
+        //项目人员的添加和更新
+        LambdaQueryWrapper<Item> itemQueryWrapper = new LambdaQueryWrapper();
+        itemQueryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<Item> itemList = itemService.list(itemQueryWrapper);
+        if(CollectionUtil.isEmpty(itemList)){
+            return;
+        }
+        Map<String, Item> itemUidItem = itemList.stream().collect(Collectors.toMap(Item::getUid, o -> o));
+
+        LambdaQueryWrapper<TotalSalary> totalSalaryWrapper = new LambdaQueryWrapper();
+        totalSalaryWrapper.likeRight(TotalSalary:: getDeclareTime, DateUtil.getYM())
+                .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<TotalSalary> totalSalaryList = totalSalaryService.list(totalSalaryWrapper);
+        Set<String> TotalSalaryItemUids = totalSalaryList.stream().map(TotalSalary::getItemUid).collect(Collectors.toSet());
+        Map<String, TotalSalaryRoom> itemUidTotalSalaryTotalSalaryRoom = new HashMap<>();
+        for(TotalSalary totalSalary : totalSalaryList){
+            String itemUid = totalSalary.getItemUid();
+            String planSalary = totalSalary.getPlanSalary();
+            Date declareTime = totalSalary.getDeclareTime();
+            if(itemUidTotalSalaryTotalSalaryRoom.containsKey(itemUid)){
+                TotalSalaryRoom totalSalaryRoom = itemUidTotalSalaryTotalSalaryRoom.get(itemUid);
+                BigDecimal total = totalSalaryRoom.getTotalSalary().add(planSalary !=null ? new BigDecimal(planSalary) : new BigDecimal(0));
+                totalSalaryRoom.setTotalSalary(total)
+                        .setDeclareTime(declareTime);
+            }else{
+                TotalSalaryRoom totalSalaryRoom = TotalSalaryRoom.builder()
+                        .totalSalary(totalSalary.getPlanSalary()!=null ? new BigDecimal(totalSalary.getPlanSalary()) :  new BigDecimal(0))
+                        .declareTime(totalSalary.getDeclareTime())
+                        .build();
+                itemUidTotalSalaryTotalSalaryRoom.put(itemUid,totalSalaryRoom);
+            }
+        }
 
         LambdaQueryWrapper<TotalSalaryRoom> wrapper = new LambdaQueryWrapper();
         wrapper.likeRight(TotalSalaryRoom:: getDeclareTime, DateUtil.getYM())
                 .eq(TotalSalaryRoom::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<TotalSalaryRoom> totalSalaryRoomList = totalSalaryRoomService.list(wrapper);
+        Map<String, TotalSalaryRoom> itemUidTotalSalaryRoom = totalSalaryRoomList.stream().collect(Collectors.toMap(TotalSalaryRoom::getItemUid, o -> o));
 
-        List<Item> addElements = itemList.stream()
-                .filter(obj1 -> totalSalaryRoomList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemUid())))
-                .collect(Collectors.toList());
+        List<String> addTotalSalaryRoom = new ArrayList<>();
+        List<TotalSalaryRoom> updateTotalSalaryRoom = new ArrayList<>();
+        for(String itemUid : TotalSalaryItemUids){
+            if(itemUidTotalSalaryRoom.containsKey(itemUid)){
+                updateTotalSalaryRoom.add(itemUidTotalSalaryRoom.get(itemUid));
+            }else{
+                addTotalSalaryRoom.add(itemUid);
+            }
+        }
+        if(CollectionUtils.isEmpty(addTotalSalaryRoom) && CollectionUtils.isEmpty(updateTotalSalaryRoom)){
+            return;
+        }
 
-        List<Item> updateElements = itemList.stream()
-                .filter(obj1 -> !totalSalaryRoomList.stream().noneMatch(obj2 -> obj1.getUid().equals(obj2.getItemUid())))
-                .collect(Collectors.toList());
-
-        User currentUser = UserRequest.getCurrentUser();
-        if(!CollectionUtils.isEmpty(addElements)){
-            List<TotalSalaryRoom> collect = addElements.stream().map(var -> {
-                TotalSalaryRoom totalSalaryRoom = new TotalSalaryRoom();
-                BeanUtil.copyProperties(var, totalSalaryRoom);
-                totalSalaryRoom.setId(null)
-                        .setUid(UUIDUtil.getUUID32Bits())
-                        .setItemUid(var.getUid())
-                        .setCreatedBy(currentUser.getNumber())
+        if(!CollectionUtils.isEmpty(addTotalSalaryRoom)){
+            List<TotalSalaryRoom> collect = addTotalSalaryRoom.stream().map(itemUid -> {
+                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(itemUid, itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentUser);
+                totalSalaryRoom.setCreatedBy(currentUser.getNumber())
                         .setCreatedTime(new Date())
-                        .setUpdatedBy(currentUser.getNumber())
-                        .setUpdatedTime(new Date())
-                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);;
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
                 return totalSalaryRoom;
             }).collect(Collectors.toList());
 
@@ -477,22 +516,41 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 throw new BusinessException("项目工资添加失败!");
             }
         }
-        if(!CollectionUtils.isEmpty(updateElements)){
-            List<TotalSalaryRoom> collect = updateElements.stream().map(var -> {
-                TotalSalaryRoom totalSalaryRoom = new TotalSalaryRoom();
-                BeanUtil.copyProperties(var, totalSalaryRoom);
-                totalSalaryRoom.setId(null)
-                        .setUid(null)
-                        .setItemUid(var.getUid())
-                        .setUpdatedBy(currentUser.getNumber())
-                        .setUpdatedTime(new Date());
+
+        if(!CollectionUtils.isEmpty(updateTotalSalaryRoom)){
+            List<TotalSalaryRoom> collect = updateTotalSalaryRoom.stream().map(oldTotalSalaryRoom -> {
+                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(oldTotalSalaryRoom.getItemUid(), itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentUser);
+                totalSalaryRoom.setId(oldTotalSalaryRoom.getId());
                 return totalSalaryRoom;
             }).collect(Collectors.toList());
 
-            int update = totalSalaryRoomService.updateByItemUid(collect);
-            if (update<=0) {
+            boolean b = totalSalaryRoomService.updateBatchById(collect);
+            if (!b) {
                 throw new BusinessException("项目工资更新失败!");
             }
         }
+    }
+
+    private TotalSalaryRoom doTotalSalaryRoom(String itemUid, Map<String, Item> itemUidItem
+            ,Map<String, TotalSalaryRoom> itemUidTotalSalaryTotalSalaryRoom, User currentUser){
+        Item item = itemUidItem.get(itemUid);
+        TotalSalaryRoom totalSalaryTotalSalaryRoom = itemUidTotalSalaryTotalSalaryRoom.get(itemUid);
+        String uid = item.getUid() + DateUtil.getYM();
+        TotalSalaryRoom totalSalaryRoom =TotalSalaryRoom.builder()
+                .uid(uid)
+                .itemUid(itemUid)
+                .room(item.getRoom())
+                .subItemNumber(item.getSubItemNumber())
+                .virtualSubItemNumbe(item.getVirtualSubItemNumber())
+                .itemNumber(item.getItemNumber())
+                .itemName(item.getItemName())
+                .itemStage(String.valueOf(item.getItemStage()))
+                .itemManager(item.getItemManager())
+                .declareTime(totalSalaryTotalSalaryRoom.getDeclareTime())
+                .totalSalary(totalSalaryTotalSalaryRoom.getTotalSalary())
+                .updatedBy(currentUser.getNumber())
+                .updatedTime(new Date())
+                .build();
+        return totalSalaryRoom;
     }
 }

@@ -5,7 +5,6 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="item_uid" property="itemUid" jdbcType="VARCHAR" />
-    <result column="item_member_uid" property="itemMemberUid" jdbcType="VARCHAR" />
     <result column="room" property="room" jdbcType="VARCHAR" />
     <result column="sub_item_number" property="subItemNumber" jdbcType="VARCHAR" />
     <result column="virtual_sub_item_numbe" property="virtualSubItemNumbe" jdbcType="VARCHAR" />

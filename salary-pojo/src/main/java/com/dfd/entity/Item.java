@@ -34,6 +34,11 @@ public class Item implements Serializable {
      */
     @ApiModelProperty(value = "uid", name = "uid")
     private String uid;
+    /**
+     * 部门
+     */
+    @ApiModelProperty(value = "部门", name = "room")
+    private String room;
 
     /**
      * 项目名称
