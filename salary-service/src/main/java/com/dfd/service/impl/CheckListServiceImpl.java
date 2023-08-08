@@ -160,6 +160,9 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<CheckList> checkLists = baseMapper.selectList(queryWrapper);
 
+        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partSubmitDTO.getItemUid());
+        Map<String, Integer> auditorUidLevel = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getTaskSequenceNumber));
+
         if(checkLists.isEmpty()) {
             CheckList var = new CheckList();
             BeanUtil.copyProperties(partSubmitDTO,var);
@@ -168,6 +171,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     .setAuditTime(new Date())
                     .setTaskName("这是一个需要处理的"+item.getItemName())
                     .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
+                    .setAuditorLevel(String.valueOf(auditorUidLevel.get(partSubmitDTO.getAuditorUid())))
                     .setCreatedBy(currentUser.getNumber())
                     .setUpdatedBy(currentUser.getNumber())
                     .setCreatedTime(new Date())
@@ -187,11 +191,17 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 if(!partSubmitDTO.getAuditorUid().equals(dataMinCheckList.getAuditorUid())) {
                     throw new BusinessException("上级审核不通过，重新填报");
                 }
-            }else{
+            }
+            if(dataMaxCheckList.getTaskStatus().equals(TaskEnum.TASK_PASS.getCode())) {
+                if(partSubmitDTO.getAuditorUid().equals(dataMaxCheckList.getAuditorUid())) {
+                    throw new BusinessException("该任务已审核，请不要重复审核！");
+                }
+            }
                 CheckList var = new CheckList();
                 BeanUtil.copyProperties(partSubmitDTO,var);
                 var.setUid(UUIDUtil.getUUID32Bits())
                         .setUrl(currentUri)
+                        .setAuditorLevel(String.valueOf(auditorUidLevel.get(partSubmitDTO.getAuditorUid())))
                         .setAuditTime(new Date())
                         .setTaskName("这是一个需要处理的"+item.getItemName())
                         .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() + 1)
@@ -204,14 +214,21 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 if (!b) {
                     throw new BusinessException("审核数据保存失败");
                 }
-            }
+
         }
 
     }
 
     @Override
     public List<CheckListPartInfoVO> partInfo(CheckListPartInfoDTO partInfoDTO) {
-        String currentUri = request.getRequestURI();
+        String oldUri = request.getRequestURI();
+        String[] split = oldUri.split("/");
+        String[] strings = Arrays.copyOf(split, split.length - 1);
+        String currentUri = "";
+        for(String str : strings){
+            currentUri += str + "/";
+        }
+        currentUri = currentUri+"submit/";
         LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(partInfoDTO.getItemUid()), CheckList:: getItemUid, partInfoDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(currentUri), CheckList:: getUrl, currentUri)
@@ -219,6 +236,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         List<CheckList> dataFinishedFlow = baseMapper.selectList(queryWrapper);
 
         List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partInfoDTO.getItemUid());
+
         if(dataFinishedFlow.isEmpty()){
             List<CheckListPartInfoVO> collect = normalFlow.stream().map(e -> new CheckListPartInfoVO()
                             .setAuditorUid(e.getAuditorUid())
@@ -229,7 +247,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
             return collect;
         }
 
-        List<CheckListPartInfoVO> resultFlow = Collections.emptyList();
+        List<CheckListPartInfoVO> resultFlow = new ArrayList<>();
         CheckList dataMaxFinishedFlow = getMaxObj(dataFinishedFlow);
         if(ObjectUtil.isNotEmpty(dataMaxFinishedFlow)){
             if(dataMaxFinishedFlow.getTaskStatus().equals(TaskEnum.TASK_UNPASS.getCode())) {
@@ -255,15 +273,25 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     resultFlow.add(var);
                 });
                 int sequence = dataMaxFinishedFlow.getTaskSequenceNumber() + 1;
-                List<CheckListNormalVO> unfinishedFlow = normalFlow.stream().filter(normal -> dataFinishedFlow.stream().noneMatch(datafinished -> datafinished.getAuditorUid().equals(normal.getAuditorUid())))
-                        .collect(Collectors.toList());
-                for(CheckListNormalVO unfinish : unfinishedFlow){
+                String maxFinishedAuditorLevel = dataMaxFinishedFlow.getAuditorLevel();
+//                List<CheckListNormalVO> unfinishedFlow = normalFlow.stream().filter(normal ->
+//                                dataFinishedFlow.stream().noneMatch(datafinished -> datafinished.getAuditorUid().equals(normal.getAuditorUid())))
+//                        .collect(Collectors.toList());
+                boolean flag = false;
+                for(int i = 0;i<normalFlow.size();i++){
+                    CheckListNormalVO normalVO = normalFlow.get(i);
+                    if(normalVO.getTaskSequenceNumber().equals(Integer.parseInt(maxFinishedAuditorLevel))){
+                        flag = true;
+                        continue;
+                    }
+                    if(flag) {
                         CheckListPartInfoVO var = new CheckListPartInfoVO();
-                        BeanUtils.copyProperties(unfinish, var);
+                        BeanUtils.copyProperties(normalVO, var);
                         var.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
                                 .setTaskSequenceNumber(sequence);
                         resultFlow.add(var);
                         sequence++;
+                    }
                 }
                 return resultFlow;
             }
@@ -276,7 +304,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         int maxTaskSequenceNumber = 1;
         for(CheckList checkList : checkLists){
             int dataTaskNumber = checkList.getTaskSequenceNumber();
-            if( dataTaskNumber > maxTaskSequenceNumber){
+            if( dataTaskNumber >= maxTaskSequenceNumber){
                 maxTaskSequenceNumber = dataTaskNumber;
                 dataMaxCheckList = checkList;
             }

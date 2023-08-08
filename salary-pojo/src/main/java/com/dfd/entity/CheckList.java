@@ -45,6 +45,12 @@ public class CheckList {
     private String url;
 
     /**
+     * 审核人级别
+     */
+    @ApiModelProperty(value = "审核人级别", name = "auditorLevel")
+    private String auditorLevel;
+
+    /**
      * 审核人uid
      */
     @ApiModelProperty(value = "审核人uid", name = "auditorUid")

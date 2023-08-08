@@ -16,13 +16,19 @@ public interface TotalSalaryFlushService {
      */
     void flushMonthTotalSalary();
 
+    void flushMonthTotalSalary(String currentNumber);
+
     /**
      * 刷新工资汇总项目表
      */
     void flushMonthTotalSalaryItem();
 
+    void flushMonthTotalSalaryItem(String currentNumber);
+
     /**
      * 刷新工资清单申报表
      */
     void flushMonthTotalSalaryRoom();
+
+    void flushMonthTotalSalaryRoom(String currentNumber);
 }

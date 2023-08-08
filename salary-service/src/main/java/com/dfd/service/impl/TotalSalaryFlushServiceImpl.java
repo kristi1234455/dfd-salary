@@ -79,7 +79,11 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     @Override
     public void flushMonthTotalSalary() {
         User currentUser = UserRequest.getCurrentUser();
+        flushMonthTotalSalary(currentUser.getNumber());
+    }
 
+    @Override
+    public void flushMonthTotalSalary(String currentNumber) {
         //项目人员的添加和更新
         LambdaQueryWrapper<Item> itemQueryWrapper = new LambdaQueryWrapper();
         itemQueryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
@@ -252,13 +256,13 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                         .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid).getOvertimeSubsidy() : totalSalary.getOvertimeSubsidy())
                         .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid).getHeatingSubsidy(): totalSalary.getHeatingSubsidy())
                         .setDeclareTime(new Date())
-                        .setCreatedBy(currentUser.getNumber())
+                        .setCreatedBy(currentNumber)
                         .setCreatedTime(new Date())
-                        .setUpdatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentNumber)
                         .setUpdatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
                 addCollect.add(totalSalary);
-        }
+            }
             boolean b = totalSalaryService.saveBatch(addCollect);
             if (!b) {
                 throw new BusinessException("工资汇总添加失败!");
@@ -285,7 +289,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                         .setOvertimeSubsidy(itemMemberUidOvertimeSubsidy!=null ? itemMemberUidOvertimeSubsidy.get(uid).getOvertimeSubsidy() : oldTotalSalary.getOvertimeSubsidy())
                         .setHeatingSubsidy(itemMemberUidHeatingSubsidy!=null ? itemMemberUidHeatingSubsidy.get(uid).getHeatingSubsidy(): oldTotalSalary.getHeatingSubsidy())
                         .setDeclareTime(new Date())
-                        .setUpdatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentNumber)
                         .setUpdatedTime(new Date());
                 updateCollect.add(oldTotalSalary);
             }
@@ -298,6 +302,12 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
     @Override
     public void flushMonthTotalSalaryItem(){
+        User currentUser = UserRequest.getCurrentUser();
+        flushMonthTotalSalaryItem(currentUser.getNumber());
+    }
+
+    @Override
+    public void flushMonthTotalSalaryItem(String currentNumber) {
         LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
@@ -360,7 +370,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
             return;
         }
 
-        User currentUser = UserRequest.getCurrentUser();
+
 
         LambdaQueryWrapper<ItemSalary> itemSalaryWrap = new LambdaQueryWrapper();
         itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), ItemSalary::getItemMemberUid, itemMemberUids)
@@ -375,8 +385,8 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         if(!CollectionUtils.isEmpty(addTotalSalary)){
             List<TotalSalaryItem> collect = new ArrayList<>();
             for(TotalSalary var : addTotalSalary){
-                TotalSalaryItem totalSalaryItem = doTotalSalaryItem(var,currentUser, itemUidItem, memberUidMember,itemMemberUidItemSalary);
-                totalSalaryItem.setCreatedBy(currentUser.getNumber())
+                TotalSalaryItem totalSalaryItem = doTotalSalaryItem(var,currentNumber, itemUidItem, memberUidMember,itemMemberUidItemSalary);
+                totalSalaryItem.setCreatedBy(currentNumber)
                         .setCreatedTime(new Date());
                 collect.add(totalSalaryItem);
             }
@@ -390,7 +400,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
             List<TotalSalaryItem> collect = new ArrayList<>();
             for(TotalSalaryItem var : updateTotalSalaryItem) {
                 TotalSalary totalSalary = uidTotalSalary.get(var.getUid());
-                TotalSalaryItem totalSalaryItem = doTotalSalaryItem(totalSalary,currentUser, itemUidItem, memberUidMember,itemMemberUidItemSalary);
+                TotalSalaryItem totalSalaryItem = doTotalSalaryItem(totalSalary,currentNumber, itemUidItem, memberUidMember,itemMemberUidItemSalary);
                 totalSalaryItem.setId(var.getId());
                 collect.add(totalSalaryItem);
             }
@@ -399,10 +409,9 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 throw new BusinessException("项目汇总工资更新失败!");
             }
         }
-
     }
 
-    private TotalSalaryItem doTotalSalaryItem(TotalSalary var,User currentUser,Map<String, Item> itemUidItem
+    private TotalSalaryItem doTotalSalaryItem(TotalSalary var,String currentNumber,Map<String, Item> itemUidItem
             ,Map<String, Member> memberUidMember,Map<String, ItemSalary> itemMemberUidItemSalary){
         Item item = itemUidItem.get(var.getItemUid());
         Member member = memberUidMember.get(var.getItemMemberUid());
@@ -438,7 +447,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 .declareTime(var.getDeclareTime())
                 .totalSalary(var.getPlanSalary()!=null ? new BigDecimal(var.getPlanSalary()) : null)
                 .mark(var.getRemarks())
-                .updatedBy(currentUser.getNumber())
+                .updatedBy(currentNumber)
                 .updatedTime(new Date())
                 .isDeleted(GlobalConstant.GLOBAL_STR_ZERO)
                 .build();
@@ -448,7 +457,11 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     @Override
     public void flushMonthTotalSalaryRoom(){
         User currentUser = UserRequest.getCurrentUser();
+        flushMonthTotalSalaryRoom(currentUser.getNumber());
+    }
 
+    @Override
+    public void flushMonthTotalSalaryRoom(String currentNumber) {
         //项目人员的添加和更新
         LambdaQueryWrapper<Item> itemQueryWrapper = new LambdaQueryWrapper();
         itemQueryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
@@ -504,8 +517,8 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
         if(!CollectionUtils.isEmpty(addTotalSalaryRoom)){
             List<TotalSalaryRoom> collect = addTotalSalaryRoom.stream().map(itemUid -> {
-                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(itemUid, itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentUser);
-                totalSalaryRoom.setCreatedBy(currentUser.getNumber())
+                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(itemUid, itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentNumber);
+                totalSalaryRoom.setCreatedBy(currentNumber)
                         .setCreatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
                 return totalSalaryRoom;
@@ -519,7 +532,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
         if(!CollectionUtils.isEmpty(updateTotalSalaryRoom)){
             List<TotalSalaryRoom> collect = updateTotalSalaryRoom.stream().map(oldTotalSalaryRoom -> {
-                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(oldTotalSalaryRoom.getItemUid(), itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentUser);
+                TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(oldTotalSalaryRoom.getItemUid(), itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentNumber);
                 totalSalaryRoom.setId(oldTotalSalaryRoom.getId());
                 return totalSalaryRoom;
             }).collect(Collectors.toList());
@@ -532,7 +545,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     }
 
     private TotalSalaryRoom doTotalSalaryRoom(String itemUid, Map<String, Item> itemUidItem
-            ,Map<String, TotalSalaryRoom> itemUidTotalSalaryTotalSalaryRoom, User currentUser){
+            ,Map<String, TotalSalaryRoom> itemUidTotalSalaryTotalSalaryRoom, String currentNumber){
         Item item = itemUidItem.get(itemUid);
         TotalSalaryRoom totalSalaryTotalSalaryRoom = itemUidTotalSalaryTotalSalaryRoom.get(itemUid);
         String uid = item.getUid() + DateUtil.getYM();
@@ -548,7 +561,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 .itemManager(item.getItemManager())
                 .declareTime(totalSalaryTotalSalaryRoom.getDeclareTime())
                 .totalSalary(totalSalaryTotalSalaryRoom.getTotalSalary())
-                .updatedBy(currentUser.getNumber())
+                .updatedBy(currentNumber)
                 .updatedTime(new Date())
                 .build();
         return totalSalaryRoom;
