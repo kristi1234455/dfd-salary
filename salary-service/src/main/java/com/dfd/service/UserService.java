@@ -4,11 +4,10 @@ package com.dfd.service;
 //import com.imooc.pojo.bo.UserBO;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dfd.dto.UserLoginInDTO;
-import com.dfd.dto.UserRegistDTO;
-import com.dfd.dto.UserResetDTO;
-import com.dfd.entity.Attendance;
+import com.dfd.dto.*;
 import com.dfd.entity.User;
+import com.dfd.utils.PageResult;
+import com.dfd.vo.UserRoleVO;
 import com.dfd.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,4 +50,11 @@ public interface UserService extends IService<User> {
      * 通过唯一手机号查询用户信息
      */
     public User selectByNumber(String number);
+
+
+    PageResult<UserRoleVO> infoRole(UserRoleInfoDTO userRoleInfoDTO);
+
+    void updateRole(UserRoleUpdateDTO userRoleUpdateDTO);
+
+    void deleteRole(UserRoleDeleteDTO userRoleDeleteDTO);
 }

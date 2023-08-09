@@ -1,21 +1,26 @@
 package com.dfd.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.constant.LoginConstant;
-import com.dfd.dto.UserLoginInDTO;
-import com.dfd.dto.UserRegistDTO;
-import com.dfd.dto.UserResetDTO;
+import com.dfd.dto.*;
+import com.dfd.entity.BidSalary;
 import com.dfd.entity.User;
+import com.dfd.enums.DYDResultEnum;
 import com.dfd.enums.RoleEnum;
 import com.dfd.mapper.UserMapper;
 import com.dfd.org.n3r.idworker.Sid;
 import com.dfd.service.UserService;
+import com.dfd.service.util.UserRequest;
 import com.dfd.utils.*;
+import com.dfd.vo.BidSalaryInfoVO;
+import com.dfd.vo.UserRoleVO;
 import com.dfd.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,12 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.dfd.utils.TokenUtil.token;
 
@@ -140,6 +147,96 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq(StringUtils.isNotBlank(number), User:: getNumber, number)
                 .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public PageResult<UserRoleVO> infoRole(UserRoleInfoDTO userRoleInfoDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        if(!currentUser.getRole().equals(RoleEnum.ROLE_ADMIN.getCode())){
+            throw new BusinessException(DYDResultEnum.ERROR_ROLE.getCode(),DYDResultEnum.ERROR_ROLE.getDesc());
+        }
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.like(StringUtils.isNotBlank(userRoleInfoDTO.getUserName()), User:: getUserName, userRoleInfoDTO.getUserName())
+                .like(StringUtils.isNotBlank(userRoleInfoDTO.getNumber()), User:: getNumber, userRoleInfoDTO.getNumber())
+                .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(User :: getCreatedTime);
+        List<User> olist = baseMapper.selectList(queryWrapper);
+
+        Integer pageNum = userRoleInfoDTO.getCurrentPage();
+        Integer pageSize = userRoleInfoDTO.getPageSize();
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (olist.size() + pageSize - 1) / pageSize;
+        List<UserRoleVO> list = convertToInfoVO(olist);
+        int size = list.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            list = list.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+        PageResult<UserRoleVO> pageResult = new PageResult<>();
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(list)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
+        return pageResult;
+    }
+
+    private List<UserRoleVO> convertToInfoVO(List<User> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
+        }
+
+        List<UserRoleVO> result = list.stream().map(user -> {
+            if(!Optional.ofNullable(user).isPresent()){
+                throw new BusinessException("用户数据为空");
+            }
+            UserRoleVO userRoleVO = new UserRoleVO();
+            BeanUtil.copyProperties(user,userRoleVO);
+            return userRoleVO;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    @Override
+    public void updateRole(UserRoleUpdateDTO userRoleUpdateDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        if(!currentUser.getRole().equals(RoleEnum.ROLE_ADMIN.getCode())){
+            throw new BusinessException(DYDResultEnum.ERROR_ROLE.getCode(),DYDResultEnum.ERROR_ROLE.getDesc());
+        }
+        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<User>();
+        updateWrapper.eq(StringUtils.isNotBlank(userRoleUpdateDTO.getUid()), User:: getUid, userRoleUpdateDTO.getUid())
+                .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(StringUtils.isNotBlank(userRoleUpdateDTO.getNumber()), User:: getNumber, userRoleUpdateDTO.getNumber())
+                .set(StringUtils.isNotBlank(userRoleUpdateDTO.getNickname()), User:: getNickname, userRoleUpdateDTO.getNickname())
+                .set(StringUtils.isNotBlank(userRoleUpdateDTO.getRole()), User:: getRole, userRoleUpdateDTO.getRole())
+                .set(User:: getUpdatedBy, currentUser.getNumber())
+                .set(User:: getUpdatedTime, new Date());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("用户权限更新失败!");
+        }
+    }
+
+    @Override
+    public void deleteRole(UserRoleDeleteDTO userRoleDeleteDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<User> updateWrapper = new UpdateWrapper<User>()
+                .lambda()
+                .in(!CollectionUtils.isEmpty(userRoleDeleteDTO.getUids()), User:: getUid, userRoleDeleteDTO.getUids())
+                .set(User:: getIsDeleted, System.currentTimeMillis())
+                .set(User:: getUpdatedBy, currentUser.getNumber())
+                .set(User:: getUpdatedTime, new Date());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("权限用户删除失败!");
+        }
     }
 
     /**

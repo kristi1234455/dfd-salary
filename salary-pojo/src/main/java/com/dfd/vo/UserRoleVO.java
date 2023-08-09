@@ -1,8 +1,6 @@
-package com.dfd.entity;
+package com.dfd.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.dfd.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,15 +17,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @ApiModel
-@TableName("user")
 @Accessors(chain = true)
-public class User implements Serializable {
-    /**
-     * 主键
-     */
-    @TableId(value="id",type = IdType.AUTO)
-    @ApiModelProperty(value = "主键", name = "id")
-    private Integer id;
+public class UserRoleVO implements Serializable {
+    private static final long serialVersionUID = 1633646096188572006L;
 
     /**
      * uid
@@ -35,17 +27,6 @@ public class User implements Serializable {
     @ApiModelProperty(value = "uid", name = "uid")
     private String uid;
 
-    /**
-     * 用户名
-     */
-    @ApiModelProperty(value = "用户名", name = "userName")
-    private String userName;
-
-    /**
-     * 手机号
-     */
-    @ApiModelProperty(value = "手机号", name = "phone")
-    private String phone;
     /**
      * 工号
      */
@@ -59,28 +40,10 @@ public class User implements Serializable {
     private String nickname;
 
     /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码", name = "password")
-    private String password;
-
-    /**
-     * 头像
-     */
-    @ApiModelProperty(value = "头像", name = "pic")
-    private String pic;
-
-    /**
      * 权限：1、项目经理；2、所长；3、部门分管领导；4、部门职能领导；5、部门负责人；6：管理员
      */
     @ApiModelProperty(value = "权限：1、项目经理；2、所长；3、部门分管领导；4、部门职能领导；5、部门负责人；6：管理员", name = "role")
     private String role;
-
-    /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人", name = "createdBy")
-    private String createdBy;
 
     /**
      * 创建时间
@@ -89,19 +52,8 @@ public class User implements Serializable {
     private Date createdTime;
 
     /**
-     * 更新人
-     */
-    @ApiModelProperty(value = "更新人", name = "updatedBy")
-    private String updatedBy;
-
-    /**
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间", name = "updatedTime")
     private Date updatedTime;
-
-    /**
-     * 是否删除，0，未删除；其他：删除
-     */
-    private String isDeleted;
 }
