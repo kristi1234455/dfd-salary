@@ -28,8 +28,10 @@ public class SaticScheduleTask {
     //3.添加定时任务
     //或直接指定时间间隔，例如：5秒
 //    @Scheduled(cron = "0/30 * * * * ?")
+    // 每日执行一次，每天0点
+    @Scheduled(cron = "0 0 0 * * ?")
     // 每周执行一次，每周一0点
-    @Scheduled(cron = "0 0 0 ? * MON")
+//    @Scheduled(cron = "0 0 0 ? * MON")
     private void configureTasks() {
         log.info("==============================定时任务开始执行==============================");
         long startTime = System.currentTimeMillis();
