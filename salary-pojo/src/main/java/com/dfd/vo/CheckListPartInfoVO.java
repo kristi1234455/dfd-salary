@@ -61,4 +61,10 @@ public class CheckListPartInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "流程序号", name = "taskSequenceNumber")
     private Integer taskSequenceNumber;
+
+    /**
+     * 审核人级别
+     */
+    @ApiModelProperty(value = "审核人级别", name = "auditorLevel")
+    private String auditorLevel;
 }

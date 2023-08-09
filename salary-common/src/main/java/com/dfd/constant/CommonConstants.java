@@ -17,8 +17,8 @@
 package com.dfd.constant;
 
 /**
- * @author lengleng
- * @date 2019/2/1
+ * @author yy
+ * @date 2023/2/1
  */
 public interface CommonConstants {
 
@@ -60,12 +60,12 @@ public interface CommonConstants {
 	/**
 	 * 前端工程名
 	 */
-	String FRONT_END_PROJECT = "pig-ui";
+	String FRONT_END_PROJECT = "dfd-ui";
 
 	/**
 	 * 后端工程名
 	 */
-	String BACK_END_PROJECT = "pig";
+	String BACK_END_PROJECT = "dfd";
 
 	/**
 	 * 成功标记

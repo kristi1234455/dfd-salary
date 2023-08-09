@@ -623,57 +623,55 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         } else {
             throw new BusinessException("该项目没有指定项目经理，请指定");
         }
-        one.setTaskSequenceNumber(taskSequenceNumber);
+        one.setTaskSequenceNumber(taskSequenceNumber)
+                .setAuditorLevel(RoleEnum.ROLE_ITEM.getCode());
         result.add(one);
         taskSequenceNumber++;
 
-
+        CheckListNormalVO two = new CheckListNormalVO();
         if (StringUtils.isNotEmpty(item.getItemLeader())) {
-            CheckListNormalVO two = new CheckListNormalVO();
             two.setAuditorUid(item.getItemLeader());
-            two.setTaskSequenceNumber(taskSequenceNumber);
-            result.add(two);
         }
         if (StringUtils.isNotEmpty(item.getAgencyLeader())) {
-            CheckListNormalVO two = new CheckListNormalVO();
             two.setAuditorUid(item.getAgencyLeader());
-            two.setTaskSequenceNumber(taskSequenceNumber);
-            result.add(two);
         }
         if (StringUtils.isNotEmpty(item.getDesignLeader())) {
-            CheckListNormalVO two = new CheckListNormalVO();
             two.setAuditorUid(item.getDesignLeader());
-            two.setTaskSequenceNumber(taskSequenceNumber);
-            result.add(two);
         }
         if (StringUtils.isNotEmpty(item.getEngineeringLeader())) {
-            CheckListNormalVO two = new CheckListNormalVO();
             two.setAuditorUid(item.getEngineeringLeader());
-            two.setTaskSequenceNumber(taskSequenceNumber);
-            result.add(two);
         }
+        two.setTaskSequenceNumber(taskSequenceNumber)
+                .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
+        result.add(two);
         taskSequenceNumber++;
 
         if (StringUtils.isNotEmpty(item.getSubLeader())) {
-            CheckListNormalVO three = new CheckListNormalVO();
-            three.setAuditorUid(item.getSubLeader());
-            three.setTaskSequenceNumber(taskSequenceNumber);
+            CheckListNormalVO three = CheckListNormalVO.builder()
+                    .auditorUid(item.getSubLeader())
+                    .taskSequenceNumber(taskSequenceNumber)
+                    .auditorLevel(RoleEnum.ROLE_SUB_LEADER.getCode())
+                    .build();
             result.add(three);
             taskSequenceNumber++;
         }
 
         if (StringUtils.isNotEmpty(item.getFunctionalLeader())) {
-            CheckListNormalVO four = new CheckListNormalVO();
-            four.setAuditorUid(item.getFunctionalLeader());
-            four.setTaskSequenceNumber(taskSequenceNumber);
+            CheckListNormalVO four = CheckListNormalVO.builder()
+                    .auditorUid(item.getFunctionalLeader())
+                    .taskSequenceNumber(taskSequenceNumber)
+                    .auditorLevel(RoleEnum.ROLE_FUNC_LEDAER.getCode())
+                    .build();
             result.add(four);
             taskSequenceNumber++;
         }
 
         if (StringUtils.isNotEmpty(item.getDepartmenLeader())) {
-            CheckListNormalVO five = new CheckListNormalVO();
-            five.setAuditorUid(item.getDepartmenLeader());
-            five.setTaskSequenceNumber(taskSequenceNumber);
+            CheckListNormalVO five = CheckListNormalVO.builder()
+                    .auditorUid(item.getDepartmenLeader())
+                    .taskSequenceNumber(taskSequenceNumber)
+                    .auditorLevel(RoleEnum.ROLE_DEPARTMENT.getCode())
+                    .build();
             result.add(five);
             taskSequenceNumber++;
         }
