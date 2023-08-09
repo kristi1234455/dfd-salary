@@ -159,7 +159,7 @@ public class TotalSalarySummaryExportVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date declareTime;
 
-    /**
+    /**......
      * 当月项目工资汇总数据对象
      */
     @ApiModelProperty(value = "当月项目工资汇总数据对象", name = "totalSalaryItemInfoVOList")

@@ -242,7 +242,8 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                             .setAuditorUid(e.getAuditorUid())
                             .setAuditorName(e.getAuditorName())
                             .setTaskSequenceNumber(e.getTaskSequenceNumber())
-                            .setTaskStatus(TaskEnum.TASK_UNDO.getCode()))
+                            .setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                            .setAuditorLevel(e.getAuditorLevel()))
                     .collect(Collectors.toList());
             return collect;
         }

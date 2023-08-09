@@ -4,7 +4,9 @@ public enum ItemPropertiesEnum {
 
     ITEM_PRO_BID("1","投标项目"),
     ITEM_PRO_EPC("2","EPC项目"),
-    ITEM_PRO_SCIEN("3","科研项目");
+    ITEM_PRO_SCIEN("3","科研项目"),
+
+    ITEM_PRO_DESIGN("4","设计项目");
 
     ItemPropertiesEnum() {
 

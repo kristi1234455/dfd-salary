@@ -11,6 +11,7 @@ import com.dfd.dto.UserLoginInDTO;
 import com.dfd.dto.UserRegistDTO;
 import com.dfd.dto.UserResetDTO;
 import com.dfd.entity.User;
+import com.dfd.enums.RoleEnum;
 import com.dfd.mapper.UserMapper;
 import com.dfd.org.n3r.idworker.Sid;
 import com.dfd.service.UserService;
@@ -88,6 +89,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         if (ObjectUtil.isEmpty(user)) {
             throw new BusinessException("用户名或密码不正确");
+        }
+        if(!RoleEnum.roleExist(user.getRole()) ){
+            throw new BusinessException("该用户没有权限，请联系管理员设置权限！");
         }
         String token = TokenUtil.token(user.getNumber(),user.getPassword());
         UserVO userVO = UserVO.builder()

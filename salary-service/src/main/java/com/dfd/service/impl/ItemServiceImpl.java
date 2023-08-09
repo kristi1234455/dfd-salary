@@ -628,23 +628,28 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         result.add(one);
         taskSequenceNumber++;
 
-        CheckListNormalVO two = new CheckListNormalVO();
-        if (StringUtils.isNotEmpty(item.getItemLeader())) {
-            two.setAuditorUid(item.getItemLeader());
-        }
-        if (StringUtils.isNotEmpty(item.getAgencyLeader())) {
-            two.setAuditorUid(item.getAgencyLeader());
-        }
-        if (StringUtils.isNotEmpty(item.getDesignLeader())) {
-            two.setAuditorUid(item.getDesignLeader());
-        }
-        if (StringUtils.isNotEmpty(item.getEngineeringLeader())) {
-            two.setAuditorUid(item.getEngineeringLeader());
-        }
-        two.setTaskSequenceNumber(taskSequenceNumber)
-                .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
-        result.add(two);
-        taskSequenceNumber++;
+//        if(item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
+//                || item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
+//                || item.getItemStage().equals(ItemStageEnum.STAGE_DESIGN.getCode()) ){
+//        }else{
+            CheckListNormalVO two = new CheckListNormalVO();
+            if (StringUtils.isNotEmpty(item.getItemLeader())) {
+                two.setAuditorUid(item.getItemLeader());
+            }
+            if (StringUtils.isNotEmpty(item.getAgencyLeader())) {
+                two.setAuditorUid(item.getAgencyLeader());
+            }
+            if (StringUtils.isNotEmpty(item.getDesignLeader())) {
+                two.setAuditorUid(item.getDesignLeader());
+            }
+            if (StringUtils.isNotEmpty(item.getEngineeringLeader())) {
+                two.setAuditorUid(item.getEngineeringLeader());
+            }
+            two.setTaskSequenceNumber(taskSequenceNumber)
+                    .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
+            result.add(two);
+            taskSequenceNumber++;
+//        }
 
         if (StringUtils.isNotEmpty(item.getSubLeader())) {
             CheckListNormalVO three = CheckListNormalVO.builder()
