@@ -2,6 +2,7 @@ package com.dfd.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -155,6 +156,7 @@ public class TotalSalarySummaryExportVO {
      * 申报时间
      */
     @ApiModelProperty(value = "申报时间", name = "declareTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date declareTime;
 
     /**

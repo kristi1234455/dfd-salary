@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author yy

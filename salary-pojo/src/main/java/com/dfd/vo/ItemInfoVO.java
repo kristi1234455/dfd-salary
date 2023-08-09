@@ -1,5 +1,6 @@
 package com.dfd.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class ItemInfoVO implements Serializable {
      * 项目开始时间
      */
     @ApiModelProperty(value = "项目开始时间", name = "itemStartTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date itemStartTime;
 
     /**
