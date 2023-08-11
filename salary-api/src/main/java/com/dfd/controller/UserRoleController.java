@@ -22,8 +22,8 @@ public class UserRoleController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value = "获取所有权限用户", httpMethod = "GET")
-    @GetMapping("/info")
+    @ApiOperation(value = "获取所有权限用户", httpMethod = "POST")
+    @PostMapping("/info")
     public DFDResult<PageResult<UserRoleVO>> infoRole(@RequestBody @Valid UserRoleInfoDTO userRoleInfoDTO) {
         return DFDResult.sucess(userService.infoRole(userRoleInfoDTO));
     }

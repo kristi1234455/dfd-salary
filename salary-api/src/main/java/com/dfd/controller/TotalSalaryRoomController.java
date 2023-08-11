@@ -55,7 +55,7 @@ public class TotalSalaryRoomController {
         totalSalaryRoomInfoDTO.setPageSize(pageSize);
         int pages = PageUtil.totalPage(totalSize,pageSize);
         if (totalSize > 0) {
-            ExcelUtils.exportBigData(response, "工资清单",  TotalSalaryRoomExportInfoVO.class,pageSize,pages,(i)->{
+            ExcelUtils.exportBigData(response, "项目清单",  TotalSalaryRoomExportInfoVO.class,pageSize,pages,(i)->{
                 totalSalaryRoomInfoDTO.setCurrentPage(i);
                 List<TotalSalaryRoomExportInfoVO> data = totalSalaryRoomService.exportRoomSalaryList(totalSalaryRoomInfoDTO);
                 return data;

@@ -108,6 +108,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
         LambdaQueryWrapper<TotalSalaryRoom> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getRoom()), TotalSalaryRoom:: getRoom, totalSalaryRoomInfoDTO.getRoom())
                 .likeRight(totalSalaryRoomInfoDTO.getDeclareTime() !=null, TotalSalaryRoom:: getDeclareTime, totalSalaryRoomInfoDTO.getDeclareTime())
+                .eq(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getItemStage()), TotalSalaryRoom:: getItemStage, totalSalaryRoomInfoDTO.getItemStage())
                 .eq(TotalSalaryRoom::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(TotalSalaryRoom :: getCreatedTime);
         List<TotalSalaryRoom> olist = baseMapper.selectList(queryWrapper);

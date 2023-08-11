@@ -2,12 +2,15 @@ package com.dfd.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.util.Date;
 
 @Builder
 @NoArgsConstructor
@@ -52,7 +55,8 @@ public class TotalSalaryPayrollExportVO {
     @ApiModelProperty(value = "申报时间", name = "declareTime")
     @ExcelProperty(value = "工资发放时间", order = 4)
     @ColumnWidth(20)
-    private String declareTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date declareTime;
 
 
     /**

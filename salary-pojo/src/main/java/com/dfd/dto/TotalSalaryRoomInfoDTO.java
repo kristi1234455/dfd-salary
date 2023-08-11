@@ -36,4 +36,9 @@ public class TotalSalaryRoomInfoDTO extends Query implements Serializable {
     @ApiModelProperty(value = "项目工资申报日期", name = "declareTime")
     private String declareTime = DateUtil.getYM();
 
+    /**
+     * 项目阶段
+     */
+    @ApiModelProperty(value = "项目阶段", name = "itemStage")
+    private String itemStage;
 }

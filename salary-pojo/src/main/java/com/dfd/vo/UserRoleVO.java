@@ -1,6 +1,7 @@
 package com.dfd.vo;
 
 import com.dfd.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -49,11 +50,13 @@ public class UserRoleVO implements Serializable {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间", name = "createdTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdTime;
 
     /**
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间", name = "updatedTime")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedTime;
 }

@@ -2,6 +2,7 @@ package com.dfd.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import com.alibaba.excel.converters.date.DateStringConverter;
@@ -97,6 +98,7 @@ public class TotalSalaryRoomExportInfoVO implements Serializable {
     @ApiModelProperty(value = "项目工资申报日期", name = "declareTime")
     @ExcelProperty(value = "项目工资申报日期", order = 8, converter = DateStringConverter.class)
     @ColumnWidth(20)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date declareTime;
 
     /**

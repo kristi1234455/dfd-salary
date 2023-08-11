@@ -33,4 +33,5 @@ public class Query {
      */
     @ApiModelProperty(value = "当前页面数据条数", name = "pageSize")
     Integer pageSize = 10;
+
 }

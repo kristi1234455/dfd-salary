@@ -28,6 +28,9 @@ public class UserRoleInfoDTO extends Query implements Serializable {
     @ApiModelProperty(value = "工号", name = "number", example = "13412345667")
     private String number;
 
-    @ApiModelProperty(value = "密码", name = "password", example = "123456")
-    private String userName;
+    /**
+     * 用户昵称
+     */
+    @ApiModelProperty(value = "用户昵称", name = "nickname")
+    private String nickname;
 }

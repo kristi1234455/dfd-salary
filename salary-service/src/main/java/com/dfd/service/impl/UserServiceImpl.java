@@ -156,7 +156,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(DYDResultEnum.ERROR_ROLE.getCode(),DYDResultEnum.ERROR_ROLE.getDesc());
         }
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.like(StringUtils.isNotBlank(userRoleInfoDTO.getUserName()), User:: getUserName, userRoleInfoDTO.getUserName())
+        queryWrapper.like(StringUtils.isNotBlank(userRoleInfoDTO.getNickname()), User:: getNickname, userRoleInfoDTO.getNickname())
                 .like(StringUtils.isNotBlank(userRoleInfoDTO.getNumber()), User:: getNumber, userRoleInfoDTO.getNumber())
                 .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(User :: getCreatedTime);

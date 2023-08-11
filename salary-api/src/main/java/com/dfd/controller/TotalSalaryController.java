@@ -60,7 +60,7 @@ public class TotalSalaryController {
         return DFDResult.sucess(totalSalaryService.infoPayroll(totalSalaryPayrollInfoDTO));
     }
 
-    @ApiOperation(value = "项目清单表格导出", httpMethod = "POST")
+    @ApiOperation(value = "工资清单表格导出", httpMethod = "POST")
     @GetMapping("export")
     public DFDResult exportSalary(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO, HttpServletResponse response){
         int totalSize = totalSalaryService.exportSalaryCount(totalSalaryPayrollInfoDTO);
