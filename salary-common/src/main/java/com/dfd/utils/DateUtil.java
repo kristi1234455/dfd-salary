@@ -135,6 +135,14 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前时间的年月，yyyy-MM
+     */
+    public static String getYM(Date date) {
+        DateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_MONTH);
+        return df.format(date);
+    }
+
+    /**
      * 时间格式化，yyyy-MM-dd HH:mm:ss
      */
     public static String getYmdHms(Date date) {

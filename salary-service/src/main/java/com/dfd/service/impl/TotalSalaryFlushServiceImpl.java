@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.stream.CollectorUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -17,6 +18,7 @@ import com.dfd.utils.BusinessException;
 import com.dfd.utils.DateUtil;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.TotalSalaryItemInfoVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
     @Autowired
@@ -379,7 +382,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         List<ItemSalary> itemSalaryWrapList = itemSalaryService.list(itemSalaryWrap);
         Map<String, ItemSalary> itemMemberUidItemSalary = null;
         if(!CollectionUtils.isEmpty(itemSalaryWrapList)){
-            itemMemberUidItemSalary = itemSalaryWrapList.stream().collect(Collectors.toMap(ItemSalary::getItemMemberUid, o->o));
+            itemMemberUidItemSalary = itemSalaryWrapList.stream().collect(Collectors.toMap(ItemSalary::getUid, o->o));
         }
 
         if(!CollectionUtils.isEmpty(addTotalSalary)){
@@ -433,10 +436,10 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
                 .designManager(item.getDesignManager())
                 .scientificManager(item.getScientificManager())
                 .postSalaryStandard(var.getPerformanceTotal())
-                .declareFactor(itemSalary.getDeclareFactor())
-                .checkPlanSalary(itemSalary.getCheckPlanSalary()!=null ? new BigDecimal(itemSalary.getCheckPlanSalary()) : null)
-                .checkSalary(itemSalary.getCheckSalary()!=null ? new BigDecimal(itemSalary.getCheckSalary()) : null)
-                .declareGrant(itemSalary.getDeclareGrant())
+                .declareFactor(itemSalary!=null ? itemSalary.getDeclareFactor() : null)
+                .checkPlanSalary(itemSalary!=null ? new BigDecimal(itemSalary.getCheckPlanSalary()) : null)
+                .checkSalary(itemSalary!=null ? new BigDecimal(itemSalary.getCheckSalary()) : null)
+                .declareGrant(itemSalary!=null ? itemSalary.getDeclareGrant() : null)
                 .performanceSalary(var.getPerformanceTotal())
                 .designSalary(var.getDesignTotal())
                 .bidSalary(var.getTenderTotal())
