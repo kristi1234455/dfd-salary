@@ -58,4 +58,10 @@ public class CheckListVO implements Serializable {
     @ApiModelProperty(value = "创建时间", name = "createdTime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdTime;
+
+    /**
+     * 页面地址
+     */
+    @ApiModelProperty(value = "页面地址", name = "url")
+    private String url;
 }

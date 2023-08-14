@@ -181,7 +181,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public Member queryMemberByNumber(String number) {
         LambdaQueryWrapper<Member> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotEmpty(number), Member::getName,number)
+        queryWrapper.eq(StringUtils.isNotEmpty(number), Member::getNumber,number)
                 .eq(Member::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         Member member = baseMapper.selectOne(queryWrapper);
         return member;

@@ -21,12 +21,12 @@ import java.io.Serializable;
 public class CheckLisQueryDTO extends Query implements Serializable {
     private static final long serialVersionUID = -7079940868863860032L;
 
-    /**
-     * 项目表uid
-     */
-    @ApiModelProperty(value = "项目表uid", name = "itemUid")
-    @NotBlank(message = "项目uid不能为空")
-    private String itemUid;
+//    /**
+//     * 项目表uid
+//     */
+//    @ApiModelProperty(value = "项目表uid", name = "itemUid")
+//    @NotBlank(message = "项目uid不能为空")
+//    private String itemUid;
 
     /**
      * 审核任务名字
