@@ -56,38 +56,9 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                 .eq(attendanceInfoDTO.getMonth() !=null, Attendance:: getMonth, attendanceInfoDTO.getMonth())
                 .eq(attendanceInfoDTO.getDay() !=null, Attendance:: getDay, attendanceInfoDTO.getDay())
                 .eq(Attendance::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
-        Integer pageNum = attendanceInfoDTO.getCurrentPage();
-        Integer pageSize = attendanceInfoDTO.getPageSize();
         List<Attendance> olist = baseMapper.selectList(queryWrapper);
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<AttendanceInfoVO> list = convertToAttendanceInfoVO(olist);
-        list.sort(new Comparator<AttendanceInfoVO>() {
-            @Override
-            public int compare(AttendanceInfoVO o1, AttendanceInfoVO o2) {
-                return Integer.parseInt(o1.getNumber()) - Integer.parseInt(o2.getNumber());
-            }
-        });
-
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<AttendanceInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        return PageResult.infoPage(olist.size(), attendanceInfoDTO.getCurrentPage(),attendanceInfoDTO.getPageSize(),list);
     }
 
     @Override

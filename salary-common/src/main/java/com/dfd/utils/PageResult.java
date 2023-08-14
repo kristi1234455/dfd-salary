@@ -126,5 +126,31 @@ public class PageResult<T> implements Iterable<T>, Serializable {
     public Iterator<T> iterator() {
         return getRecords().iterator();
     }
+
+    public static <T> PageResult<T> infoPage(int oldSize,int pageNum, int pageSize, List<T> newlist){
+        PageResult<T> pageResult = new PageResult<>();
+        //总页数
+//        int totalPage = list.size() / pageSize;
+        int totalPage = (oldSize + pageSize - 1) / pageSize;
+
+        int size = newlist.size();
+        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 0 : pageSize;
+        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
+        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
+        if (size > pageNum) {
+            newlist = newlist.subList(pageStart, pageEnd);
+        }
+        //防止pageSize出现<=0
+        pageSize = pageSize <= 0 ? 1 : pageSize;
+
+        pageResult.setCurrentPage(pageNum)
+                .setPageSize(pageSize)
+                .setRecords(newlist)
+                .setTotalPages(totalPage)
+                .setTotalRecords(size);
+        return pageResult;
+    }
 }
 

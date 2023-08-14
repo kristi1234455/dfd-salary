@@ -161,31 +161,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq(User::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(User :: getCreatedTime);
         List<User> olist = baseMapper.selectList(queryWrapper);
-
-        Integer pageNum = userRoleInfoDTO.getCurrentPage();
-        Integer pageSize = userRoleInfoDTO.getPageSize();
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<UserRoleVO> list = convertToInfoVO(olist);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<UserRoleVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        return PageResult.infoPage(olist.size(), userRoleInfoDTO.getCurrentPage(),userRoleInfoDTO.getPageSize(),list);
     }
 
     private List<UserRoleVO> convertToInfoVO(List<User> list) {

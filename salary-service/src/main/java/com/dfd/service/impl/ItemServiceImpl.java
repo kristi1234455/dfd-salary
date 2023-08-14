@@ -75,7 +75,6 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userLambdaQueryWrapper.eq(StringUtils.isNotBlank(currentUser.getNumber()), User::getNumber, currentUser.getNumber());
         User user = userMapper.selectOne(userLambdaQueryWrapper);
-        IPage<Item> page = null;
         String role = user.getRole();
         LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
         queryWrapper
@@ -96,31 +95,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             }
         }
         queryWrapper.orderByDesc(Item :: getCreatedTime);
-        Integer pageNum = itemInfoQueryDTO.getCurrentPage();
-        Integer pageSize = itemInfoQueryDTO.getPageSize();
-        List<Item> members = baseMapper.selectList(queryWrapper);
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (members.size() + pageSize - 1) / pageSize;
-        List<ItemInfoVO> list = convertToItemVO(members);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<ItemInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        List<Item> olist = baseMapper.selectList(queryWrapper);
+        List<ItemInfoVO> list = convertToItemVO(olist);
+        return PageResult.infoPage(olist.size(), itemInfoQueryDTO.getCurrentPage(),itemInfoQueryDTO.getPageSize(),list);
     }
 
     private List<ItemInfoVO> convertToItemVO(List<Item> records) {

@@ -309,31 +309,8 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
         List<TotalSalary> olist = baseMapper.selectList(queryWrapper);
-
-        Integer pageNum = totalSalaryPayrollInfoDTO.getCurrentPage();
-        Integer pageSize = totalSalaryPayrollInfoDTO.getPageSize();
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<TotalSalaryPayrollInfoVO> list = convertToRoomInfoVO(olist);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<TotalSalaryPayrollInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        return PageResult.infoPage(olist.size(), totalSalaryPayrollInfoDTO.getCurrentPage(),totalSalaryPayrollInfoDTO.getPageSize(),list);
     }
 
     private List<TotalSalaryPayrollInfoVO> convertToRoomInfoVO(List<TotalSalary> list) {

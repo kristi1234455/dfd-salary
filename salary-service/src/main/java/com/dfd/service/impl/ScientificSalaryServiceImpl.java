@@ -49,32 +49,9 @@ public class ScientificSalaryServiceImpl extends ServiceImpl<ScientificSalaryMap
                 .likeRight(scientificSalaryInfoDTO.getDeclareTime() !=null, ScientificSalary:: getDeclareTime, scientificSalaryInfoDTO.getDeclareTime())
                 .eq(ScientificSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(ScientificSalary :: getCreatedTime);
-
-        Integer pageNum = scientificSalaryInfoDTO.getCurrentPage();
-        Integer pageSize = scientificSalaryInfoDTO.getPageSize();
-        List<ScientificSalary> members = baseMapper.selectList(queryWrapper);
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (members.size() + pageSize - 1) / pageSize;
-        List<ScientificSalaryInfoVO> list = convertToInfoVO(members);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<ScientificSalaryInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        List<ScientificSalary> olist = baseMapper.selectList(queryWrapper);
+        List<ScientificSalaryInfoVO> list = convertToInfoVO(olist);
+        return PageResult.infoPage(olist.size(), scientificSalaryInfoDTO.getCurrentPage(),scientificSalaryInfoDTO.getPageSize(),list);
     }
 
     private List<ScientificSalaryInfoVO> convertToInfoVO(List<ScientificSalary> list) {

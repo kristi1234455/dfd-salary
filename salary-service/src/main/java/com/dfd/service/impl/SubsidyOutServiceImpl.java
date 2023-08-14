@@ -48,32 +48,10 @@ public class SubsidyOutServiceImpl extends ServiceImpl<SubsidyOutMapper, Subsidy
                 .eq(SubsidyOut::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(SubsidyOut :: getCreatedTime);
 
-        Integer pageNum = subsidyOutInfoDTO.getCurrentPage();
-        Integer pageSize = subsidyOutInfoDTO.getPageSize();
-        List<SubsidyOut> members = baseMapper.selectList(queryWrapper);
-        members = members.stream().filter(e -> e.getOutDays() != null).collect(Collectors.toList());
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (members.size() + pageSize - 1) / pageSize;
-        List<SubsidyOutInfoVO> list = convertToOutSalaryInfoVO(members);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<SubsidyOutInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        List<SubsidyOut> olist = baseMapper.selectList(queryWrapper);
+        olist = olist.stream().filter(e -> e.getOutDays() != null).collect(Collectors.toList());
+        List<SubsidyOutInfoVO> list = convertToOutSalaryInfoVO(olist);
+        return PageResult.infoPage(olist.size(), subsidyOutInfoDTO.getCurrentPage(),subsidyOutInfoDTO.getPageSize(),list);
     }
 
     private List<SubsidyOutInfoVO> convertToOutSalaryInfoVO(List<SubsidyOut> list) {

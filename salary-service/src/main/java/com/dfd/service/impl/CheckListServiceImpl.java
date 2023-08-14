@@ -62,7 +62,6 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
             currentUid = member.getUid();
         }
 
-        PageResult<CheckListVO> pageResult = new PageResult<>();
         LambdaQueryWrapper<CheckList> wrapper = new LambdaQueryWrapper();
         if(StringUtils.isNotBlank(currentUid) && currentUid.equals("admin")){
 
@@ -73,31 +72,9 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         wrapper.orderByDesc(CheckList::getCreatedTime);
         List<CheckList> olist = baseMapper.selectList(wrapper);
-
-        Integer pageNum = checkLisQueryDTO.getCurrentPage();
-        Integer pageSize = checkLisQueryDTO.getPageSize();
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<CheckListVO> list = convertToInfoVO(olist);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
+        return PageResult.infoPage(olist.size(), checkLisQueryDTO.getCurrentPage(),checkLisQueryDTO.getPageSize(),list);
 
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
     }
 
 

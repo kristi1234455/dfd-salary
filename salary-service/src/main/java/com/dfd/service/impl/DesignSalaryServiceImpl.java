@@ -52,32 +52,9 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
                 .likeRight(designSalaryInfoDTO.getDeclareTime() !=null, DesignSalary:: getDeclareTime, designSalaryInfoDTO.getDeclareTime())
                 .eq(DesignSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(DesignSalary :: getCreatedTime);
-
-        Integer pageNum = designSalaryInfoDTO.getCurrentPage();
-        Integer pageSize = designSalaryInfoDTO.getPageSize();
         List<DesignSalary> olist = baseMapper.selectList(queryWrapper);
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<DesignSalaryInfoVO> list = convertToSalaryInfoVO(olist);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
-        }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<DesignSalaryInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        return PageResult.infoPage(olist.size(), designSalaryInfoDTO.getCurrentPage(),designSalaryInfoDTO.getPageSize(),list);
     }
 
     private List<DesignSalaryInfoVO> convertToSalaryInfoVO(List<DesignSalary> list) {
