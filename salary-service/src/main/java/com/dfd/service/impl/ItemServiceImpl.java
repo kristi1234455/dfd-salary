@@ -77,8 +77,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User user = userMapper.selectOne(userLambdaQueryWrapper);
         String role = user.getRole();
         LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper
-                .eq(StringUtils.isNotEmpty(itemInfoQueryDTO.getItemProperties()), Item::getItemProperties, itemInfoQueryDTO.getItemProperties())
+        queryWrapper.eq(StringUtils.isNotEmpty(itemInfoQueryDTO.getItemProperties()), Item::getItemProperties, itemInfoQueryDTO.getItemProperties())
                 .like(StringUtils.isNotEmpty(itemInfoQueryDTO.getItemName()), Item::getItemName, itemInfoQueryDTO.getItemName())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if (Optional.ofNullable(user).isPresent() && StringUtils.isNotBlank(role)) {

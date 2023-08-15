@@ -55,9 +55,12 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         }
         String currentUid = currentUser.getNumber();
         if(!currentUser.getNumber().equals("admin")){
-            Member member = memberService.queryMemberByNumber(currentUser.getNumber());
+            Member member = memberService.queryMemberByNumber(currentUid);
             if (ObjectUtil.isEmpty(member)) {
-                throw new BusinessException("当前登录用户基本信息为空！");
+                return new PageResult<CheckListVO>()
+                        .setPageSize(checkLisQueryDTO.getPageSize())
+                        .setCurrentPage(checkLisQueryDTO.getCurrentPage())
+                        .setTotalPages(Long.parseLong(GlobalConstant.GLOBAL_STR_ZERO));
             }
             currentUid = member.getUid();
         }
@@ -119,10 +122,12 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
     public void partSubmit(CheckListPartSubmitDTO partSubmitDTO) {
         String currentUri = request.getRequestURI();
         User currentUser = UserRequest.getCurrentUser();
+        String currentUserNumber = currentUser.getNumber();
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
         wrapper.eq(StringUtils.isNotBlank(partSubmitDTO.getItemUid()), Item::getUid, partSubmitDTO.getItemUid())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         Item item = itemService.getOne(wrapper);
+        String itemName = item.getItemName();
 
         LambdaQueryWrapper<CheckList> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(partSubmitDTO.getItemUid()), CheckList::getItemUid, partSubmitDTO.getItemUid())
@@ -131,7 +136,9 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         List<CheckList> checkLists = baseMapper.selectList(queryWrapper);
 
         List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partSubmitDTO.getItemUid());
+        Map<String, String> auditorUidAuditorName = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getAuditorName));
         Map<String, Integer> auditorUidLevel = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getTaskSequenceNumber));
+        Map<Integer, String> sequenceAuditorUid = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getTaskSequenceNumber, CheckListNormalVO::getAuditorUid));
 
         if (checkLists.isEmpty()) {
             CheckList var = new CheckList();
@@ -139,17 +146,21 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
             var.setUid(UUIDUtil.getUUID32Bits())
                     .setUrl(currentUri)
                     .setAuditTime(new Date())
-                    .setTaskName(item.getItemName())
+                    .setTaskName(itemName)
                     .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
                     .setAuditorLevel(String.valueOf(auditorUidLevel.get(partSubmitDTO.getAuditorUid())))
-                    .setCreatedBy(currentUser.getNumber())
-                    .setUpdatedBy(currentUser.getNumber())
+                    .setCreatedBy(currentUserNumber)
+                    .setUpdatedBy(currentUserNumber)
                     .setCreatedTime(new Date())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             boolean b = this.save(var);
             if (!b) {
                 throw new BusinessException("审核数据保存失败");
+            }else{
+                Integer currentSequence = GlobalConstant.GLOBAL_INT_ONE;
+                Integer currentLevel = GlobalConstant.GLOBAL_INT_ONE;
+                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,sequenceAuditorUid,currentSequence,currentLevel);
             }
             return;
         }
@@ -175,18 +186,51 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     .setAuditTime(new Date())
                     .setTaskName(item.getItemName())
                     .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() + 1)
-                    .setCreatedBy(currentUser.getNumber())
-                    .setUpdatedBy(currentUser.getNumber())
+                    .setCreatedBy(currentUserNumber)
+                    .setUpdatedBy(currentUserNumber)
                     .setCreatedTime(new Date())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
             boolean b = this.save(var);
             if (!b) {
                 throw new BusinessException("审核数据保存失败");
+            }else{
+                Integer currentSequence = dataMaxCheckList.getTaskSequenceNumber() + 1;
+                Integer currentLevel = auditorUidLevel.get(partSubmitDTO.getAuditorUid());
+                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,sequenceAuditorUid,currentSequence,currentLevel);
             }
-
         }
+    }
 
+    private void saveNextLevel(Map<String, String> auditorUidAuditorName,CheckListPartSubmitDTO partSubmitDTO,String itemName, String currentUri,
+                               String currentUserNumber,Map<Integer, String> sequenceAuditorUid,
+                               Integer currentSequence,Integer currentLevel){
+        if(partSubmitDTO.getTaskStatus().equals(TaskEnum.TASK_PASS.getCode())){
+            int nextSequence = currentSequence + 1;
+            int nextLevel = currentLevel + 1;
+            String nextLevelAuditorUid = sequenceAuditorUid.get(nextLevel);
+            String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
+            CheckList next = CheckList.builder()
+                    .uid(UUIDUtil.getUUID32Bits())
+                    .itemUid(partSubmitDTO.getItemUid())
+                    .url(currentUri)
+                    .auditorLevel(String.valueOf(nextLevel))
+                    .auditorUid(nextLevelAuditorUid)
+                    .auditorName(nextAuditorName)
+                    .taskName(itemName)
+                    .taskStatus(TaskEnum.TASK_UNDO.getCode())
+                    .taskSequenceNumber(nextSequence)
+                    .createdBy(currentUserNumber)
+                    .createdTime(new Date())
+                    .updatedBy(currentUserNumber)
+                    .updatedTime(new Date())
+                    .isDeleted(GlobalConstant.GLOBAL_STR_ZERO)
+                    .build();
+            boolean nextB = this.save(next);
+            if (!nextB) {
+                throw new BusinessException("下一级别审核人数据保存失败");
+            }
+        }
     }
 
     @Override
