@@ -33,5 +33,4 @@ public class TotalSalaryInfoVO implements Serializable {
      */
     @ApiModelProperty(value = "当月项目工资汇总数据对象", name = "totalSalaryItemInfoVOList")
     private List<TotalSalaryItemInfoVO> totalSalaryItemInfoVOList;
-
 }

@@ -29,6 +29,14 @@ public interface TotalSalaryService extends IService<TotalSalary> {
      */
     PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO);
 
+
+    /**
+     * 获取工资综合汇总综合项目相关数据
+     * @param totalSalaryInfoDTO
+     * @return
+     */
+    List<TotalSalarySumItemInfoVO> infoItem(TotalSalaryInfoDTO totalSalaryInfoDTO);
+
     /**
      * 工资汇总总数据量
      * @param totalSalaryInfoDTO
@@ -63,6 +71,5 @@ public interface TotalSalaryService extends IService<TotalSalary> {
      * @return
      */
     List<TotalSalaryPayrollExportVO> exportSalaryList(TotalSalaryPayrollInfoDTO totalSalaryPayrollInfoDTO);
-
 
 }

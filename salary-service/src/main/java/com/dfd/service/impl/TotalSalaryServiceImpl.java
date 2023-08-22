@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
+import com.dfd.enums.ItemStageEnum;
 import com.dfd.mapper.TotalSalaryMapper;
 import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
@@ -155,31 +156,33 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(TotalSalary :: getCreatedTime);
         List<TotalSalary> olist = baseMapper.selectList(queryWrapper);
-
-        Integer pageNum = totalSalaryInfoDTO.getCurrentPage();
-        Integer pageSize = totalSalaryInfoDTO.getPageSize();
-        //总页数
-//        int totalPage = list.size() / pageSize;
-        int totalPage = (olist.size() + pageSize - 1) / pageSize;
         List<TotalSalaryInfoVO> list = convertToTotalSalaryInfoVO(totalSalaryInfoDTO,olist);
-        int size = list.size();
-        //先判断pageNum(使之page <= 0 与page==1返回结果相同)
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 0 : pageSize;
-        int pageStart = (pageNum - 1) * pageSize;//截取的开始位置 pageNum>=1
-        int pageEnd = size < pageNum * pageSize ? size : pageNum * pageSize;//截取的结束位置
-        if (size > pageNum) {
-            list = list.subList(pageStart, pageEnd);
+        return PageResult.infoPage(olist.size(), totalSalaryInfoDTO.getCurrentPage(),totalSalaryInfoDTO.getPageSize(),list);
+    }
+
+    @Override
+    public List<TotalSalarySumItemInfoVO> infoItem(TotalSalaryInfoDTO totalSalaryInfoDTO) {
+        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.ne(Item::getItemStage, ItemStageEnum.STAGE_FINISH.getCode())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        queryWrapper.orderByDesc(Item :: getCreatedTime);
+        List<Item> olist = itemService.list(queryWrapper);
+        return convertToItemInfoVO(olist);
+    }
+
+    private List<TotalSalarySumItemInfoVO> convertToItemInfoVO(List<Item> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Collections.emptyList();
         }
-        //防止pageSize出现<=0
-        pageSize = pageSize <= 0 ? 1 : pageSize;
-        PageResult<TotalSalaryInfoVO> pageResult = new PageResult<>();
-        pageResult.setCurrentPage(pageNum)
-                .setPageSize(pageSize)
-                .setRecords(list)
-                .setTotalPages(totalPage)
-                .setTotalRecords(size);
-        return pageResult;
+        List<TotalSalarySumItemInfoVO> result = list.stream().map(var -> {
+            if(!Optional.ofNullable(var).isPresent()){
+                throw new BusinessException("项目总数据为空");
+            }
+            TotalSalarySumItemInfoVO resultVO = new TotalSalarySumItemInfoVO();
+            BeanUtil.copyProperties(var,resultVO);
+            return resultVO;
+        }).collect(Collectors.toList());
+        return result;
     }
 
     private List<TotalSalaryInfoVO> convertToTotalSalaryInfoVO(TotalSalaryInfoDTO totalSalaryInfoDTO, List<TotalSalary> list) {

@@ -37,6 +37,12 @@ public class TotalSalaryController {
         return DFDResult.sucess(totalSalaryService.info(totalSalaryInfoDTO));
     }
 
+    @ApiOperation(value = "获取工资综合汇总综合项目相关数据", httpMethod = "POST")
+    @PostMapping("/summary/item/info")
+    public DFDResult<List<TotalSalarySumItemInfoVO>> infoItem(@RequestBody @Valid TotalSalaryInfoDTO totalSalaryInfoDTO){
+        return DFDResult.sucess(totalSalaryService.infoItem(totalSalaryInfoDTO));
+    }
+
     @ApiOperation(value = "工资综合汇总数据导出", httpMethod = "POST")
     @PostMapping("/summary/export")
     public DFDResult<TotalSalarySummaryExportVO> exportSummarySalary(TotalSalaryInfoDTO totalSalaryInfoDTO, HttpServletResponse response){
