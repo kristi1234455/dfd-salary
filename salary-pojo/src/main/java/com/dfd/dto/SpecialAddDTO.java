@@ -78,5 +78,5 @@ public class SpecialAddDTO extends Query implements Serializable {
      * 专岗申报时间
      */
     @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
-    private Date specialDeclareTime;
+    private String specialDeclareTime;
 }

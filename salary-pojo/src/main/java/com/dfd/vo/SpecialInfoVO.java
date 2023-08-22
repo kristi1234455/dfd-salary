@@ -74,7 +74,7 @@ public class SpecialInfoVO extends Query implements Serializable {
      */
     @ApiModelProperty(value = "专岗申报时间", name = "specialDeclareTime")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date specialDeclareTime;
+    private String specialDeclareTime;
 
     /**
      * 专岗基础工资

@@ -17,7 +17,7 @@
     <result column="design_total" property="designTotal" jdbcType="DECIMAL" />
     <result column="tender_total" property="tenderTotal" jdbcType="DECIMAL" />
     <result column="scientific_total" property="scientificTotal" jdbcType="DECIMAL" />
-    <result column="special_declare_time" property="specialDeclareTime" jdbcType="TIMESTAMP" />
+    <result column="special_declare_time" property="specialDeclareTime" jdbcType="VARCHAR" />
     <result column="special_base_fee" property="specialBaseFee" jdbcType="VARCHAR" />
     <result column="special_max_coefficient" property="specialMaxCoefficient" jdbcType="VARCHAR" />
     <result column="standard_subsidy" property="standardSubsidy" jdbcType="VARCHAR" />

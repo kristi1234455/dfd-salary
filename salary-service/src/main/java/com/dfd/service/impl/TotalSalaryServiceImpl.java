@@ -15,6 +15,7 @@ import com.dfd.mapper.TotalSalaryMapper;
 import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
+import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
@@ -90,15 +91,18 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
     public void addSpecial(SpecialAddDTO speciaAddlDTO) {
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(speciaAddlDTO.getItemUid()), TotalSalary:: getItemUid, speciaAddlDTO.getItemUid())
+                .eq(StringUtils.isNotBlank(speciaAddlDTO.getItemMemberUid()), TotalSalary:: getItemMemberUid, speciaAddlDTO.getItemMemberUid())
                 .likeRight(speciaAddlDTO.getSpecialDeclareTime()!=null, TotalSalary:: getSpecialDeclareTime, speciaAddlDTO.getSpecialDeclareTime())
                 .eq(TotalSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
             throw new BusinessException("添加失败，专岗工资数据已经存在！");
         }
         User currentUser = UserRequest.getCurrentUser();
+        String uid = speciaAddlDTO.getItemUid() + speciaAddlDTO.getItemMemberUid() + DateUtil.getYM();
         TotalSalary totalSalary = new TotalSalary();
         BeanUtil.copyProperties(speciaAddlDTO,totalSalary);
-        totalSalary.setUid(UUIDUtil.getUUID32Bits())
+        totalSalary.setUid(uid)
+                .setSpecialDeclareTime(speciaAddlDTO.getSpecialDeclareTime())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -122,6 +126,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
                 .set(StringUtils.isNotBlank(specialVO.getStandardSubsidy()), TotalSalary:: getStandardSubsidy, specialVO.getStandardSubsidy())
                 .set(StringUtils.isNotBlank(specialVO.getSubsidyCoefficient()), TotalSalary:: getSubsidyCoefficient, specialVO.getSubsidyCoefficient())
                 .set(StringUtils.isNotBlank(specialVO.getRemarks()), TotalSalary:: getRemarks, specialVO.getRemarks())
+                .set(StringUtils.isNotBlank(specialVO.getSpecialDeclareTime()), TotalSalary:: getSpecialDeclareTime,specialVO.getSpecialDeclareTime())
                 .set((specialVO.getSpecialDeclareTime()!=null), TotalSalary:: getSpecialDeclareTime, specialVO.getSpecialDeclareTime())
                 .set(TotalSalary:: getUpdatedBy, currentUser.getNumber())
                 .set(TotalSalary:: getUpdatedTime, new Date());

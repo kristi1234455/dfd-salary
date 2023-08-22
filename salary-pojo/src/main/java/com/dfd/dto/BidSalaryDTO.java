@@ -1,5 +1,6 @@
 package com.dfd.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -93,6 +94,7 @@ public class BidSalaryDTO implements Serializable {
      * 设计完成时间
      */
     @ApiModelProperty(value = "设计完成时间", name = "finishTime")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date finishTime;
 
     /**
@@ -140,6 +142,7 @@ public class BidSalaryDTO implements Serializable {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间", name = "createdTime")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
     /**
@@ -152,5 +155,6 @@ public class BidSalaryDTO implements Serializable {
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间", name = "updatedTime")
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 }
