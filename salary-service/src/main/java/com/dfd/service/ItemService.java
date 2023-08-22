@@ -108,6 +108,6 @@ public interface ItemService extends IService<Item> {
      * @param itemUid
      * @return
      */
-    List<CheckListNormalVO> queryCheckListByUid(String itemUid);
+    List<CheckListNormalVO> queryCheckListByUid(String itemUid,String currentUri);
 
 }

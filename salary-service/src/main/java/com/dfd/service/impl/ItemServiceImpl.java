@@ -577,7 +577,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
-    public List<CheckListNormalVO> queryCheckListByUid(String itemUid) {
+    public List<CheckListNormalVO> queryCheckListByUid(String itemUid,String currentUri) {
         List<CheckListNormalVO> result = new ArrayList<>();
         int taskSequenceNumber = 1;
 
@@ -604,10 +604,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         result.add(one);
         taskSequenceNumber++;
 
-//        if(item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
-//                || item.getItemProperties().equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
-//                || item.getItemStage().equals(ItemStageEnum.STAGE_DESIGN.getCode()) ){
-//        }else{
+        if(currentUri.contains("attendance")){
             CheckListNormalVO two = new CheckListNormalVO();
             if (StringUtils.isNotEmpty(item.getItemLeader())) {
                 two.setAuditorUid(item.getItemLeader());
@@ -625,7 +622,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                     .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
             result.add(two);
             taskSequenceNumber++;
-//        }
+        }
 
         if (StringUtils.isNotEmpty(item.getSubLeader())) {
             CheckListNormalVO three = CheckListNormalVO.builder()

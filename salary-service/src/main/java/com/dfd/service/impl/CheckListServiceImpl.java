@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
+import com.dfd.enums.RoleEnum;
 import com.dfd.enums.TaskEnum;
 import com.dfd.mapper.CheckListMapper;
 import com.dfd.service.CheckListService;
@@ -135,10 +136,10 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<CheckList> checkLists = baseMapper.selectList(queryWrapper);
 
-        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partSubmitDTO.getItemUid());
+        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partSubmitDTO.getItemUid(),currentUri);
         Map<String, String> auditorUidAuditorName = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getAuditorName));
-        Map<String, Integer> auditorUidLevel = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getTaskSequenceNumber));
-        Map<Integer, String> sequenceAuditorUid = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getTaskSequenceNumber, CheckListNormalVO::getAuditorUid));
+        Map<String, String> auditorUidLevel = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getAuditorLevel));
+        Map<String, String> sequenceAuditorUid = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorLevel, CheckListNormalVO::getAuditorUid));
 
         if (checkLists.isEmpty()) {
             CheckList var = new CheckList();
@@ -178,37 +179,69 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     throw new BusinessException("该任务已审核，请不要重复审核！");
                 }
             }
+
             CheckList var = new CheckList();
             BeanUtil.copyProperties(partSubmitDTO, var);
-            var.setUid(UUIDUtil.getUUID32Bits())
-                    .setUrl(currentUri)
-                    .setAuditorLevel(String.valueOf(auditorUidLevel.get(partSubmitDTO.getAuditorUid())))
+            var.setId(dataMaxCheckList.getId())
                     .setAuditTime(new Date())
-                    .setTaskName(item.getItemName())
-                    .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() + 1)
-                    .setCreatedBy(currentUserNumber)
+                    .setTaskSequenceNumber(dataMaxCheckList.getTaskSequenceNumber() )
                     .setUpdatedBy(currentUserNumber)
-                    .setCreatedTime(new Date())
                     .setUpdatedTime(new Date())
                     .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-            boolean b = this.save(var);
+            boolean b = this.updateById(var);
             if (!b) {
                 throw new BusinessException("审核数据保存失败");
             }else{
-                Integer currentSequence = dataMaxCheckList.getTaskSequenceNumber() + 1;
-                Integer currentLevel = auditorUidLevel.get(partSubmitDTO.getAuditorUid());
+                Integer currentSequence = dataMaxCheckList.getTaskSequenceNumber();
+                Integer currentLevel = Integer.parseInt(auditorUidLevel.get(partSubmitDTO.getAuditorUid()));
                 saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,sequenceAuditorUid,currentSequence,currentLevel);
             }
         }
     }
 
-    private void saveNextLevel(Map<String, String> auditorUidAuditorName,CheckListPartSubmitDTO partSubmitDTO,String itemName, String currentUri,
-                               String currentUserNumber,Map<Integer, String> sequenceAuditorUid,
+    private void saveNextLevel(Map<String, String> auditorUidAuditorName,CheckListPartSubmitDTO partSubmitDTO,
+                               String itemName, String currentUri,
+                               String currentUserNumber,Map<String, String> sequenceAuditorUid,
                                Integer currentSequence,Integer currentLevel){
+        if(partSubmitDTO.getTaskStatus().equals(TaskEnum.TASK_PASS.getCode()) &&
+                currentLevel.equals(Integer.parseInt(RoleEnum.ROLE_DEPARTMENT.getCode()))){
+            return;
+        }
+        int nextSequence = currentSequence + 1;
         if(partSubmitDTO.getTaskStatus().equals(TaskEnum.TASK_PASS.getCode())){
-            int nextSequence = currentSequence + 1;
-            int nextLevel = currentLevel + 1;
-            String nextLevelAuditorUid = sequenceAuditorUid.get(nextLevel);
+            int nextLevel = currentLevel;
+            if(currentLevel.equals(Integer.parseInt(RoleEnum.ROLE_ITEM.getCode()))){
+                nextLevel = (currentUri.contains("attendance")) ? (currentLevel + 1) : (currentLevel + 2);
+            }else{
+                nextLevel++;
+            }
+
+
+            String nextLevelAuditorUid = sequenceAuditorUid.get(String.valueOf(nextLevel));
+            String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
+            CheckList next = CheckList.builder()
+                    .uid(UUIDUtil.getUUID32Bits())
+                    .itemUid(partSubmitDTO.getItemUid())
+                    .url(currentUri)
+                    .auditorLevel(String.valueOf(nextLevel))
+                    .auditorUid(nextLevelAuditorUid)
+                    .auditorName(nextAuditorName)
+                    .taskName(itemName)
+                    .taskStatus(TaskEnum.TASK_UNDO.getCode())
+                    .taskSequenceNumber(nextSequence)
+                    .createdBy(currentUserNumber)
+                    .createdTime(new Date())
+                    .updatedBy(currentUserNumber)
+                    .updatedTime(new Date())
+                    .isDeleted(GlobalConstant.GLOBAL_STR_ZERO)
+                    .build();
+            boolean nextB = this.save(next);
+            if (!nextB) {
+                throw new BusinessException("下一级别审核人数据保存失败");
+            }
+        }else{
+            int nextLevel = Integer.parseInt(RoleEnum.ROLE_ITEM.getCode());
+            String nextLevelAuditorUid = sequenceAuditorUid.get(String.valueOf(nextLevel));
             String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
             CheckList next = CheckList.builder()
                     .uid(UUIDUtil.getUUID32Bits())
@@ -249,7 +282,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 .eq(CheckList::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<CheckList> dataFinishedFlow = baseMapper.selectList(queryWrapper);
 
-        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partInfoDTO.getItemUid());
+        List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partInfoDTO.getItemUid(),currentUri);
 
         if (dataFinishedFlow.isEmpty()) {
             List<CheckListPartInfoVO> collect = normalFlow.stream().map(e -> new CheckListPartInfoVO()
@@ -295,7 +328,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 boolean flag = false;
                 for (int i = 0; i < normalFlow.size(); i++) {
                     CheckListNormalVO normalVO = normalFlow.get(i);
-                    if (normalVO.getTaskSequenceNumber().equals(Integer.parseInt(maxFinishedAuditorLevel))) {
+                    if (normalVO.getAuditorLevel().equals(maxFinishedAuditorLevel)) {
                         flag = true;
                         continue;
                     }
