@@ -117,11 +117,16 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         Map<String, Member> memberUidMember = memberList.stream().collect(Collectors.toMap(Member::getUid, o -> o));
 
         List<String> itemUidItemMemberUidDate = new ArrayList<>();
+        List<String> itemUidItemMemberUidDateItemProperties = new ArrayList<>();
         Map<String,ItemMember> uidItemMember = new HashMap<>();
         for(ItemMember itemMember : itemMemberList){
             String key = itemMember.getItemUid() + itemMember.getMemberUid() + DateUtil.getYM();
             itemUidItemMemberUidDate.add(key);
             uidItemMember.put(key,itemMember);
+
+            Item item = itemUidItem.get(itemMember.getItemUid());
+            Integer itemStage = item.getItemStage();
+            itemUidItemMemberUidDateItemProperties.add(key + itemStage);
 
         }
         LambdaQueryWrapper<TotalSalary> totalSalaryWrapper = new LambdaQueryWrapper();
@@ -145,7 +150,7 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
 
         //更新项目基本工资
         LambdaQueryWrapper<ItemSalary> itemSalaryWrap = new LambdaQueryWrapper();
-        itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), ItemSalary::getUid, itemUidItemMemberUidDate)
+        itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDateItemProperties), ItemSalary::getUid, itemUidItemMemberUidDateItemProperties)
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemSalary> itemSalaryWrapList = itemSalaryService.list(itemSalaryWrap);
         Map<String, ItemSalary> itemMemberUidItemSalary = null;

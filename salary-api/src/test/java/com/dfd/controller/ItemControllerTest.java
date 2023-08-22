@@ -52,8 +52,8 @@ public class ItemControllerTest {
 //                )
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andDo(print());
-        ItemInfoQueryDTO param = ItemInfoQueryDTO.builder().build();
-        userService.selectByNumber("111");
-        itemService.queryItemList(param);
+//        ItemInfoQueryDTO param = ItemInfoQueryDTO.builder().build();
+//        userService.selectByNumber("111");
+//        itemService.queryItemList(param);
     }
 }

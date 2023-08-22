@@ -44,9 +44,6 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
     @Autowired
     private TotalSalaryFlushService totalSalaryFlushService;
 
-    @Autowired
-    private TotalSalaryMapper totalSalaryMapper;
-
     @Override
     public PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO) {
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();

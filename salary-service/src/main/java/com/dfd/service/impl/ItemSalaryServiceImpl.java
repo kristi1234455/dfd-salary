@@ -86,6 +86,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
         LambdaQueryWrapper<ItemSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(itemSalaryDTO.getItemUid()), ItemSalary:: getItemUid, itemSalaryDTO.getItemUid())
                 .eq(StringUtils.isNotBlank(itemSalaryDTO.getItemMemberUid()), ItemSalary:: getItemMemberUid, itemSalaryDTO.getItemMemberUid())
+                .eq(StringUtils.isNotBlank(itemSalaryDTO.getItemStage()), ItemSalary:: getItemStage, itemSalaryDTO.getItemStage())
                 .likeRight(itemSalaryDTO.getDeclareTime()!=null, ItemSalary:: getDeclareTime, itemSalaryDTO.getDeclareTime())
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if(baseMapper.exists(queryWrapper)){
@@ -102,7 +103,7 @@ public class ItemSalaryServiceImpl extends ServiceImpl<ItemSalaryMapper, ItemSal
             BigDecimal declareGrant = checkPlanSalary.subtract(checkSalary);
             salary.setDeclareGrant(declareGrant);
         }
-        String uid = itemSalaryDTO.getItemUid() + itemSalaryDTO.getItemMemberUid() + DateUtil.getYM();
+        String uid = itemSalaryDTO.getItemUid() + itemSalaryDTO.getItemMemberUid() + DateUtil.getYM() + itemSalaryDTO.getItemStage();
         salary.setUid(uid)
                 .setCheckPlanSalary(checkPlanSalary.toString())
                 .setCheckSalary(checkSalary.toString())

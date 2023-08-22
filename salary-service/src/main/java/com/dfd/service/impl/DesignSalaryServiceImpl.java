@@ -95,10 +95,10 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         }
         User currentUser = UserRequest.getCurrentUser();
         DesignSalary designSalary = new DesignSalary();
+        BeanUtil.copyProperties(designSalaryDTO,designSalary);
         BigDecimal subTotal = designSalary.getDesignManager().add(designSalary.getDirector())
                 .add(designSalary.getDesign()).add(designSalary.getProofread()).add(designSalary.getAudit()) ;
         subTotal = subTotal != null ? subTotal : new BigDecimal(0);
-        BeanUtil.copyProperties(designSalaryDTO,designSalary);
         String uid = designSalaryDTO.getItemUid() + designSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         designSalary.setUid(uid)
                 .setSubtotal(subTotal)

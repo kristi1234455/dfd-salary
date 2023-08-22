@@ -114,6 +114,7 @@ public class SubsidyHeatingServiceImpl extends ServiceImpl<SubsidyHeatingMapper,
         updateWrapper.eq(StringUtils.isNotBlank(subsidyHeatingDTO.getUid()), SubsidyHeating:: getUid, subsidyHeatingDTO.getUid())
                 .eq(SubsidyHeating::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
                 .set(SubsidyHeating:: getUid, uid)
+                .set((subsidyHeatingDTO.getIsHeatingGrant()!=null), SubsidyHeating:: getIsHeatingGrant, subsidyHeatingDTO.getIsHeatingGrant())
                 .set((subsidyHeatingDTO.getHeatingSubsidyStandard()!=null), SubsidyHeating:: getHeatingSubsidyStandard, subsidyHeatingDTO.getHeatingSubsidyStandard())
                 .set(subsidyHeatingDTO.getHeatingDays()!=null, SubsidyHeating:: getHeatingDays, subsidyHeatingDTO.getHeatingDays())
                 .set(subsidyHeatingDTO.getHeatingSubsidy()!=null, SubsidyHeating:: getHeatingSubsidy, subsidyHeatingDTO.getHeatingSubsidy())
