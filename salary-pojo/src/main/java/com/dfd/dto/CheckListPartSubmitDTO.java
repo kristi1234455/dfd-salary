@@ -53,5 +53,11 @@ public class CheckListPartSubmitDTO implements Serializable {
     @ApiModelProperty(value = "审核意见", name = "taskOpinion")
     private String taskOpinion;
 
+    /**
+     * 审核人级别
+     */
+    @ApiModelProperty(value = "审核人级别", name = "auditorLevel")
+    private String auditorLevel;
+
 
 }

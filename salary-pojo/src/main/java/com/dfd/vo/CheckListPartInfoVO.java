@@ -34,6 +34,12 @@ public class CheckListPartInfoVO implements Serializable {
     private String auditorName;
 
     /**
+     * 审核人工号
+     */
+    @ApiModelProperty(value = "审核人工号", name = "auditorNumber")
+    private String auditorNumber;
+
+    /**
      * 审核时间
      */
     @ApiModelProperty(value = "审核时间", name = "auditTime")

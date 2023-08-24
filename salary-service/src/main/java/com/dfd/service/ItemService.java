@@ -96,6 +96,12 @@ public interface ItemService extends IService<Item> {
     void deleteScientific(ScientificItemDelDTO scientificItemDelDTO);
 
 
+    void saveDesign(DesignItemDTO designItemVO);
+
+    void updateDesign(DesignItemUpdateDTO designItemUpdateDTO);
+
+    void deleteDesign(DesignItemDelDTO designItemDelDTO);
+
     /**
      * 根据itemuid获取项目名字
      * @param uids

@@ -66,7 +66,6 @@ public class AttendanceInfoVO implements Serializable {
     @ApiModelProperty(value = "名字", name = "name")
     private String name;
 
-
     /**
      * 年
      */

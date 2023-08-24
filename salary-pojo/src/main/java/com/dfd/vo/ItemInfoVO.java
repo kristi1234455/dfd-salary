@@ -45,9 +45,9 @@ public class ItemInfoVO implements Serializable {
     private Date itemStartTime;
 
     /**
-     * 项目类别：1：投标项目；2：EPC项目；3：科研项目
+     * 项目类别：1：投标项目；2：EPC项目；3：科研项目；4、设计项目
      */
-    @ApiModelProperty(value = "项目类别：1：投标项目；2：EPC项目；3：科研项目", name = "itemProperties")
+    @ApiModelProperty(value = "项目类别：1：投标项目；2：EPC项目；3：科研项目；4、设计项目", name = "itemProperties")
     private String itemProperties;
 
     /**

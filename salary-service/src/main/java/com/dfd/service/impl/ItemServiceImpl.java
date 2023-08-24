@@ -568,6 +568,95 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
+    public void saveDesign(DesignItemDTO designItemVO) {
+        LambdaQueryWrapper<Item> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(StringUtils.isNotBlank(designItemVO.getItemName()), Item::getItemName, designItemVO.getItemName())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        if (baseMapper.exists(queryWrapper)) {
+            throw new BusinessException("添加失败，该用户设计项目数据已经存在！");
+        }
+        User currentUser = UserRequest.getCurrentUser();
+        String itemUid = UUIDUtil.getUUID32Bits();
+        Item item = new Item();
+        BeanUtil.copyProperties(designItemVO, item);
+        item.setUid(itemUid)
+                .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setCreatedBy(currentUser.getNumber())
+                .setUpdatedBy(currentUser.getNumber())
+                .setCreatedTime(new Date())
+                .setUpdatedTime(new Date())
+                .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+        boolean var = this.saveOrUpdate(item);
+
+        List<ItemMemberDTO> itemMemberDTOS = designItemVO.getItemMemberDTOS();
+        if (CollectionUtil.isNotEmpty(itemMemberDTOS)) {
+            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            List<ItemMember> memberList = new ArrayList<>();
+            memberUids.stream().forEach(e -> {
+                ItemMember itemMember = new ItemMember()
+                        .setItemUid(itemUid)
+                        .setMemberUid(e)
+                        .setUid(UUIDUtil.getUUID32Bits())
+                        .setDeclareTime(new Date())
+                        .setCreatedBy(currentUser.getNumber())
+                        .setUpdatedBy(currentUser.getNumber())
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                memberList.add(itemMember);
+            });
+            boolean var1 = itemMemberService.saveBatch(memberList);
+            if (!var || !var1) {
+                throw new BusinessException("设计项目数据保存失败!");
+            }
+        }
+    }
+
+    @Override
+    public void updateDesign(DesignItemUpdateDTO designItemUpdateDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Item> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(StringUtils.isNotBlank(designItemUpdateDTO.getUid()), Item::getUid, designItemUpdateDTO.getUid())
+                .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO)
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getItemName()), Item::getItemName, designItemUpdateDTO.getItemName())
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getItemProperties()), Item::getItemProperties, designItemUpdateDTO.getItemProperties())
+                .set((designItemUpdateDTO.getDesignManager() != null), Item::getDesignManager, designItemUpdateDTO.getDesignManager())
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getItemLeader()), Item::getItemLeader, designItemUpdateDTO.getItemLeader())
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getSubLeader()), Item::getSubLeader, designItemUpdateDTO.getSubLeader())
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getFunctionalLeader()), Item::getFunctionalLeader, designItemUpdateDTO.getFunctionalLeader())
+                .set(StringUtils.isNotBlank(designItemUpdateDTO.getDepartmenLeader()), Item::getDepartmenLeader, designItemUpdateDTO.getDepartmenLeader())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
+                .set(Item::getUpdatedTime, new Date());
+        boolean var = this.update(updateWrapper);
+        if (!var) {
+            throw new BusinessException("设计项目数据更新失败!");
+        }
+
+        String itemUid = designItemUpdateDTO.getUid();
+        List<ItemMemberDTO> itemMemberDTOS = designItemUpdateDTO.getItemMemberDTOS();
+        if (CollectionUtil.isNotEmpty(itemMemberDTOS)) {
+            List<String> nitemIds = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
+            itemMemberService.updateMembersByItemId(itemUid, nitemIds);
+        }
+    }
+
+    @Override
+    public void deleteDesign(DesignItemDelDTO designItemDelDTO) {
+        User currentUser = UserRequest.getCurrentUser();
+        LambdaUpdateWrapper<Item> updateWrapper = new UpdateWrapper<Item>()
+                .lambda()
+                .eq(StringUtils.isNotBlank(designItemDelDTO.getUid()), Item::getUid, designItemDelDTO.getUid())
+                .set(Item::getIsDeleted, System.currentTimeMillis())
+                .set(Item::getUpdatedBy, currentUser.getNumber())
+                .set(Item::getUpdatedTime, new Date());
+        boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("设计项目删除失败!");
+        }
+    }
+
+    @Override
     public Map<String, String> queryNameByUids(List<String> uids) {
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper();
         wrapper.in(CollectionUtil.isNotEmpty(uids), Item::getUid, uids);
@@ -605,23 +694,31 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         taskSequenceNumber++;
 
         if(currentUri.contains("attendance")){
-            CheckListNormalVO two = new CheckListNormalVO();
+            Set<String> auditorUidSet = new HashSet<>();
             if (StringUtils.isNotEmpty(item.getItemLeader())) {
-                two.setAuditorUid(item.getItemLeader());
+//                two.setAuditorUid(item.getItemLeader());
+                auditorUidSet.add(item.getItemLeader());
             }
             if (StringUtils.isNotEmpty(item.getAgencyLeader())) {
-                two.setAuditorUid(item.getAgencyLeader());
+//                two.setAuditorUid(item.getAgencyLeader());
+                auditorUidSet.add(item.getAgencyLeader());
             }
             if (StringUtils.isNotEmpty(item.getDesignLeader())) {
-                two.setAuditorUid(item.getDesignLeader());
+//                two.setAuditorUid(item.getDesignLeader());
+                auditorUidSet.add(item.getDesignLeader());
             }
             if (StringUtils.isNotEmpty(item.getEngineeringLeader())) {
-                two.setAuditorUid(item.getEngineeringLeader());
+//                two.setAuditorUid(item.getEngineeringLeader());
+                auditorUidSet.add(item.getEngineeringLeader());
             }
-            two.setTaskSequenceNumber(taskSequenceNumber)
-                    .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
-            result.add(two);
-            taskSequenceNumber++;
+            for(String var : auditorUidSet) {
+                CheckListNormalVO two = new CheckListNormalVO();
+                two.setAuditorUid(var)
+                        .setTaskSequenceNumber(taskSequenceNumber)
+                        .setAuditorLevel(RoleEnum.ROLE_SUB_DIRECTOR.getCode());
+                result.add(two);
+                taskSequenceNumber++;
+            }
         }
 
         if (StringUtils.isNotEmpty(item.getSubLeader())) {

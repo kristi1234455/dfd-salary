@@ -3,6 +3,7 @@ package com.dfd.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
+import com.dfd.entity.Member;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.MemberInfoVO;
 

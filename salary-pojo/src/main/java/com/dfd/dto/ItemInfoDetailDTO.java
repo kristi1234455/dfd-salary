@@ -30,9 +30,9 @@ public class ItemInfoDetailDTO implements Serializable {
     private String uid;
 
     /**
-     * 项目属性，1、投标项目；2、EPC项目；3、科研项目
+     * 项目属性，1、投标项目；2、EPC项目；3、科研项目；4、设计项目
      */
-    @ApiModelProperty(value = "项目属性，1、投标项目；2、EPC项目；3、科研项目", name = "itemProperties")
+    @ApiModelProperty(value = "项目属性，1、投标项目；2、EPC项目；3、科研项目；4、设计项目", name = "itemProperties")
     @NotBlank(message = "项目属性不能为空")
     private String itemProperties;
 }

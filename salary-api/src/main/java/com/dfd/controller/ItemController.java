@@ -116,4 +116,25 @@ public class ItemController {
         return DFDResult.sucess();
     }
 
+    @ApiOperation(value = "保存设计项目信息", httpMethod = "POST")
+    @PostMapping("/save/design")
+    public DFDResult saveDesign(@RequestBody @Valid DesignItemDTO designItemVO) {
+        itemService.saveDesign(designItemVO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "更新设计项目信息", httpMethod = "POST")
+    @PostMapping("/update/design")
+    public DFDResult updateDesign(@RequestBody @Valid DesignItemUpdateDTO designItemUpdateDTO) {
+        itemService.updateDesign(designItemUpdateDTO);
+        return DFDResult.sucess();
+    }
+
+    @ApiOperation(value = "删除设计项目信息", httpMethod = "POST")
+    @PostMapping("/delete/design")
+    public DFDResult deleteDesign(@RequestBody @Valid DesignItemDelDTO designItemDelDTO) {
+        itemService.deleteDesign(designItemDelDTO);
+        return DFDResult.sucess();
+    }
+
 }

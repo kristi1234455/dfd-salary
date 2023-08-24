@@ -86,6 +86,9 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
         if (!b) {
             throw new BusinessException("项目中添加人员状态保存失败");
         }
+
+        //将项目人员刷新到其他工资类别中去
+
     }
 
     private List<MemberInfoVO> convertToSalaryInfoVO(String itemUid,List<Member> list) {

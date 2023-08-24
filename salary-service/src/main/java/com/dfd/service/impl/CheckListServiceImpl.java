@@ -137,9 +137,13 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         List<CheckList> checkLists = baseMapper.selectList(queryWrapper);
 
         List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partSubmitDTO.getItemUid(),currentUri);
-        Map<String, String> auditorUidAuditorName = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getAuditorName));
-        Map<String, String> auditorUidLevel = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorUid, CheckListNormalVO::getAuditorLevel));
-        Map<String, String> sequenceAuditorUid = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorLevel, CheckListNormalVO::getAuditorUid));
+        Map<String, String> auditorUidAuditorName = new HashMap<>();
+        for(CheckListNormalVO vo : normalFlow){
+            if(!auditorUidAuditorName.containsKey(vo.getAuditorUid())){
+                auditorUidAuditorName.put(vo.getAuditorUid(),vo.getAuditorName());
+            }
+        }
+//        Map<String, String> sequenceAuditorUid = normalFlow.stream().collect(Collectors.toMap(CheckListNormalVO::getAuditorLevel, CheckListNormalVO::getAuditorUid));
 
         if (checkLists.isEmpty()) {
             CheckList var = new CheckList();
@@ -149,7 +153,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     .setAuditTime(new Date())
                     .setTaskName(itemName)
                     .setTaskSequenceNumber(GlobalConstant.GLOBAL_INT_ONE)
-                    .setAuditorLevel(String.valueOf(auditorUidLevel.get(partSubmitDTO.getAuditorUid())))
+                    .setAuditorLevel(partSubmitDTO.getAuditorLevel())
                     .setCreatedBy(currentUserNumber)
                     .setUpdatedBy(currentUserNumber)
                     .setCreatedTime(new Date())
@@ -161,7 +165,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
             }else{
                 Integer currentSequence = GlobalConstant.GLOBAL_INT_ONE;
                 Integer currentLevel = GlobalConstant.GLOBAL_INT_ONE;
-                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,sequenceAuditorUid,currentSequence,currentLevel);
+                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,normalFlow,currentSequence,currentLevel);
             }
             return;
         }
@@ -193,15 +197,15 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 throw new BusinessException("审核数据保存失败");
             }else{
                 Integer currentSequence = dataMaxCheckList.getTaskSequenceNumber();
-                Integer currentLevel = Integer.parseInt(auditorUidLevel.get(partSubmitDTO.getAuditorUid()));
-                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,sequenceAuditorUid,currentSequence,currentLevel);
+                Integer currentLevel = Integer.parseInt(partSubmitDTO.getAuditorLevel());
+                saveNextLevel(auditorUidAuditorName,partSubmitDTO,itemName, currentUri, currentUserNumber,normalFlow,currentSequence,currentLevel);
             }
         }
     }
 
     private void saveNextLevel(Map<String, String> auditorUidAuditorName,CheckListPartSubmitDTO partSubmitDTO,
                                String itemName, String currentUri,
-                               String currentUserNumber,Map<String, String> sequenceAuditorUid,
+                               String currentUserNumber,List<CheckListNormalVO> normalFlow,
                                Integer currentSequence,Integer currentLevel){
         if(partSubmitDTO.getTaskStatus().equals(TaskEnum.TASK_PASS.getCode()) &&
                 currentLevel.equals(Integer.parseInt(RoleEnum.ROLE_DEPARTMENT.getCode()))){
@@ -215,33 +219,40 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
             }else{
                 nextLevel++;
             }
-
-
-            String nextLevelAuditorUid = sequenceAuditorUid.get(String.valueOf(nextLevel));
-            String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
-            CheckList next = CheckList.builder()
-                    .uid(UUIDUtil.getUUID32Bits())
-                    .itemUid(partSubmitDTO.getItemUid())
-                    .url(currentUri)
-                    .auditorLevel(String.valueOf(nextLevel))
-                    .auditorUid(nextLevelAuditorUid)
-                    .auditorName(nextAuditorName)
-                    .taskName(itemName)
-                    .taskStatus(TaskEnum.TASK_UNDO.getCode())
-                    .taskSequenceNumber(nextSequence)
-                    .createdBy(currentUserNumber)
-                    .createdTime(new Date())
-                    .updatedBy(currentUserNumber)
-                    .updatedTime(new Date())
-                    .isDeleted(GlobalConstant.GLOBAL_STR_ZERO)
-                    .build();
-            boolean nextB = this.save(next);
-            if (!nextB) {
-                throw new BusinessException("下一级别审核人数据保存失败");
+            for(CheckListNormalVO vo : normalFlow){
+                if(Integer.parseInt(vo.getAuditorLevel()) == (nextLevel)){
+                    String nextLevelAuditorUid = vo.getAuditorUid();
+                    String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
+                    CheckList next = CheckList.builder()
+                            .uid(UUIDUtil.getUUID32Bits())
+                            .itemUid(partSubmitDTO.getItemUid())
+                            .url(currentUri)
+                            .auditorLevel(String.valueOf(nextLevel))
+                            .auditorUid(nextLevelAuditorUid)
+                            .auditorName(nextAuditorName)
+                            .taskName(itemName)
+                            .taskStatus(TaskEnum.TASK_UNDO.getCode())
+                            .taskSequenceNumber(nextSequence)
+                            .createdBy(currentUserNumber)
+                            .createdTime(new Date())
+                            .updatedBy(currentUserNumber)
+                            .updatedTime(new Date())
+                            .isDeleted(GlobalConstant.GLOBAL_STR_ZERO)
+                            .build();
+                    boolean nextB = this.save(next);
+                    if (!nextB) {
+                        throw new BusinessException("下一级别审核人数据保存失败");
+                    }
+                }
             }
         }else{
             int nextLevel = Integer.parseInt(RoleEnum.ROLE_ITEM.getCode());
-            String nextLevelAuditorUid = sequenceAuditorUid.get(String.valueOf(nextLevel));
+            String nextLevelAuditorUid = null;
+            for(CheckListNormalVO vo :normalFlow){
+                if(vo.getAuditorLevel().equals(RoleEnum.ROLE_ITEM.getCode())){
+                    nextLevelAuditorUid = vo.getAuditorUid();
+                }
+            }
             String nextAuditorName = auditorUidAuditorName.get(nextLevelAuditorUid);
             CheckList next = CheckList.builder()
                     .uid(UUIDUtil.getUUID32Bits())
@@ -283,11 +294,14 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
         List<CheckList> dataFinishedFlow = baseMapper.selectList(queryWrapper);
 
         List<CheckListNormalVO> normalFlow = itemService.queryCheckListByUid(partInfoDTO.getItemUid(),currentUri);
+        List<String> memUIdList = normalFlow.stream().map(CheckListNormalVO::getAuditorUid).collect(Collectors.toList());
+        Map<String, String> itemMemberNumbers = memberService.queryNumberByUids(memUIdList);
 
         if (dataFinishedFlow.isEmpty()) {
             List<CheckListPartInfoVO> collect = normalFlow.stream().map(e -> new CheckListPartInfoVO()
                             .setAuditorUid(e.getAuditorUid())
                             .setAuditorName(e.getAuditorName())
+                            .setAuditorNumber(itemMemberNumbers.get(e.getAuditorUid()))
                             .setTaskSequenceNumber(e.getTaskSequenceNumber())
                             .setTaskStatus(TaskEnum.TASK_UNDO.getCode())
                             .setAuditorLevel(e.getAuditorLevel()))
@@ -302,6 +316,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 dataFinishedFlow.stream().forEach(e -> {
                     CheckListPartInfoVO var = new CheckListPartInfoVO();
                     BeanUtils.copyProperties(e, var);
+                    var.setAuditorNumber(itemMemberNumbers.get(e.getAuditorUid()));
                     resultFlow.add(var);
                 });
                 int sequence = dataMaxFinishedFlow.getTaskSequenceNumber() + 1;
@@ -309,6 +324,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                     CheckListPartInfoVO var = new CheckListPartInfoVO();
                     BeanUtils.copyProperties(e, var);
                     var.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                            .setAuditorNumber(itemMemberNumbers.get(e.getAuditorUid()))
                             .setTaskSequenceNumber(sequence);
                     resultFlow.add(var);
                     sequence++;
@@ -318,6 +334,7 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                 dataFinishedFlow.stream().forEach(e -> {
                     CheckListPartInfoVO var = new CheckListPartInfoVO();
                     BeanUtils.copyProperties(e, var);
+                    var.setAuditorNumber(itemMemberNumbers.get(e.getAuditorUid()));
                     resultFlow.add(var);
                 });
                 int sequence = dataMaxFinishedFlow.getTaskSequenceNumber() + 1;
@@ -333,11 +350,12 @@ public class CheckListServiceImpl extends ServiceImpl<CheckListMapper, CheckList
                         continue;
                     }
                     if (flag) {
-                        CheckListPartInfoVO var = new CheckListPartInfoVO();
-                        BeanUtils.copyProperties(normalVO, var);
-                        var.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                        CheckListPartInfoVO e = new CheckListPartInfoVO();
+                        BeanUtils.copyProperties(normalVO, e);
+                        e.setTaskStatus(TaskEnum.TASK_UNDO.getCode())
+                                .setAuditorNumber(itemMemberNumbers.get(e.getAuditorUid()))
                                 .setTaskSequenceNumber(sequence);
-                        resultFlow.add(var);
+                        resultFlow.add(e);
                         sequence++;
                     }
                 }
