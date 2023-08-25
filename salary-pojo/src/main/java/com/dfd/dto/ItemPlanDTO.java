@@ -33,7 +33,6 @@ public class ItemPlanDTO implements Serializable {
     @NotBlank(message = "项目人员表uid能为空")
     private String itemMemberUid;
 
-
     /**
      * 设计阶段系数
      */

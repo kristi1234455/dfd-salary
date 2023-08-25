@@ -24,6 +24,9 @@ public class DateUtil {
     public static final String DEFAULT_FORMAT_Hour="yyyy-MM-dd HH";
     public static final String DEFAULT_FORMAT_DATE="yyyy-MM-dd";
     public static final String FORMAT_DATE="yyyyMMdd";
+    public static final String DEFAULT_FORMAT_YEAR="yyyy";
+    public static final String DEFAULT_FORMAT_MON="MM";
+    public static final String DEFAULT_FORMAT_DAY="dd";
     public static final String DEFAULT_FORMAT_MONTH="yyyy-MM";
     public static final String DEFAULT_FORMAT_TIME="HH:mm:ss";
 
@@ -123,6 +126,30 @@ public class DateUtil {
      */
     public static String getYmdHms() {
         DateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_DATETIME);
+        return df.format(new Date());
+    }
+
+    /**
+     * 获取当前时间的年月，yyyy
+     */
+    public static String getY() {
+        DateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_YEAR);
+        return df.format(new Date());
+    }
+
+    /**
+     * 获取当前时间的年月，MM
+     */
+    public static String getM() {
+        DateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_MON);
+        return df.format(new Date());
+    }
+
+    /**
+     * 获取当前时间的年月，MM
+     */
+    public static String getD() {
+        DateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_DAY);
         return df.format(new Date());
     }
 
@@ -433,7 +460,7 @@ public class DateUtil {
         System.out.println(String.format("广告消耗记录%s至%s", beginDate, endDate));
          */
 
-        System.out.println(getYM());
+        System.out.println(getD());
     }
 }
 

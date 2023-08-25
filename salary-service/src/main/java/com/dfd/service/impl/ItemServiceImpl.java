@@ -169,13 +169,14 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 memUIdList.add(item.getBidDirector());
             } else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())) {
                 memUIdList.add(item.getScientificManager());
+            }else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_DESIGN.getCode())) {
+                memUIdList.add(item.getDesignManager());
             }
         }
-        memUIdList.add(item.getDesignManager());
         memUIdList.add(item.getItemManager());
         memUIdList.add(item.getItemLeader());
         memUIdList.add(item.getAgencyLeader());
-        memUIdList.add(item.getDesignManager());
+        memUIdList.add(item.getDesignLeader());
         memUIdList.add(item.getEngineeringLeader());
         memUIdList.add(item.getSubLeader());
         memUIdList.add(item.getFunctionalLeader());
@@ -228,6 +229,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 result.setBidDirector(!memberVOMap.isEmpty() ? memberVOMap.get(item.getBidDirector()) : null);
             } else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())) {
                 result.setScientificManager(!memberVOMap.isEmpty() ? memberVOMap.get(item.getScientificManager()) : null);
+            }else if (itemProperties.equals(ItemPropertiesEnum.ITEM_PRO_DESIGN.getCode())) {
+                result.setDesignManager(!memberVOMap.isEmpty() ? memberVOMap.get(item.getDesignManager()) : null);
             }
         }
         return result;
@@ -244,10 +247,11 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         User currentUser = UserRequest.getCurrentUser();
         Item item = new Item();
         BeanUtil.copyProperties(itemDTO, item);
-        String uuid = UUIDUtil.getUUID32Bits();
-        item.setUid(uuid)
+        String itemUid = UUIDUtil.getUUID32Bits();
+        item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())
                 .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -261,7 +265,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 ItemPlan itemPlan = new ItemPlan();
                 BeanUtils.copyProperties(itemPlanDTO, itemPlan);
                 itemPlan.setUid(UUIDUtil.getUUID32Bits())
-                        .setItemUid(uuid)
+                        .setItemUid(itemUid)
                         .setItemMemberUid(itemPlanDTO.getItemMemberUid())
                         .setUid(UUIDUtil.getUUID32Bits())
                         .setDeclareTime(new Date())
@@ -277,9 +281,23 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             if (!var1 || !var2) {
                 throw new BusinessException("EPC项目数据保存失败");
             }
+            List<ItemMemberDTO> itemMemberDTOS = itemPlanDTOList.stream().map(var -> {
+                ItemMemberDTO result = ItemMemberDTO.builder()
+                        .memberUid(var.getItemMemberUid())
+                        .build();
+                return result;
+            }).collect(Collectors.toList());
+            ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
+                    .itemUid(itemUid)
+                    .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                    .currentUserNumber(currentUser.getNumber())
+                    .itemMemberDTOS(itemMemberDTOS)
+                    .build();
+            itemMemberService.addItemMemberList(itemMemberAddListDTO);
         } else {
             throw new BusinessException("阶段策划系数为空，请添加相关数据");
         }
+
     }
 
     @Override
@@ -306,6 +324,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(Item::getUpdatedBy, currentUser.getNumber())
                 .set(Item::getUpdatedTime, new Date());
         boolean update = this.update(updateWrapper);
+        if (!update) {
+            throw new BusinessException("EPC项目数据更新失败");
+        }
         List<ItemPlanDTO> itemPlanDTOList = itemDTO.getItemPlanDTOList();
         if(CollectionUtil.isNotEmpty(itemPlanDTOList)){
             itemPlanService.updatePlanByItemId(itemDTO.getUid(), itemPlanDTOList);
@@ -392,6 +413,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
                 .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
@@ -401,29 +423,13 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (!var) {
             throw new BusinessException("投标项目数据保存失败");
         }
-
-        List<ItemMemberDTO> itemMemberDTOS = bidVO.getItemMemberDTOS();
-        if (CollectionUtil.isNotEmpty(itemMemberDTOS)) {
-            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
-            List<ItemMember> memberList = new ArrayList<>();
-            memberUids.stream().forEach(e -> {
-                ItemMember itemMember = new ItemMember()
-                        .setItemUid(itemUid)
-                        .setMemberUid(e)
-                        .setUid(UUIDUtil.getUUID32Bits())
-                        .setDeclareTime(new Date())
-                        .setCreatedBy(currentUser.getNumber())
-                        .setUpdatedBy(currentUser.getNumber())
-                        .setCreatedTime(new Date())
-                        .setUpdatedTime(new Date())
-                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-                memberList.add(itemMember);
-            });
-            boolean var1 = itemMemberService.saveBatch(memberList);
-            if (!var || !var1) {
-                throw new BusinessException("投标项目数据保存失败!");
-            }
-        }
+        ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
+                .itemUid(itemUid)
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .currentUserNumber(currentUser.getNumber())
+                .itemMemberDTOS(bidVO.getItemMemberDTOS())
+                .build();
+        itemMemberService.addItemMemberList(itemMemberAddListDTO);
     }
 
 
@@ -489,35 +495,23 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
                 .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
         boolean var = this.saveOrUpdate(item);
-
-        List<ItemMemberDTO> itemMemberDTOS = scientificVO.getItemMemberDTOS();
-        if (CollectionUtil.isNotEmpty(itemMemberDTOS)) {
-            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
-            List<ItemMember> memberList = new ArrayList<>();
-            memberUids.stream().forEach(e -> {
-                ItemMember itemMember = new ItemMember()
-                        .setItemUid(itemUid)
-                        .setMemberUid(e)
-                        .setUid(UUIDUtil.getUUID32Bits())
-                        .setDeclareTime(new Date())
-                        .setCreatedBy(currentUser.getNumber())
-                        .setUpdatedBy(currentUser.getNumber())
-                        .setCreatedTime(new Date())
-                        .setUpdatedTime(new Date())
-                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-                memberList.add(itemMember);
-            });
-            boolean var1 = itemMemberService.saveBatch(memberList);
-            if (!var || !var1) {
-                throw new BusinessException("投标项目数据保存失败!");
-            }
+        if (!var) {
+            throw new BusinessException("科研项目保存失败!");
         }
+        ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
+                .itemUid(itemUid)
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .currentUserNumber(currentUser.getNumber())
+                .itemMemberDTOS(scientificVO.getItemMemberDTOS())
+                .build();
+        itemMemberService.addItemMemberList(itemMemberAddListDTO);
     }
 
 
@@ -580,37 +574,25 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         Item item = new Item();
         BeanUtil.copyProperties(designItemVO, item);
         item.setUid(itemUid)
-                .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
+                .setItemProperties(ItemPropertiesEnum.ITEM_PRO_DESIGN.getCode())
                 .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
                 .setCreatedTime(new Date())
                 .setUpdatedTime(new Date())
                 .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
         boolean var = this.saveOrUpdate(item);
-
-        List<ItemMemberDTO> itemMemberDTOS = designItemVO.getItemMemberDTOS();
-        if (CollectionUtil.isNotEmpty(itemMemberDTOS)) {
-            List<String> memberUids = itemMemberDTOS.stream().map(e -> e.getMemberUid()).collect(Collectors.toList());
-            List<ItemMember> memberList = new ArrayList<>();
-            memberUids.stream().forEach(e -> {
-                ItemMember itemMember = new ItemMember()
-                        .setItemUid(itemUid)
-                        .setMemberUid(e)
-                        .setUid(UUIDUtil.getUUID32Bits())
-                        .setDeclareTime(new Date())
-                        .setCreatedBy(currentUser.getNumber())
-                        .setUpdatedBy(currentUser.getNumber())
-                        .setCreatedTime(new Date())
-                        .setUpdatedTime(new Date())
-                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-                memberList.add(itemMember);
-            });
-            boolean var1 = itemMemberService.saveBatch(memberList);
-            if (!var || !var1) {
-                throw new BusinessException("设计项目数据保存失败!");
-            }
+        if (!var) {
+            throw new BusinessException("设计项目数据保存失败!");
         }
+        ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
+                .itemUid(itemUid)
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .currentUserNumber(currentUser.getNumber())
+                .itemMemberDTOS(designItemVO.getItemMemberDTOS())
+                .build();
+        itemMemberService.addItemMemberList(itemMemberAddListDTO);
     }
 
     @Override

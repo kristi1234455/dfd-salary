@@ -31,7 +31,7 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
     private ItemService itemService;
 
     @Autowired
-    private TotalSalaryFlushService totalSalaryFlushService;
+    private FlushTotalSalaryService flushTotalSalaryService;
 
     @Autowired
     private MemberService memberService;
@@ -80,8 +80,8 @@ public class TotalSalaryRoomServiceImpl extends ServiceImpl<TotalSalaryRoomMappe
 
     @Override
     public PageResult<TotalSalaryRoomInfoVO> infoRoomSalary(TotalSalaryRoomInfoDTO totalSalaryRoomInfoDTO) {
-        totalSalaryFlushService.flushMonthTotalSalaryRoom();
-        totalSalaryFlushService.flushMonthTotalSalaryItem();
+        flushTotalSalaryService.flushMonthTotalSalaryRoom();
+        flushTotalSalaryService.flushMonthTotalSalaryItem();
         LambdaQueryWrapper<TotalSalaryRoom> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryRoomInfoDTO.getRoom()), TotalSalaryRoom:: getRoom, totalSalaryRoomInfoDTO.getRoom())
                 .likeRight(totalSalaryRoomInfoDTO.getDeclareTime() !=null, TotalSalaryRoom:: getDeclareTime, totalSalaryRoomInfoDTO.getDeclareTime())

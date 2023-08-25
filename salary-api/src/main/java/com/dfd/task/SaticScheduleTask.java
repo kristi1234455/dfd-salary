@@ -1,9 +1,6 @@
 package com.dfd.task;
 
-import com.alibaba.fastjson.JSON;
-import com.dfd.constant.LoginConstant;
-import com.dfd.entity.User;
-import com.dfd.service.TotalSalaryFlushService;
+import com.dfd.service.FlushTotalSalaryService;
 import com.dfd.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-
 @Configuration
 @EnableScheduling
 @Slf4j
 public class SaticScheduleTask {
 
     @Autowired
-    private TotalSalaryFlushService totalSalaryFlushService;
+    private FlushTotalSalaryService flushTotalSalaryService;
 
     @Autowired
     private UserService userService;
@@ -35,9 +29,9 @@ public class SaticScheduleTask {
     private void configureTasks() {
         log.info("==============================定时任务开始执行==============================");
         long startTime = System.currentTimeMillis();
-        totalSalaryFlushService.flushMonthTotalSalary("taskFlush");
-        totalSalaryFlushService.flushMonthTotalSalaryItem("taskFlush");
-        totalSalaryFlushService.flushMonthTotalSalaryRoom("taskFlush");
+        flushTotalSalaryService.flushMonthTotalSalary("taskFlush");
+        flushTotalSalaryService.flushMonthTotalSalaryItem("taskFlush");
+        flushTotalSalaryService.flushMonthTotalSalaryRoom("taskFlush");
         long endTime = System.currentTimeMillis();
         long takeTime = endTime - startTime;
         log.info("==============================定时任务执行结束，耗时：{}毫秒==============================", takeTime);

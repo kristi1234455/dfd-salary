@@ -19,10 +19,7 @@ import com.dfd.service.DesignSalaryService;
 import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
-import com.dfd.utils.BusinessException;
-import com.dfd.utils.DateUtil;
-import com.dfd.utils.PageResult;
-import com.dfd.utils.UUIDUtil;
+import com.dfd.utils.*;
 import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import org.apache.commons.lang3.StringUtils;
@@ -96,9 +93,11 @@ public class DesignSalaryServiceImpl extends ServiceImpl<DesignSalaryMapper, Des
         User currentUser = UserRequest.getCurrentUser();
         DesignSalary designSalary = new DesignSalary();
         BeanUtil.copyProperties(designSalaryDTO,designSalary);
-        BigDecimal subTotal = designSalary.getDesignManager().add(designSalary.getDirector())
-                .add(designSalary.getDesign()).add(designSalary.getProofread()).add(designSalary.getAudit()) ;
-        subTotal = subTotal != null ? subTotal : new BigDecimal(0);
+        BigDecimal var1 = DecimalUtils.accumulate(designSalary.getDesignManager(),designSalary.getDirector());
+        BigDecimal var2 = DecimalUtils.accumulate(var1,designSalary.getDesign());
+        BigDecimal var3 = DecimalUtils.accumulate(var2,designSalary.getProofread());
+        BigDecimal var4 = DecimalUtils.accumulate(var3,designSalary.getAudit());
+        BigDecimal subTotal = var4 != null ? var4 : new BigDecimal(0);
         String uid = designSalaryDTO.getItemUid() + designSalaryDTO.getItemMemberUid() + DateUtil.getYM();
         designSalary.setUid(uid)
                 .setSubtotal(subTotal)

@@ -4,7 +4,7 @@ package com.dfd.service;
  * @author yy
  * @date 2023/6/9 17:26
  */
-public interface TotalSalaryFlushService {
+public interface FlushTotalSalaryService {
 
     /**
      * todo:项目一启动，全量刷新

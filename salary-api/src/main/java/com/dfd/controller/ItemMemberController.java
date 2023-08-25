@@ -30,11 +30,4 @@ public class ItemMemberController {
     public DFDResult<PageResult<MemberInfoVO>> infoItem(@RequestBody @Valid ItemMemberQueryDTO itemMemberQueryDTO){
         return DFDResult.sucess(itemMemberService.queryItemMemberList(itemMemberQueryDTO));
     }
-
-    @ApiOperation(value = "当前项目批量新增人员",httpMethod = "POST")
-    @PostMapping("/add/list")
-    public DFDResult addItemList(@RequestBody @Valid ItemMemberAddListDTO itemMemberAddListDTO){
-        itemMemberService.addItemMemberList(itemMemberAddListDTO);
-        return DFDResult.sucess();
-    }
 }

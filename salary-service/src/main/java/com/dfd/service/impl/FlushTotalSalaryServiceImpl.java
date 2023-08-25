@@ -1,26 +1,15 @@
 package com.dfd.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.stream.CollectorUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dfd.constant.GlobalConstant;
 import com.dfd.entity.*;
-import com.dfd.enums.ItemPropertiesEnum;
 import com.dfd.enums.ItemStageEnum;
 import com.dfd.service.*;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.DateUtil;
-import com.dfd.utils.UUIDUtil;
-import com.dfd.vo.TotalSalaryItemInfoVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -31,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
+public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
 
     @Autowired
     private ItemService itemService;
@@ -524,14 +513,17 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         }
 
         if(!CollectionUtils.isEmpty(addTotalSalaryRoom)){
-            List<TotalSalaryRoom> collect = addTotalSalaryRoom.stream().map(itemUid -> {
+            List<TotalSalaryRoom> collect = new ArrayList<>();
+            for(String itemUid : addTotalSalaryRoom) {
                 TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(itemUid, itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentNumber);
+                if(totalSalaryRoom == null) {
+                    continue;
+                }
                 totalSalaryRoom.setCreatedBy(currentNumber)
                         .setCreatedTime(new Date())
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-                return totalSalaryRoom;
-            }).collect(Collectors.toList());
-
+                collect.add(totalSalaryRoom);
+            }
             boolean b = totalSalaryRoomService.saveBatch(collect);
             if (!b) {
                 throw new BusinessException("项目工资添加失败!");
@@ -539,12 +531,15 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
         }
 
         if(!CollectionUtils.isEmpty(updateTotalSalaryRoom)){
-            List<TotalSalaryRoom> collect = updateTotalSalaryRoom.stream().map(oldTotalSalaryRoom -> {
+            List<TotalSalaryRoom> collect = new ArrayList<>();
+            for(TotalSalaryRoom oldTotalSalaryRoom: updateTotalSalaryRoom){
                 TotalSalaryRoom totalSalaryRoom = doTotalSalaryRoom(oldTotalSalaryRoom.getItemUid(), itemUidItem, itemUidTotalSalaryTotalSalaryRoom, currentNumber);
+                if(totalSalaryRoom == null){
+                    continue;
+                }
                 totalSalaryRoom.setId(oldTotalSalaryRoom.getId());
-                return totalSalaryRoom;
-            }).collect(Collectors.toList());
-
+                collect.add(totalSalaryRoom);
+            }
             boolean b = totalSalaryRoomService.updateBatchById(collect);
             if (!b) {
                 throw new BusinessException("项目工资更新失败!");
@@ -555,23 +550,26 @@ public class TotalSalaryFlushServiceImpl implements TotalSalaryFlushService {
     private TotalSalaryRoom doTotalSalaryRoom(String itemUid, Map<String, Item> itemUidItem
             ,Map<String, TotalSalaryRoom> itemUidTotalSalaryTotalSalaryRoom, String currentNumber){
         Item item = itemUidItem.get(itemUid);
-        TotalSalaryRoom totalSalaryTotalSalaryRoom = itemUidTotalSalaryTotalSalaryRoom.get(itemUid);
-        String uid = item.getUid() + DateUtil.getYM();
-        TotalSalaryRoom totalSalaryRoom =TotalSalaryRoom.builder()
-                .uid(uid)
-                .itemUid(itemUid)
-                .room(item.getRoom())
-                .subItemNumber(item.getSubItemNumber())
-                .virtualSubItemNumbe(item.getVirtualSubItemNumber())
-                .itemNumber(item.getItemNumber())
-                .itemName(item.getItemName())
-                .itemStage(String.valueOf(item.getItemStage()))
-                .itemManager(item.getItemManager())
-                .declareTime(totalSalaryTotalSalaryRoom.getDeclareTime())
-                .totalSalary(totalSalaryTotalSalaryRoom.getTotalSalary())
-                .updatedBy(currentNumber)
-                .updatedTime(new Date())
-                .build();
-        return totalSalaryRoom;
+        if(item!=null){
+            TotalSalaryRoom totalSalaryTotalSalaryRoom = itemUidTotalSalaryTotalSalaryRoom.get(itemUid);
+            String uid = item.getUid() + DateUtil.getYM();
+            TotalSalaryRoom totalSalaryRoom =TotalSalaryRoom.builder()
+                    .uid(uid)
+                    .itemUid(itemUid)
+                    .room(item.getRoom())
+                    .subItemNumber(item.getSubItemNumber())
+                    .virtualSubItemNumbe(item.getVirtualSubItemNumber())
+                    .itemNumber(item.getItemNumber())
+                    .itemName(item.getItemName())
+                    .itemStage(String.valueOf(item.getItemStage()))
+                    .itemManager(item.getItemManager())
+                    .declareTime(totalSalaryTotalSalaryRoom.getDeclareTime())
+                    .totalSalary(totalSalaryTotalSalaryRoom.getTotalSalary())
+                    .updatedBy(currentNumber)
+                    .updatedTime(new Date())
+                    .build();
+            return totalSalaryRoom;
+        }
+        return null;
     }
 }

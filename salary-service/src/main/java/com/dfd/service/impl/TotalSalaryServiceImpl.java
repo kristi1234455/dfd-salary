@@ -17,7 +17,6 @@ import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
-import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
     private TotalSalaryItemService totalSalaryItemService;
 
     @Autowired
-    private TotalSalaryFlushService totalSalaryFlushService;
+    private FlushTotalSalaryService flushTotalSalaryService;
 
     @Override
     public PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO) {
@@ -153,7 +152,7 @@ public class TotalSalaryServiceImpl extends ServiceImpl<TotalSalaryMapper, Total
 
     @Override
     public PageResult<TotalSalaryInfoVO> info(TotalSalaryInfoDTO totalSalaryInfoDTO) {
-        totalSalaryFlushService.flushMonthTotalSalary();
+        flushTotalSalaryService.flushMonthTotalSalary();
         LambdaQueryWrapper<TotalSalary> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(totalSalaryInfoDTO.getNumber()), TotalSalary:: getNumber, totalSalaryInfoDTO.getNumber())
                 .like(StringUtils.isNotBlank(totalSalaryInfoDTO.getName()), TotalSalary:: getName, totalSalaryInfoDTO.getName())

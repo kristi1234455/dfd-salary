@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dfd.dto.*;
 import com.dfd.entity.ItemMember;
 import com.dfd.entity.Member;
+import com.dfd.entity.User;
 import com.dfd.utils.PageResult;
 import com.dfd.vo.MemberInfoVO;
 
@@ -22,7 +23,9 @@ public interface ItemMemberService extends IService<ItemMember> {
      */
     PageResult<MemberInfoVO> queryItemMemberList(ItemMemberQueryDTO itemMemberQueryDTO);
 
-
+    /**
+     * 批量新增项目人员
+     */
     void addItemMemberList(ItemMemberAddListDTO itemMemberAddListDTO);
 
     /**

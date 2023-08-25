@@ -29,27 +29,27 @@ public class SpecialSalaryController {
     private TotalSalaryService totalSalaryService;
 
     @ApiOperation(value = "获取专岗津贴工资信息", httpMethod = "POST")
-    @PostMapping("special/info")
+    @PostMapping("/info")
     public DFDResult<PageResult<SpecialInfoVO>> infoSpecial(@RequestBody @Valid SpecialInfoDTO specialInfoDTO){
         return DFDResult.sucess(totalSalaryService.infoSpecial(specialInfoDTO));
     }
 
     @ApiOperation(value = "新增专岗津贴工资信息", httpMethod = "POST")
-    @PostMapping("special/add")
+    @PostMapping("/add")
     public DFDResult addSpecial(@RequestBody @Valid SpecialAddDTO speciaAddlDTO){
         totalSalaryService.addSpecial(speciaAddlDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新专岗津贴工资信息", httpMethod = "POST")
-    @PostMapping("special/update")
+    @PostMapping("/update")
     public DFDResult updateSpecial(@RequestBody @Valid SpecialDTO specialVO){
         totalSalaryService.updateSpecial(specialVO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除专岗津贴工资信息", httpMethod = "POST")
-    @PostMapping("special/del")
+    @PostMapping("/del")
     public DFDResult delSpecial(@RequestBody @Valid SpecialDelDTO specialDelDTO){
         totalSalaryService.delSpecial(specialDelDTO);
         return DFDResult.sucess();
