@@ -44,7 +44,7 @@ public class SubsidyOutServiceImpl extends ServiceImpl<SubsidyOutMapper, Subsidy
     public PageResult<SubsidyOutInfoVO> info(SubsidyOutInfoDTO subsidyOutInfoDTO) {
         LambdaQueryWrapper<SubsidyOut> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOutInfoDTO.getItemUid()), SubsidyOut:: getItemUid, subsidyOutInfoDTO.getItemUid())
-                .eq(subsidyOutInfoDTO.getOutDeclareTime() !=null, SubsidyOut:: getOutDeclareTime, subsidyOutInfoDTO.getOutDeclareTime())
+                .likeRight(subsidyOutInfoDTO.getOutDeclareTime() !=null, SubsidyOut:: getOutDeclareTime, subsidyOutInfoDTO.getOutDeclareTime())
                 .eq(SubsidyOut::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(SubsidyOut :: getCreatedTime);
 

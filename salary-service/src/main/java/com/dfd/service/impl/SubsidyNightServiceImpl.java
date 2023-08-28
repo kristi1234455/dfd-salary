@@ -44,7 +44,7 @@ public class SubsidyNightServiceImpl extends ServiceImpl<SubsidyNightMapper, Sub
     public PageResult<SubsidyNightInfoVO> info(SubsidyNightInfoDTO subsidyNightInfoDTO) {
         LambdaQueryWrapper<SubsidyNight> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyNightInfoDTO.getItemUid()), SubsidyNight:: getItemUid, subsidyNightInfoDTO.getItemUid())
-                .eq(subsidyNightInfoDTO.getNightDeclareTime() !=null, SubsidyNight:: getNightDeclareTime, subsidyNightInfoDTO.getNightDeclareTime())
+                .likeRight(subsidyNightInfoDTO.getNightDeclareTime() !=null, SubsidyNight:: getNightDeclareTime, subsidyNightInfoDTO.getNightDeclareTime())
                 .eq(SubsidyNight::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(SubsidyNight :: getCreatedTime);
 

@@ -43,7 +43,7 @@ public class SubsidyOvertimeServiceImpl extends ServiceImpl<SubsidyOvertimeMappe
     public PageResult<SubsidyOvertimeInfoVO> info(SubsidyOvertimeInfoDTO subsidyOvertimeInfoDTO) {
         LambdaQueryWrapper<SubsidyOvertime> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyOvertimeInfoDTO.getItemUid()), SubsidyOvertime:: getItemUid, subsidyOvertimeInfoDTO.getItemUid())
-                .eq(subsidyOvertimeInfoDTO.getOvertimeDeclareTime() !=null, SubsidyOvertime:: getOvertimeDeclareTime, subsidyOvertimeInfoDTO.getOvertimeDeclareTime())
+                .likeRight(subsidyOvertimeInfoDTO.getOvertimeDeclareTime() !=null, SubsidyOvertime:: getOvertimeDeclareTime, subsidyOvertimeInfoDTO.getOvertimeDeclareTime())
                 .eq(SubsidyOvertime::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(SubsidyOvertime :: getCreatedTime);
 

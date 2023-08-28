@@ -43,7 +43,7 @@ public class SubsidyHeatingServiceImpl extends ServiceImpl<SubsidyHeatingMapper,
     public PageResult<SubsidyHeatingInfoVO> info(SubsidyHeatingInfoDTO subsidyHeatingInfoDTO) {
         LambdaQueryWrapper<SubsidyHeating> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(subsidyHeatingInfoDTO.getItemUid()), SubsidyHeating:: getItemUid, subsidyHeatingInfoDTO.getItemUid())
-                .eq(subsidyHeatingInfoDTO.getHeatingDeclareTime() !=null, SubsidyHeating:: getHeatingDeclareTime, subsidyHeatingInfoDTO.getHeatingDeclareTime())
+                .likeRight(subsidyHeatingInfoDTO.getHeatingDeclareTime() !=null, SubsidyHeating:: getHeatingDeclareTime, subsidyHeatingInfoDTO.getHeatingDeclareTime())
                 .eq(SubsidyHeating::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         queryWrapper.orderByDesc(SubsidyHeating :: getCreatedTime);
 
