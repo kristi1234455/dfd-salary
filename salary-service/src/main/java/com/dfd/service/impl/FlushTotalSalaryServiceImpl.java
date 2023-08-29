@@ -1,5 +1,6 @@
 package com.dfd.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.dfd.constant.GlobalConstant;
@@ -36,6 +37,9 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
 
     @Autowired
     private PerformanceSalaryService performanceSalaryService;
+
+    @Autowired
+    private SpecialSalaryService specialSalaryService;
 
     @Autowired
     private DesignSalaryService designSalaryService;
@@ -157,6 +161,16 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             itemMemberUidPerformanceSalary = performanceSalaryList.stream().collect(Collectors.toMap(PerformanceSalary::getUid, o->o));
         }
 
+        //更新专岗工资
+        LambdaQueryWrapper<SpecialSalary> specialSalaryWrap = new LambdaQueryWrapper();
+        specialSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), SpecialSalary::getUid, itemUidItemMemberUidDate)
+                .eq(SpecialSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SpecialSalary> specialSalaryList = specialSalaryService.list(specialSalaryWrap);
+        Map<String, SpecialSalary> itemMemberUidSpecialSalary = null;
+        if(!CollectionUtils.isEmpty(itemMemberUidSpecialSalary)){
+            itemMemberUidSpecialSalary = specialSalaryList.stream().collect(Collectors.toMap(SpecialSalary::getUid, o->o));
+        }
+
         //更新设计工资
         LambdaQueryWrapper<DesignSalary> designSalaryWrap = new LambdaQueryWrapper();
         designSalaryWrap.in(CollectionUtil.isNotEmpty(itemUidItemMemberUidDate), DesignSalary::getUid, itemUidItemMemberUidDate)
@@ -233,7 +247,12 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                 String itemMemberUid = itemMember.getMemberUid();
                 Member member = memberUidMember.get(itemMemberUid);
                 String uid = item.getUid() + member.getUid() + DateUtil.getYM();
+
                 TotalSalary totalSalary = new TotalSalary();
+                SpecialSalary specialSalary = (itemMemberUidSpecialSalary != null && itemMemberUidSpecialSalary.get(uid) != null) ? itemMemberUidSpecialSalary.get(uid) : null;
+                if(specialSalary !=null){
+                    BeanUtil.copyProperties(specialSalary, totalSalary);
+                }
                 totalSalary.setId(null)
                         .setUid(uid)
                         .setItemUid(item.getUid())

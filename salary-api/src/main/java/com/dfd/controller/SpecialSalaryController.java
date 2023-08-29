@@ -2,9 +2,9 @@ package com.dfd.controller;
 
 import com.dfd.dto.*;
 import com.dfd.service.CheckListService;
+import com.dfd.service.SpecialSalaryService;
 import com.dfd.vo.CheckListPartInfoVO;
 import com.dfd.vo.SpecialInfoVO;
-import com.dfd.service.TotalSalaryService;
 import com.dfd.utils.DFDResult;
 import com.dfd.utils.PageResult;
 import io.swagger.annotations.Api;
@@ -26,32 +26,32 @@ import java.util.List;
 public class SpecialSalaryController {
 
     @Autowired
-    private TotalSalaryService totalSalaryService;
+    private SpecialSalaryService specialSalaryService;
 
     @ApiOperation(value = "获取专岗津贴工资信息", httpMethod = "POST")
     @PostMapping("/info")
     public DFDResult<PageResult<SpecialInfoVO>> infoSpecial(@RequestBody @Valid SpecialInfoDTO specialInfoDTO){
-        return DFDResult.sucess(totalSalaryService.infoSpecial(specialInfoDTO));
+        return DFDResult.sucess(specialSalaryService.infoSpecial(specialInfoDTO));
     }
 
     @ApiOperation(value = "新增专岗津贴工资信息", httpMethod = "POST")
     @PostMapping("/add")
     public DFDResult addSpecial(@RequestBody @Valid SpecialAddDTO speciaAddlDTO){
-        totalSalaryService.addSpecial(speciaAddlDTO);
+        specialSalaryService.addSpecial(speciaAddlDTO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "更新专岗津贴工资信息", httpMethod = "POST")
     @PostMapping("/update")
     public DFDResult updateSpecial(@RequestBody @Valid SpecialDTO specialVO){
-        totalSalaryService.updateSpecial(specialVO);
+        specialSalaryService.updateSpecial(specialVO);
         return DFDResult.sucess();
     }
 
     @ApiOperation(value = "删除专岗津贴工资信息", httpMethod = "POST")
     @PostMapping("/del")
     public DFDResult delSpecial(@RequestBody @Valid SpecialDelDTO specialDelDTO){
-        totalSalaryService.delSpecial(specialDelDTO);
+        specialSalaryService.delSpecial(specialDelDTO);
         return DFDResult.sucess();
     }
 

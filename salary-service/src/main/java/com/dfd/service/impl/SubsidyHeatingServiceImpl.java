@@ -48,7 +48,7 @@ public class SubsidyHeatingServiceImpl extends ServiceImpl<SubsidyHeatingMapper,
         queryWrapper.orderByDesc(SubsidyHeating :: getCreatedTime);
 
         List<SubsidyHeating> olist = baseMapper.selectList(queryWrapper);
-        olist = olist.stream().filter(e -> e.getHeatingDays() != null).collect(Collectors.toList());
+//        olist = olist.stream().filter(e -> e.getHeatingDays() != null).collect(Collectors.toList());
         List<SubsidyHeatingInfoVO> list = convertToHeatingSalaryInfoVO(olist);
         return PageResult.infoPage(olist.size(), subsidyHeatingInfoDTO.getCurrentPage(),subsidyHeatingInfoDTO.getPageSize(),list);
     }

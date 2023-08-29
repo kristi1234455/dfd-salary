@@ -11,6 +11,7 @@ import com.dfd.entity.ItemMember;
 import com.dfd.entity.Member;
 import com.dfd.entity.PerformanceSalary;
 import com.dfd.entity.User;
+import com.dfd.enums.ItemStageEnum;
 import com.dfd.mapper.ItemMemberMapper;
 import com.dfd.service.FlushItemMemberService;
 import com.dfd.service.ItemMemberService;
@@ -114,6 +115,7 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
                 .eq(ItemMember::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemMember> oMembers = list(itemMemberWrapper);
 
+        //批量删除原来项目人员
         oMembers.stream().forEach(e ->{
             e.setRemarks(String.valueOf(new Date()))
                     .setIsDeleted(String.valueOf(System.currentTimeMillis()))
@@ -147,5 +149,19 @@ public class ItemMemberServiceImpl extends ServiceImpl<ItemMemberMapper, ItemMem
         if ( !update) {
             throw new BusinessException("根据项目id更新项目人员数据失败!");
         }
+
+        List<ItemMemberDTO> itemMemberDTOS = upItemMembers.stream().map(e->{
+            ItemMemberDTO itemMemberDTO = ItemMemberDTO.builder()
+                    .memberUid(e.getMemberUid())
+                    .build();
+             return itemMemberDTO;
+        }).collect(Collectors.toList());
+        ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
+                .itemUid(itemUid)
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
+                .currentUserNumber(currentUser.getNumber())
+                .itemMemberDTOS(itemMemberDTOS)
+                .build();
+        flushItemMemberService.flushToSalaryCategory(itemMemberAddListDTO);
     }
 }

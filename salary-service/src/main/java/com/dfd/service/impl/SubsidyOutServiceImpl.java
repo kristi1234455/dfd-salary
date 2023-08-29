@@ -49,7 +49,7 @@ public class SubsidyOutServiceImpl extends ServiceImpl<SubsidyOutMapper, Subsidy
         queryWrapper.orderByDesc(SubsidyOut :: getCreatedTime);
 
         List<SubsidyOut> olist = baseMapper.selectList(queryWrapper);
-        olist = olist.stream().filter(e -> e.getOutDays() != null).collect(Collectors.toList());
+//        olist = olist.stream().filter(e -> e.getOutDays() != null).collect(Collectors.toList());
         List<SubsidyOutInfoVO> list = convertToOutSalaryInfoVO(olist);
         return PageResult.infoPage(olist.size(), subsidyOutInfoDTO.getCurrentPage(),subsidyOutInfoDTO.getPageSize(),list);
     }

@@ -2,15 +2,11 @@ package com.dfd.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.io.unit.DataUnit;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dfd.constant.GlobalConstant;
-import com.dfd.dto.MemberInfoVO;
 import com.dfd.enums.ItemPropertiesEnum;
 import com.dfd.dto.*;
 import com.dfd.entity.*;
@@ -25,7 +21,6 @@ import com.dfd.service.ItemService;
 import com.dfd.service.MemberService;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
-import com.dfd.utils.DateUtil;
 import com.dfd.utils.PageResult;
 import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.*;
@@ -250,7 +245,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = UUIDUtil.getUUID32Bits();
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_EPC.getCode())
-                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
@@ -289,7 +284,6 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             }).collect(Collectors.toList());
             ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
                     .itemUid(itemUid)
-                    .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
                     .currentUserNumber(currentUser.getNumber())
                     .itemMemberDTOS(itemMemberDTOS)
                     .build();
@@ -412,7 +406,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         String itemUid = UUIDUtil.getUUID32Bits();
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_BID.getCode())
-                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
@@ -425,7 +419,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         }
         ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
                 .itemUid(itemUid)
-                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .currentUserNumber(currentUser.getNumber())
                 .itemMemberDTOS(bidVO.getItemMemberDTOS())
                 .build();
@@ -494,7 +488,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         BeanUtil.copyProperties(scientificVO, item);
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_SCIEN.getCode())
-                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
@@ -507,7 +501,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         }
         ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
                 .itemUid(itemUid)
-                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .currentUserNumber(currentUser.getNumber())
                 .itemMemberDTOS(scientificVO.getItemMemberDTOS())
                 .build();
@@ -575,7 +569,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         BeanUtil.copyProperties(designItemVO, item);
         item.setUid(itemUid)
                 .setItemProperties(ItemPropertiesEnum.ITEM_PRO_DESIGN.getCode())
-                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .setItemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .setItemStartTime(new Date())
                 .setCreatedBy(currentUser.getNumber())
                 .setUpdatedBy(currentUser.getNumber())
@@ -588,7 +582,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         }
         ItemMemberAddListDTO itemMemberAddListDTO = ItemMemberAddListDTO.builder()
                 .itemUid(itemUid)
-                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_DESIGN.getCode()))
+                .itemStage(Integer.parseInt(ItemStageEnum.STAGE_EARLIER.getCode()))
                 .currentUserNumber(currentUser.getNumber())
                 .itemMemberDTOS(designItemVO.getItemMemberDTOS())
                 .build();

@@ -14,13 +14,6 @@ import java.util.List;
  */
 public interface TotalSalaryService extends IService<TotalSalary> {
 
-    PageResult<SpecialInfoVO> infoSpecial(SpecialInfoDTO specialInfoDTO);
-
-    void addSpecial(SpecialAddDTO speciaAddlDTO);
-
-    void updateSpecial(SpecialDTO specialVO);
-
-    void delSpecial(SpecialDelDTO specialDelDTO);
 
     /**
      * 获取工资汇总相关数据

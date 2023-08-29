@@ -49,7 +49,7 @@ public class SubsidyNightServiceImpl extends ServiceImpl<SubsidyNightMapper, Sub
         queryWrapper.orderByDesc(SubsidyNight :: getCreatedTime);
 
         List<SubsidyNight> olist = baseMapper.selectList(queryWrapper);
-        olist = olist.stream().filter(e -> e.getNightDays() != null).collect(Collectors.toList());
+//        olist = olist.stream().filter(e -> e.getNightDays() != null).collect(Collectors.toList());
         List<SubsidyNightInfoVO> list = convertToNightSalaryInfoVO(olist);
         return PageResult.infoPage(olist.size(), subsidyNightInfoDTO.getCurrentPage(),subsidyNightInfoDTO.getPageSize(),list);
     }

@@ -36,6 +36,9 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
     private PerformanceSalaryService performanceSalaryService;
 
     @Autowired
+    private SpecialSalaryService specialSalaryService;
+
+    @Autowired
     private DesignSalaryService designSalaryService;
 
     @Autowired
@@ -61,7 +64,7 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
         String itemUid = itemMemberAddListDTO.getItemUid();
         List<ItemMemberDTO> itemMemberDTOS = itemMemberAddListDTO.getItemMemberDTOS();
         String currentUserNumber = itemMemberAddListDTO.getCurrentUserNumber();
-        String itemStage = String.valueOf(itemMemberAddListDTO.getItemStage());
+
         //刷新到考勤
         LambdaQueryWrapper<Attendance> attendanceLambdaQueryWrapper = new LambdaQueryWrapper();
         attendanceLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemUid), Attendance:: getItemUid, itemUid)
@@ -87,39 +90,48 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 attdancesResult.add(var);
             }
         });
-        boolean attendanceBoolean = attendanceService.saveBatch(attdancesResult);
-        if (!attendanceBoolean) {
-            throw new BusinessException("项目人员添加到考勤保存失败");
+        if(CollectionUtil.isNotEmpty(attdancesResult)){
+            boolean attendanceBoolean = attendanceService.saveBatch(attdancesResult);
+            if (!attendanceBoolean) {
+                throw new BusinessException("项目人员添加到考勤保存失败");
+            }
         }
 
-        //刷新到项目工资
+
+        //刷新到项目工资:前期和后期
+        List<ItemSalary> itemSalaryResult = new ArrayList<>();
         LambdaQueryWrapper<ItemSalary> itemSalaryLambdaQueryWrapper = new LambdaQueryWrapper();
         itemSalaryLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemUid), ItemSalary:: getItemUid, itemUid)
                 .eq(ItemSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         List<ItemSalary> itemSalaries = itemSalaryService.list(itemSalaryLambdaQueryWrapper);
         List<String> itemSalaryMembers = itemSalaries.stream().map(ItemSalary::getItemMemberUid).collect(Collectors.toList());
-        List<ItemSalary> itemSalaryResult = new ArrayList<>();
-        itemMemberDTOS.stream().forEach(itemMemberDTO ->{
-            String memberUid = itemMemberDTO.getMemberUid();
-            if(!itemSalaryMembers.contains(memberUid)){
-                ItemSalary var = new ItemSalary();
-                String uid = itemUid + memberUid + DateUtil.getYM();
-                var.setUid(uid)
-                        .setItemUid(itemUid)
-                        .setItemMemberUid(memberUid)
-                        .setItemStage(itemStage)
-                        .setDeclareTime(DateUtil.getYM())
-                        .setCreatedBy(currentUserNumber)
-                        .setUpdatedBy(currentUserNumber)
-                        .setCreatedTime(new Date())
-                        .setUpdatedTime(new Date())
-                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
-                itemSalaryResult.add(var);
+
+        for(ItemStageEnum value : ItemStageEnum.values()){
+            String itemStage = value.getCode();
+            itemMemberDTOS.stream().forEach(itemMemberDTO ->{
+                String memberUid = itemMemberDTO.getMemberUid();
+                if(!itemSalaryMembers.contains(memberUid)){
+                    ItemSalary var = new ItemSalary();
+                    String uid = itemUid + memberUid + DateUtil.getYM() + itemStage;
+                    var.setUid(uid)
+                            .setItemUid(itemUid)
+                            .setItemMemberUid(memberUid)
+                            .setItemStage(itemStage)
+                            .setDeclareTime(DateUtil.getYM())
+                            .setCreatedBy(currentUserNumber)
+                            .setUpdatedBy(currentUserNumber)
+                            .setCreatedTime(new Date())
+                            .setUpdatedTime(new Date())
+                            .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                    itemSalaryResult.add(var);
+                }
+            });
+        }
+        if(CollectionUtil.isNotEmpty(itemSalaryResult)){
+            boolean itemSalaryBoolean = itemSalaryService.saveBatch(itemSalaryResult);
+            if (!itemSalaryBoolean) {
+                throw new BusinessException("项目人员添加到项目工资保存失败");
             }
-        });
-        boolean itemSalaryBoolean = itemSalaryService.saveBatch(itemSalaryResult);
-        if (!itemSalaryBoolean) {
-            throw new BusinessException("项目人员添加到考勤保存失败");
         }
 
         //刷新到投标工资
@@ -146,10 +158,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 bidSalaryResult.add(var);
             }
         });
-        boolean bidSalaryBoolean = bidSalaryService.saveBatch(bidSalaryResult);
-        if (!bidSalaryBoolean) {
-            throw new BusinessException("项目人员添加到投标保存失败");
+        if(CollectionUtil.isNotEmpty(bidSalaryResult)){
+            boolean bidSalaryBoolean = bidSalaryService.saveBatch(bidSalaryResult);
+            if (!bidSalaryBoolean) {
+                throw new BusinessException("项目人员添加到投标保存失败");
+            }
         }
+
 
         //刷新到设计工资
         LambdaQueryWrapper<DesignSalary> designSalaryLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -175,10 +190,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 designSalaryResult.add(var);
             }
         });
-        boolean designSalaryBoolean = designSalaryService.saveBatch(designSalaryResult);
-        if (!designSalaryBoolean) {
-            throw new BusinessException("项目人员添加到设计保存失败");
+        if(CollectionUtil.isNotEmpty(designSalaryResult)){
+            boolean designSalaryBoolean = designSalaryService.saveBatch(designSalaryResult);
+            if (!designSalaryBoolean) {
+                throw new BusinessException("项目人员添加到设计保存失败");
+            }
         }
+
 
         //刷新到绩效工资
         LambdaQueryWrapper<PerformanceSalary> performanceSalaryLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -204,9 +222,43 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 performanceSalaryResult.add(var);
             }
         });
-        boolean performanceSalaryBoolean = performanceSalaryService.saveBatch(performanceSalaryResult);
-        if (!performanceSalaryBoolean) {
-            throw new BusinessException("项目人员添加到绩效保存失败");
+        if(CollectionUtil.isNotEmpty(performanceSalaryResult)){
+            boolean performanceSalaryBoolean = performanceSalaryService.saveBatch(performanceSalaryResult);
+            if (!performanceSalaryBoolean) {
+                throw new BusinessException("项目人员添加到绩效保存失败");
+            }
+        }
+
+
+        //刷新到专岗工资
+        LambdaQueryWrapper<SpecialSalary> specialSalaryLambdaQueryWrapper = new LambdaQueryWrapper();
+        specialSalaryLambdaQueryWrapper.eq(StringUtils.isNotBlank(itemUid), SpecialSalary:: getItemUid, itemUid)
+                .eq(SpecialSalary::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
+        List<SpecialSalary> specialSalaries = specialSalaryService.list(specialSalaryLambdaQueryWrapper);
+        List<String> specialSalaryMembers = specialSalaries.stream().map(SpecialSalary::getItemMemberUid).collect(Collectors.toList());
+        List<SpecialSalary> specialSalaryResult = new ArrayList<>();
+        itemMemberDTOS.stream().forEach(itemMemberDTO ->{
+            String memberUid = itemMemberDTO.getMemberUid();
+            if(!specialSalaryMembers.contains(memberUid)){
+                SpecialSalary var = new SpecialSalary();
+                String uid = itemUid + memberUid + DateUtil.getYM();
+                var.setUid(uid)
+                        .setItemUid(itemUid)
+                        .setItemMemberUid(memberUid)
+                        .setSpecialDeclareTime(DateUtil.getYM())
+                        .setCreatedBy(currentUserNumber)
+                        .setUpdatedBy(currentUserNumber)
+                        .setCreatedTime(new Date())
+                        .setUpdatedTime(new Date())
+                        .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                specialSalaryResult.add(var);
+            }
+        });
+        if(CollectionUtil.isNotEmpty(specialSalaryResult)){
+            boolean specialSalaryBoolean = specialSalaryService.saveBatch(specialSalaryResult);
+            if (!specialSalaryBoolean) {
+                throw new BusinessException("项目人员添加到专岗工资保存失败");
+            }
         }
 
         //刷新到科研工资
@@ -233,10 +285,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 scientificSalaryResult.add(var);
             }
         });
-        boolean scientificSalaryBoolean = scientificSalaryService.saveBatch(scientificSalaryResult);
-        if (!scientificSalaryBoolean) {
-            throw new BusinessException("项目人员添加到科研保存失败");
+        if(CollectionUtil.isNotEmpty(scientificSalaryResult)){
+            boolean scientificSalaryBoolean = scientificSalaryService.saveBatch(scientificSalaryResult);
+            if (!scientificSalaryBoolean) {
+                throw new BusinessException("项目人员添加到科研保存失败");
+            }
         }
+
 
         //刷新到高温工资
         LambdaQueryWrapper<SubsidyHeating> subsidyHeatingLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -262,10 +317,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 subsidyHeatingResult.add(var);
             }
         });
-        boolean subsidyHeatingBoolean = subsidyHeatingService.saveBatch(subsidyHeatingResult);
-        if (!subsidyHeatingBoolean) {
-            throw new BusinessException("项目人员添加到高温保存失败");
+        if(CollectionUtil.isNotEmpty(subsidyHeatingResult)){
+            boolean subsidyHeatingBoolean = subsidyHeatingService.saveBatch(subsidyHeatingResult);
+            if (!subsidyHeatingBoolean) {
+                throw new BusinessException("项目人员添加到高温保存失败");
+            }
         }
+
 
         //刷新到夜班工资
         LambdaQueryWrapper<SubsidyNight> subsidyNightLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -291,10 +349,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 subsidyNightResult.add(var);
             }
         });
-        boolean subsidyNightBoolean = subsidyNightService.saveBatch(subsidyNightResult);
-        if (!subsidyNightBoolean) {
-            throw new BusinessException("项目人员添加到夜班保存失败");
+        if(CollectionUtil.isNotEmpty(subsidyNightResult)){
+            boolean subsidyNightBoolean = subsidyNightService.saveBatch(subsidyNightResult);
+            if (!subsidyNightBoolean) {
+                throw new BusinessException("项目人员添加到夜班保存失败");
+            }
         }
+
 
         //刷新到驻外工资
         LambdaQueryWrapper<SubsidyOut> subsidyOutLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -320,10 +381,13 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 subsidyOutResult.add(var);
             }
         });
-        boolean subsidyOutBoolean = subsidyOutService.saveBatch(subsidyOutResult);
-        if (!subsidyOutBoolean) {
-            throw new BusinessException("项目人员添加到驻外保存失败");
+        if(CollectionUtil.isNotEmpty(subsidyOutResult)){
+            boolean subsidyOutBoolean = subsidyOutService.saveBatch(subsidyOutResult);
+            if (!subsidyOutBoolean) {
+                throw new BusinessException("项目人员添加到驻外保存失败");
+            }
         }
+
 
         //刷新到加班工资
         LambdaQueryWrapper<SubsidyOvertime> subsidyOvertimeLambdaQueryWrapper = new LambdaQueryWrapper();
@@ -349,13 +413,11 @@ public class FlushItemMemberServiceImpl implements FlushItemMemberService {
                 subsidyOvertimeResult.add(var);
             }
         });
-        boolean subsidyOvertimeBoolean = subsidyOvertimeService.saveBatch(subsidyOvertimeResult);
-        if (!subsidyOvertimeBoolean) {
-            throw new BusinessException("项目人员添加到加班保存失败");
+        if(CollectionUtil.isNotEmpty(subsidyOvertimeResult)){
+            boolean subsidyOvertimeBoolean = subsidyOvertimeService.saveBatch(subsidyOvertimeResult);
+            if (!subsidyOvertimeBoolean) {
+                throw new BusinessException("项目人员添加到加班保存失败");
+            }
         }
-
-        //todo:专岗津贴添加
-
-
     }
 }

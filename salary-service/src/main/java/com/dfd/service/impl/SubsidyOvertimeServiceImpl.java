@@ -48,7 +48,7 @@ public class SubsidyOvertimeServiceImpl extends ServiceImpl<SubsidyOvertimeMappe
         queryWrapper.orderByDesc(SubsidyOvertime :: getCreatedTime);
 
         List<SubsidyOvertime> olist = baseMapper.selectList(queryWrapper);
-        olist = olist.stream().filter(e -> e.getOvertimeDays() != null).collect(Collectors.toList());
+//        olist = olist.stream().filter(e -> e.getOvertimeDays() != null).collect(Collectors.toList());
         List<SubsidyOvertimeInfoVO> list = convertToOverTimeSalaryInfoVO(olist);
         return PageResult.infoPage(olist.size(), subsidyOvertimeInfoDTO.getCurrentPage(),subsidyOvertimeInfoDTO.getPageSize(),list);
     }
