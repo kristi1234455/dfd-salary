@@ -1,14 +1,19 @@
-package com.dfd.utils;
+package com.dfd.service.util;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import com.dfd.dto.MemberExcelImportDTO;
+import com.dfd.entity.Member;
+import com.dfd.service.listener.MemberReadListener;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -18,8 +23,8 @@ import java.util.stream.Collectors;
 
 /**
  * @description:excel工具类
- * @author:yupanli
- * @date:2022-12-20 11:51:34
+ * @author:yy
+ * @date 2023/6/12 10:28
  */
 @Slf4j
 public class ExcelUtils {
@@ -92,5 +97,41 @@ public class ExcelUtils {
             }
         }
         return fileName;
+    }
+
+    public static void importExcel(String fileUrl) throws FileNotFoundException {
+        //1. 读取文件的流
+        File file = new File(fileUrl);
+        InputStream is = new FileInputStream(file);
+
+        //2. 创建一个读取监听器
+        MemberReadListener listener = new MemberReadListener();
+
+        //3. 导入的参数配置
+        EasyExcel.read(is, MemberExcelImportDTO.class,listener)
+                .excelType(ExcelTypeEnum.CSV)
+                .sheet(0)			//读第几个工作表，从0开始
+//                .headRowNumber(1)	//列头占几行
+                .doRead();
+        log.info("ceshi");
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        String filename = "C:\\Users\\44303\\Desktop\\工资申报\\副本装配部员工信息统计2023.8.28.xlsx";
+//        ExcelUtils.importExcel(filename);
+        // 读取excel
+        EasyExcel.read(filename, MemberExcelImportDTO.class, new AnalysisEventListener<MemberExcelImportDTO>() {
+            // 每解析一行数据,该方法会被调用一次
+            @Override
+            public void invoke(MemberExcelImportDTO demoData, AnalysisContext analysisContext) {
+                System.out.println("解析数据为:" + demoData.toString());
+            }
+            // 全部解析完成被调用
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                System.out.println("解析完成...");
+                // 可以将解析的数据保存到数据库
+            }
+        }).sheet().doRead();
     }
 }

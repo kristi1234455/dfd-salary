@@ -279,9 +279,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
                 addCollect.add(totalSalary);
             }
-            boolean b = totalSalaryService.saveBatch(addCollect);
-            if (!b) {
-                throw new BusinessException("工资汇总添加失败!");
+            if(CollectionUtil.isNotEmpty(addCollect)){
+                boolean b = totalSalaryService.saveBatch(addCollect);
+                if (!b) {
+                    throw new BusinessException("工资汇总添加失败!");
+                }
             }
         }
         if(!CollectionUtils.isEmpty(updateItemMember)){
@@ -309,9 +311,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                         .setUpdatedTime(new Date());
                 updateCollect.add(oldTotalSalary);
             }
-            boolean b = totalSalaryService.updateBatchById(updateCollect);
-            if (!b) {
-                throw new BusinessException("项目人员信息更新失败!");
+            if(CollectionUtil.isNotEmpty(updateCollect)){
+                boolean b = totalSalaryService.updateBatchById(updateCollect);
+                if (!b) {
+                    throw new BusinessException("项目人员信息更新失败!");
+                }
             }
         }
     }
@@ -386,8 +390,6 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             return;
         }
 
-
-
         LambdaQueryWrapper<ItemSalary> itemSalaryWrap = new LambdaQueryWrapper();
         itemSalaryWrap.in(CollectionUtil.isNotEmpty(itemMemberUids), ItemSalary::getItemMemberUid, itemMemberUids)
                 .likeRight( ItemSalary:: getDeclareTime, DateUtil.getYM())
@@ -406,9 +408,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                         .setCreatedTime(new Date());
                 collect.add(totalSalaryItem);
             }
-            boolean b = totalSalaryItemService.saveBatch(collect);
-            if (!b) {
-                throw new BusinessException("项目汇总工资添加失败!");
+            if(CollectionUtil.isNotEmpty(collect)){
+                boolean b = totalSalaryItemService.saveBatch(collect);
+                if (!b) {
+                    throw new BusinessException("项目汇总工资添加失败!");
+                }
             }
         }
 
@@ -420,9 +424,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                 totalSalaryItem.setId(var.getId());
                 collect.add(totalSalaryItem);
             }
-            boolean b = totalSalaryItemService.updateBatchById(collect);
-            if (!b) {
-                throw new BusinessException("项目汇总工资更新失败!");
+            if(CollectionUtil.isNotEmpty(collect)){
+                boolean b = totalSalaryItemService.updateBatchById(collect);
+                if (!b) {
+                    throw new BusinessException("项目汇总工资更新失败!");
+                }
             }
         }
     }
@@ -543,9 +549,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                         .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
                 collect.add(totalSalaryRoom);
             }
-            boolean b = totalSalaryRoomService.saveBatch(collect);
-            if (!b) {
-                throw new BusinessException("项目工资添加失败!");
+            if(CollectionUtil.isNotEmpty(collect)){
+                boolean b = totalSalaryRoomService.saveBatch(collect);
+                if (!b) {
+                    throw new BusinessException("项目工资添加失败!");
+                }
             }
         }
 
@@ -559,9 +567,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                 totalSalaryRoom.setId(oldTotalSalaryRoom.getId());
                 collect.add(totalSalaryRoom);
             }
-            boolean b = totalSalaryRoomService.updateBatchById(collect);
-            if (!b) {
-                throw new BusinessException("项目工资更新失败!");
+            if(CollectionUtil.isNotEmpty(collect)){
+                boolean b = totalSalaryRoomService.updateBatchById(collect);
+                if (!b) {
+                    throw new BusinessException("项目工资更新失败!");
+                }
             }
         }
     }
