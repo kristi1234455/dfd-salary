@@ -1,5 +1,6 @@
 package com.dfd.controller;
 
+import com.alibaba.excel.event.AbstractIgnoreExceptionReadListener;
 import com.dfd.dto.*;
 import com.dfd.entity.Member;
 import com.dfd.service.MemberService;
@@ -46,6 +47,12 @@ public class MemberController {
     @PostMapping("/delete")
     public DFDResult delete(@RequestBody @Valid MemberDelDTO memberDelDTO){
         memberService.delete(memberDelDTO);
+        return DFDResult.sucess();
+    }
+
+    @PostMapping("/import/excel")
+    public DFDResult excel(String fileName){
+        memberService.importExcel(fileName);
         return DFDResult.sucess();
     }
 }

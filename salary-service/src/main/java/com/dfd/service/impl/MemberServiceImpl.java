@@ -14,6 +14,7 @@ import com.dfd.entity.*;
 import com.dfd.mapper.MemberMapper;
 import com.dfd.service.ItemMemberService;
 import com.dfd.service.MemberService;
+import com.dfd.service.util.ExcelUtils;
 import com.dfd.service.util.UserRequest;
 import com.dfd.utils.BusinessException;
 import com.dfd.utils.PageResult;
@@ -21,6 +22,7 @@ import com.dfd.utils.UUIDUtil;
 import com.dfd.vo.BidSalaryInfoVO;
 import com.dfd.vo.DesignSalaryInfoVO;
 import com.dfd.vo.MemberVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,12 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
 
     @Override
@@ -174,5 +178,22 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         }).collect(Collectors.toList());
         Map<String, MemberVO> result = collect.stream().collect(Collectors.toMap(MemberVO::getUid, MemberVO->MemberVO));
         return result;
+    }
+
+    @Override
+    public void importExcel(String fileName) {
+        List<Member> members = null;
+        try {
+            members = ExcelUtils.importExcel(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(CollectionUtil.isNotEmpty(members)){
+            boolean b = saveBatch(members);
+            if(!b){
+                throw new BusinessException("通过表格导入人员数据错误");
+            }
+            log.info("通过表格导入人员数据成功！");
+        }
     }
 }

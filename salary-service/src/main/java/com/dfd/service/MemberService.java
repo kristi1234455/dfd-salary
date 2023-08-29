@@ -33,4 +33,5 @@ public interface MemberService extends IService<Member> {
 
     Map<String, MemberVO> queryMemberByNumber(List<String> uids);
 
+    void importExcel(String fileName);
 }

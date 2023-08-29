@@ -1,5 +1,6 @@
 package com.dfd.service.util;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
@@ -11,12 +12,16 @@ import com.dfd.entity.Member;
 import com.dfd.service.listener.MemberReadListener;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -99,31 +104,14 @@ public class ExcelUtils {
         return fileName;
     }
 
-    public static void importExcel(String fileUrl) throws FileNotFoundException {
-        //1. 读取文件的流
-        File file = new File(fileUrl);
-        InputStream is = new FileInputStream(file);
-
-        //2. 创建一个读取监听器
-        MemberReadListener listener = new MemberReadListener();
-
-        //3. 导入的参数配置
-        EasyExcel.read(is, MemberExcelImportDTO.class,listener)
-                .excelType(ExcelTypeEnum.CSV)
-                .sheet(0)			//读第几个工作表，从0开始
-//                .headRowNumber(1)	//列头占几行
-                .doRead();
-        log.info("ceshi");
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        String filename = "C:\\Users\\44303\\Desktop\\工资申报\\副本装配部员工信息统计2023.8.28.xlsx";
-//        ExcelUtils.importExcel(filename);
+    public static List<Member> importExcel(String filename) throws FileNotFoundException {
+        List<MemberExcelImportDTO> memberDTOS = new ArrayList<MemberExcelImportDTO>();
         // 读取excel
         EasyExcel.read(filename, MemberExcelImportDTO.class, new AnalysisEventListener<MemberExcelImportDTO>() {
             // 每解析一行数据,该方法会被调用一次
             @Override
             public void invoke(MemberExcelImportDTO demoData, AnalysisContext analysisContext) {
+                memberDTOS.add(demoData);
                 System.out.println("解析数据为:" + demoData.toString());
             }
             // 全部解析完成被调用
@@ -133,5 +121,44 @@ public class ExcelUtils {
                 // 可以将解析的数据保存到数据库
             }
         }).sheet().doRead();
+        List<Member> members = new ArrayList<Member>();
+        if(CollectionUtil.isNotEmpty(memberDTOS)){
+            members = memberDTOS.stream().map(e->{
+                Member member = new Member();
+                BeanUtils.copyProperties(e,member);
+                return member;
+            }).collect(Collectors.toList());
+        }
+        return members;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        String filename = "C:\\Users\\kristi\\Desktop\\1---工资申报-2023-03-27\\副本装配部员工信息统计2023.8.28.xls";
+//        ExcelUtils.importExcel(filename);
+        List<MemberExcelImportDTO> memberDTOS = new ArrayList<MemberExcelImportDTO>();
+        // 读取excel
+        EasyExcel.read(filename, MemberExcelImportDTO.class, new AnalysisEventListener<MemberExcelImportDTO>() {
+            // 每解析一行数据,该方法会被调用一次
+            @Override
+            public void invoke(MemberExcelImportDTO demoData, AnalysisContext analysisContext) {
+                memberDTOS.add(demoData);
+                System.out.println("解析数据为:" + demoData.toString());
+            }
+            // 全部解析完成被调用
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                System.out.println("解析完成...");
+                // 可以将解析的数据保存到数据库
+            }
+        }).sheet().doRead();
+        if(CollectionUtil.isNotEmpty(memberDTOS)){
+            List<Member> members = new ArrayList<Member>();
+            members = memberDTOS.stream().map(e->{
+                Member member = new Member();
+                BeanUtils.copyProperties(e,member);
+                return member;
+            }).collect(Collectors.toList());
+
+        }
     }
 }
