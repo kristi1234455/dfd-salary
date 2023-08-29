@@ -104,7 +104,7 @@ public class ExcelUtils {
         return fileName;
     }
 
-    public static List<Member> importExcel(String filename) throws FileNotFoundException {
+    public static List<MemberExcelImportDTO> importExcel(String filename) throws FileNotFoundException {
         List<MemberExcelImportDTO> memberDTOS = new ArrayList<MemberExcelImportDTO>();
         // 读取excel
         EasyExcel.read(filename, MemberExcelImportDTO.class, new AnalysisEventListener<MemberExcelImportDTO>() {
@@ -121,15 +121,7 @@ public class ExcelUtils {
                 // 可以将解析的数据保存到数据库
             }
         }).sheet().doRead();
-        List<Member> members = new ArrayList<Member>();
-        if(CollectionUtil.isNotEmpty(memberDTOS)){
-            members = memberDTOS.stream().map(e->{
-                Member member = new Member();
-                BeanUtils.copyProperties(e,member);
-                return member;
-            }).collect(Collectors.toList());
-        }
-        return members;
+        return memberDTOS;
     }
 
     public static void main(String[] args) throws FileNotFoundException {

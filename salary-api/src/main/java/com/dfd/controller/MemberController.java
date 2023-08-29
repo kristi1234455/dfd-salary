@@ -50,8 +50,9 @@ public class MemberController {
         return DFDResult.sucess();
     }
 
-    @PostMapping("/import/excel")
-    public DFDResult excel(String fileName){
+    @GetMapping("/import/excel")
+    public DFDResult excel(){
+        String fileName = "C:\\\\Users\\\\kristi\\\\Desktop\\\\1---工资申报-2023-03-27\\\\副本装配部员工信息统计2023.8.28.xls";
         memberService.importExcel(fileName);
         return DFDResult.sucess();
     }

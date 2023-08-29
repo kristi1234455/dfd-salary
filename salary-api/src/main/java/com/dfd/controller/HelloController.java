@@ -38,8 +38,8 @@ public class HelloController {
     @RequestMapping("token")
     @BusLog(descrip = "生成token")
     public String token(){
-        String username ="13419876445";
-        String password = "123";
+        String username ="admin";
+        String password = "123456";
         String token = TokenUtil.token(username,password);
         System.out.println(token);
         return token;

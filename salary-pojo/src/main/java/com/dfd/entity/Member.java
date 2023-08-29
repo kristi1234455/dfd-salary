@@ -48,7 +48,7 @@ public class Member {
      * 性别
      */
     @ApiModelProperty(value = "性别", name = "gender")
-    private Integer gender;
+    private String gender;
 
     /**
      * 部门

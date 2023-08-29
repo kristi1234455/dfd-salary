@@ -6,7 +6,7 @@
     <result column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="room" jdbcType="VARCHAR" property="room" />
     <result column="post_title" jdbcType="VARCHAR" property="postTitle" />
     <result column="department" jdbcType="VARCHAR" property="department" />

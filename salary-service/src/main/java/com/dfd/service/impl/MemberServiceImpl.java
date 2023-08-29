@@ -182,13 +182,29 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
     @Override
     public void importExcel(String fileName) {
-        List<Member> members = null;
+        User currentUser = UserRequest.getCurrentUser();
+        List<MemberExcelImportDTO> memberDTOS = null;
         try {
-            members = ExcelUtils.importExcel(fileName);
+            memberDTOS = ExcelUtils.importExcel(fileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if(CollectionUtil.isNotEmpty(members)){
+        if(CollectionUtil.isNotEmpty(memberDTOS)){
+            List<Member> members = new ArrayList<Member>();
+            if(CollectionUtil.isNotEmpty(memberDTOS)){
+                members = memberDTOS.stream().map(e->{
+                    Member member = new Member();
+                    BeanUtils.copyProperties(e,member);
+                    member.setId(null)
+                            .setUid(UUIDUtil.getUUID32Bits())
+                            .setCreatedBy(currentUser.getNumber())
+                            .setUpdatedBy(currentUser.getNumber())
+                            .setCreatedTime(new Date())
+                            .setUpdatedTime(new Date())
+                            .setIsDeleted(GlobalConstant.GLOBAL_STR_ZERO);
+                    return member;
+                }).collect(Collectors.toList());
+            }
             boolean b = saveBatch(members);
             if(!b){
                 throw new BusinessException("通过表格导入人员数据错误");
