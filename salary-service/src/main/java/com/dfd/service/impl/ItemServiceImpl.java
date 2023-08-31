@@ -87,11 +87,11 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                         .or().eq(Item::getDesignLeader, currentUser.getUid())
                         .or().eq(Item::getEngineeringLeader, currentUser.getUid());
             }else if (role.equals(RoleEnum.ROLE_SUB_LEADER.getCode())) {
-                queryWrapper.eq(Item::getSubLeader, currentUser.getUid());
+                queryWrapper.or().eq(Item::getSubLeader, currentUser.getUid());
             } else if (role.equals(RoleEnum.ROLE_FUNC_LEDAER.getCode())) {
-                queryWrapper.eq(Item::getFunctionalLeader, currentUser.getUid());
+                queryWrapper.or().eq(Item::getFunctionalLeader, currentUser.getUid());
             } else if (role.equals(RoleEnum.ROLE_DEPARTMENT.getCode())) {
-                queryWrapper.eq(Item::getDepartmenLeader, currentUser.getUid());
+                queryWrapper.or().eq(Item::getDepartmenLeader, currentUser.getUid());
             } else {
             }
         }
