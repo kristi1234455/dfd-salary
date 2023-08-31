@@ -76,16 +76,23 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .like(StringUtils.isNotEmpty(itemInfoQueryDTO.getItemName()), Item::getItemName, itemInfoQueryDTO.getItemName())
                 .eq(Item::getIsDeleted, GlobalConstant.GLOBAL_STR_ZERO);
         if (Optional.ofNullable(user).isPresent() && StringUtils.isNotBlank(role)) {
-            if (role.equals(RoleEnum.ROLE_ITEM)) {
-                queryWrapper.eq(Item::getItemManager, currentUser.getUid());
-            } else if (role.equals(RoleEnum.ROLE_SUB_LEADER)) {
+            if (role.equals(RoleEnum.ROLE_ITEM.getCode())) {
+                queryWrapper.or().eq(Item::getItemManager, currentUser.getUid())
+                        .or().eq(Item::getBidDirector, currentUser.getUid())
+                        .or().eq(Item::getDesignManager, currentUser.getUid())
+                        .or().eq(Item::getScientificManager, currentUser.getUid());
+            } else if (role.equals(RoleEnum.ROLE_SUB_DIRECTOR.getCode())) {
+                queryWrapper.or().eq(Item::getItemLeader, currentUser.getUid())
+                        .or().eq(Item::getAgencyLeader, currentUser.getUid())
+                        .or().eq(Item::getDesignLeader, currentUser.getUid())
+                        .or().eq(Item::getEngineeringLeader, currentUser.getUid());
+            }else if (role.equals(RoleEnum.ROLE_SUB_LEADER.getCode())) {
                 queryWrapper.eq(Item::getSubLeader, currentUser.getUid());
-            } else if (role.equals(RoleEnum.ROLE_FUNC_LEDAER)) {
+            } else if (role.equals(RoleEnum.ROLE_FUNC_LEDAER.getCode())) {
                 queryWrapper.eq(Item::getFunctionalLeader, currentUser.getUid());
-            } else if (role.equals(RoleEnum.ROLE_DEPARTMENT)) {
+            } else if (role.equals(RoleEnum.ROLE_DEPARTMENT.getCode())) {
                 queryWrapper.eq(Item::getDepartmenLeader, currentUser.getUid());
             } else {
-
             }
         }
         queryWrapper.orderByDesc(Item :: getCreatedTime);
@@ -98,6 +105,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         List<String> memUIdList = new ArrayList<>();
         for (Item item : records) {
             memUIdList.add(item.getBidDirector());
+            memUIdList.add(item.getItemManager());
             memUIdList.add(item.getDesignManager());
             memUIdList.add(item.getScientificManager());
             memUIdList.add(item.getItemLeader());
@@ -169,6 +177,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             }
         }
         memUIdList.add(item.getItemManager());
+        memUIdList.add(item.getDesignManager());
         memUIdList.add(item.getItemLeader());
         memUIdList.add(item.getAgencyLeader());
         memUIdList.add(item.getDesignLeader());
@@ -438,7 +447,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set((bidItemDTO.getTechnicalFee() != null), Item::getTechnicalFee, bidItemDTO.getTechnicalFee())
                 .set((bidItemDTO.getItemSalary() != null), Item::getItemSalary, bidItemDTO.getItemSalary())
                 .set((bidItemDTO.getItemPerformance() != null), Item::getItemPerformance, bidItemDTO.getItemPerformance())
-                .set(StringUtils.isNotBlank(bidItemDTO.getBidManager()), Item::getItemLeader, bidItemDTO.getItemLeader())
+                .set(StringUtils.isNotBlank(bidItemDTO.getBidDirector()), Item::getBidDirector, bidItemDTO.getBidDirector())
                 .set(StringUtils.isNotBlank(bidItemDTO.getItemLeader()), Item::getItemLeader, bidItemDTO.getItemLeader())
                 .set(StringUtils.isNotBlank(bidItemDTO.getSubLeader()), Item::getSubLeader, bidItemDTO.getSubLeader())
                 .set(StringUtils.isNotBlank(bidItemDTO.getFunctionalLeader()), Item::getFunctionalLeader, bidItemDTO.getFunctionalLeader())
@@ -520,7 +529,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set((scientificItemUpdateDTO.getTechnicalFee() != null), Item::getTechnicalFee, scientificItemUpdateDTO.getTechnicalFee())
                 .set((scientificItemUpdateDTO.getItemSalary() != null), Item::getItemSalary, scientificItemUpdateDTO.getItemSalary())
                 .set((scientificItemUpdateDTO.getItemPerformance() != null), Item::getItemPerformance, scientificItemUpdateDTO.getItemPerformance())
-                .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getScientificManager()), Item::getItemLeader, scientificItemUpdateDTO.getScientificManager())
+                .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getScientificManager()), Item::getScientificManager, scientificItemUpdateDTO.getScientificManager())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getItemLeader()), Item::getItemLeader, scientificItemUpdateDTO.getItemLeader())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getSubLeader()), Item::getSubLeader, scientificItemUpdateDTO.getSubLeader())
                 .set(StringUtils.isNotBlank(scientificItemUpdateDTO.getFunctionalLeader()), Item::getFunctionalLeader, scientificItemUpdateDTO.getFunctionalLeader())

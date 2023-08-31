@@ -69,8 +69,8 @@ public class BidItemUpdateDTO implements Serializable {
     /**
      * 投标经理
      */
-    @ApiModelProperty(value = "投标经理", name = "bidManager")
-    private String bidManager;
+    @ApiModelProperty(value = "投标经理", name = "bidDirector")
+    private String bidDirector;
 
     /**
      * 项目管理所

@@ -246,6 +246,9 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
                 Item item = itemUidItem.get(itemMember.getItemUid());
                 String itemMemberUid = itemMember.getMemberUid();
                 Member member = memberUidMember.get(itemMemberUid);
+                if(member == null){
+                    continue;
+                }
                 String uid = item.getUid() + member.getUid() + DateUtil.getYM();
 
                 TotalSalary totalSalary = new TotalSalary();
@@ -291,6 +294,9 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             for(TotalSalary oldTotalSalary : updateItemMember){
                 Item item = itemUidItem.get(oldTotalSalary.getItemUid());
                 Member member = memberUidMember.get(oldTotalSalary.getItemMemberUid());
+                if(member == null){
+                    continue;
+                }
                 String uid = oldTotalSalary.getUid();
                 oldTotalSalary.setItemName(item.getItemName())
                         .setRoom(member.getRoom())
@@ -404,6 +410,9 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             List<TotalSalaryItem> collect = new ArrayList<>();
             for(TotalSalary var : addTotalSalary){
                 TotalSalaryItem totalSalaryItem = doTotalSalaryItem(var,currentNumber, itemUidItem, memberUidMember,itemMemberUidItemSalary);
+                if(totalSalaryItem == null){
+                    continue;
+                }
                 totalSalaryItem.setCreatedBy(currentNumber)
                         .setCreatedTime(new Date());
                 collect.add(totalSalaryItem);
@@ -421,6 +430,9 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             for(TotalSalaryItem var : updateTotalSalaryItem) {
                 TotalSalary totalSalary = uidTotalSalary.get(var.getUid());
                 TotalSalaryItem totalSalaryItem = doTotalSalaryItem(totalSalary,currentNumber, itemUidItem, memberUidMember,itemMemberUidItemSalary);
+                if(totalSalaryItem == null){
+                    continue;
+                }
                 totalSalaryItem.setId(var.getId());
                 collect.add(totalSalaryItem);
             }
@@ -437,8 +449,11 @@ public class FlushTotalSalaryServiceImpl implements FlushTotalSalaryService {
             ,Map<String, Member> memberUidMember,Map<String, ItemSalary> itemMemberUidItemSalary){
         Item item = itemUidItem.get(var.getItemUid());
         Member member = memberUidMember.get(var.getItemMemberUid());
-        ItemSalary itemSalary = itemMemberUidItemSalary != null ? itemMemberUidItemSalary.get(var.getItemMemberUid()) : null;
+        if(member == null){
+            return null;
+        }
         String uid = itemUidItem.get(var.getItemUid()).getUid() + memberUidMember.get(var.getItemMemberUid()).getUid() + DateUtil.getYM();
+        ItemSalary itemSalary = itemMemberUidItemSalary != null ? itemMemberUidItemSalary.get(uid) : null;
         TotalSalaryItem totalSalaryItem = TotalSalaryItem.builder()
                 .uid(uid)
                 .itemUid(var.getUid())

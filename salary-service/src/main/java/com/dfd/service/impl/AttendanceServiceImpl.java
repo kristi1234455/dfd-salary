@@ -137,10 +137,10 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
                         .setNumber(!itemMemberNumbers.isEmpty() ? itemMemberNumbers.get(a.getItemMemberUid()) : null);
                 AttendanceMonDataVO dataVO = new AttendanceMonDataVO();
                 BeanUtil.copyProperties(a, dataVO);
-                if(a.getStatus() == 1){
+                if(a.getStatus()!=null && a.getStatus() == 1){
                     duty++;
                 }
-                if (a.getStatus() == 2) {
+                if (a.getStatus()!=null && a.getStatus() == 2) {
                     out++;
                 }
                 dataVOList.add(dataVO);
@@ -184,11 +184,11 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         int outGoings = 0;
         int dutys = 0;
         for(Attendance e : list){
-            if(!e.getStatus().equals(AttendanceEnum.TTDANCE_VACATION.getCode())){
+            if(e.getStatus()!=null && !e.getStatus().equals(AttendanceEnum.TTDANCE_VACATION.getCode())){
                 dutys++;
             }
-            if(e.getStatus().equals(AttendanceEnum.ATTDANCE_SITE.getCode())
-                    || e.getStatus().equals(AttendanceEnum.ATTDANCE_OUT.getCode())){
+            if(e.getStatus()!=null && (e.getStatus().equals(AttendanceEnum.ATTDANCE_SITE.getCode())
+                    || e.getStatus().equals(AttendanceEnum.ATTDANCE_OUT.getCode()))){
                 outGoings++;
             }
         }
